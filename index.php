@@ -1,0 +1,4 @@
+<?
+
+echo "ola k ase?";
+?>
