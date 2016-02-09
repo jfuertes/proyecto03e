@@ -10,10 +10,17 @@
   angular.module('Controllers', [])
 
   
-  .controller('mainController',['$scope', function ($scope) {
+  .controller('mainController',['$scope', '$http', function ($scope, $http) {
     
-    $scope.variablePrueba = "Giggio";
-    //alert('entro');
+    /*
+      $http({method:'POST',url: 'api/getProy.php',headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+      .success(function(response) {
+        console.log(response);
+      })
+      .error(function(response){
+        console.log(response);
+      });
+*/
 
   }])
   .controller('nuevoController',['$scope', function ($scope) {

@@ -3,9 +3,9 @@
 /**
  * Handling database connection
  *
- * @author Eisson
+ * @author Mindtec
  */
-class EissonConnect {
+class dbConnect {
 
     private $dbh;
 
@@ -15,7 +15,7 @@ class EissonConnect {
      * Establishing database connection
      * @return database connection handler
      */
-    function enchufalo() {
+    function conectardb() {
         include_once dirname(__FILE__) . '/config.php';
 
         $dataSourceName = "mysql:host=".DB_HOST.";dbname=".DB_NAME;
