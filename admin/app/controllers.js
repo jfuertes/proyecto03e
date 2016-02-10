@@ -1,4 +1,4 @@
-/**
+ /**
  * List Controller
  * @version v1.0.0 - 2016-02-08 * @link http://www.mindtec.pe
  * @author MindTec <contacto@mindtec.pe>
@@ -20,8 +20,35 @@
     
 
   }])
-  .controller('editarController',['$scope', function ($scope) {
+  .controller('tabMaestrasController',['$scope', '$http', function ($scope, $http) {
 
+    $http.post('api/getEtiqueta.php' )
+              .success(function(data) {
+
+                console.log(data);
+               // console.log(data[0].IDMAESTRO);
+                //$scope.etiquetas=data;
+                $scope.etiquetas=[42, 42, 43, 43];
+
+              })
+              .error(function(data) {
+                //console.log('Error: ' + data);
+                console.log(data);
+                });
+
+
+
+    $scope.formNewEtiqueta = function(et){
+       $http.post('api/addEtiqueta.php', { et: et } )
+              .success(function(data) {
+                console.log(data);
+              })
+              .error(function(data) {
+                //console.log('Error: ' + data);
+                console.log(data);
+                });
+
+    }
 
   }])
   .controller('exportarController',['$scope', function ($scope) {
