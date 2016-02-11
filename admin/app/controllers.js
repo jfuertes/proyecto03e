@@ -11,24 +11,38 @@
 
   
   .controller('mainController',['$scope', function ($scope) {
-    
-    $scope.variablePrueba = "Giggio";
-    //alert('entro');
+    $(document).ready(function() {
+        $('#dataTables-home').DataTable({
+                responsive: true,
+                "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            }
+        });
+    });
 
   }])
-  .controller('nuevoController',['$scope', function ($scope) {
+  .controller('proyMacroController',['$scope', function ($scope) {
     
 
   }])
   .controller('tabMaestrasController',['$scope', '$http', function ($scope, $http) {
+    $(document).ready(function() {
+          $('#dataTables-maestra').DataTable({
+                  responsive: true,
+                  "language": {
+                      "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                  }
+          });
+      });
+
 
     $http.post('api/getEtiqueta.php' )
               .success(function(data) {
 
                 console.log(data);
                // console.log(data[0].IDMAESTRO);
-                //$scope.etiquetas=data;
-                $scope.etiquetas=[42, 42, 43, 43];
+                $scope.etiquetas=data;
+                //$scope.etiquetas=[42, 42, 43, 43];
 
               })
               .error(function(data) {
