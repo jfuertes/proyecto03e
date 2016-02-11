@@ -4,7 +4,7 @@
 
 var app = angular.module('entelApp', [
   'ngRoute',
-  'ngAnimate',
+  'ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.moveColumns',
   'Controllers']);
 
     app.config(['$routeProvider', function($routeProvider){

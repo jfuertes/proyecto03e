@@ -19,15 +19,15 @@
                     <thead>
                         <tr>
                             <th>ID Maestro</th>
-                            <!--<th>Etiqueta</th>-->
+                            <th>Etiqueta</th>
                             
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="n in etiquetas track by $index">
-                            <td >{{n}}</td>
-                            <!--<td >{{et.ETIQUETA}}</td>
-                            <td><a href="#editar_usuario/{{n.username}}"><i tittle="Editar" class="small mdi-content-create"></i></a><a href="#usuarios" ng-click="delEtiqueta(n.username, $index)"><i tittle="Eliminar" class="small mdi-action-delete"></i></a></td>-->
+                        <tr ng-repeat="n in etiquetas">
+                            <td >{{n.IDMAESTRO}}</td>
+                            <td >{{n.ETIQUETA}}</td>
+                            <!--<td><a href="#editar_usuario/{{n.username}}"><i tittle="Editar" class="small mdi-content-create"></i></a><a href="#usuarios" ng-click="delEtiqueta(n.username, $index)"><i tittle="Eliminar" class="small mdi-action-delete"></i></a></td>-->
                         </tr>
                       
                        
@@ -58,6 +58,28 @@
             </form>
         </div>
     </div>
-
+  <label>Which columns should we export?</label>
+  <select ng-model="export_column_type"</select>
+    <option value='all'>All</option>
+    <option value='visible'>Visible</option>
+  </select>
+  <label>Which rows should we export?</label>
+  <select ng-model="export_row_type"</select>
+    <option value='all'>All</option>
+    <option value='visible'>Visible</option>
+    <option value='selected'>Selected</option>
+  </select>
+  <label>What format would you like?</label>
+  <select ng-model="export_format"</select>
+    <option value='csv'>CSV</option>
+    <option value='pdf'>PDF</option>
+  </select>
+  <button ng-click="export()">Export</button>
+  <div class="custom-csv-link-location">
+    <label>Your CSV will show below:</label>
+    <span class="ui-grid-exporter-csv-link">&nbsp</span>
+  </div>
+  
+  <div ui-grid="gridOptions" ui-grid-selection ui-grid-exporter ui-grid-move-columns class="grid"></div>
 
 </div>
