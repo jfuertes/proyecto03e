@@ -63,8 +63,7 @@
       $scope.gridApi = gridApi;
     }
   };
-  
-   /*$http.get('https://cdn.rawgit.com/angular-ui/ui-grid.info/gh-pages/data/100.json')
+   $http.get('https://cdn.rawgit.com/angular-ui/ui-grid.info/gh-pages/data/100.json')
     .success(function(data) {
       data.forEach( function( row, index ) {
         if( row.gender === 'female' ){
@@ -73,12 +72,10 @@
           row.gender = 2;
         }
       });
-      $scope.gridOptions.datas = data;
+      $scope.gridOptions.data = data;
+      //$scope.gridOptions.datas = data;
     });
-
-    */
-
-    $scope.export = function(){
+      $scope.export = function(){
     if ($scope.export_format == 'csv') {
       var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
       $scope.gridApi.exporter.csvExport( $scope.export_row_type, $scope.export_column_type, myElement );
@@ -95,7 +92,7 @@
                 console.log(data);
                // console.log(data[0].IDMAESTRO);
                 $scope.etiquetas=data;
-                $scope.gridOptions.data=data;
+                //$scope.gridOptions.datas
                 //$scope.etiquetas=[42, 42, 43, 43];
 
               })
