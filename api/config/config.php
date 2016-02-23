@@ -11,9 +11,9 @@
 
 
 # MySQL Credentials :
-define('DB_USERNAME', 'mindtec_entel');
-define('DB_PASSWORD', 'Ent3l16');
-define('DB_HOST', '198.57.242.116');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_HOST', 'localhost');
 define('DB_NAME', 'mindtec_entel_proyectos');
 define('CLAVE', '');
 
