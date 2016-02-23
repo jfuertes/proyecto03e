@@ -6,6 +6,7 @@ var app = angular.module('entelApp', [
   'ngRoute',
   'ngAnimate',
   'datatables',
+  'datatables.bootstrap',
   'Controllers']);
 
     app.config(['$routeProvider', function($routeProvider){
@@ -27,8 +28,8 @@ var app = angular.module('entelApp', [
         })
         .when('/proyMacro', {
           templateUrl: 'views/proyMacro.html',
-          caseInsensitiveMatch: true
-          //controller: 'proyMacroController'
+          caseInsensitiveMatch: true,
+          controller: 'proyMacroController'
         })
         .when('/carga_masiva', {
           templateUrl: 'views/carga_masiva.html',
