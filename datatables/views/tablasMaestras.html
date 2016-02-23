@@ -1,0 +1,51 @@
+
+<div class="container-fluid">
+     <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Gestión de Tablas Maestras
+            </h1>
+            
+        </div>
+    </div>
+     <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-maestra">
+                    <thead>
+                        <tr>
+                            <th>ID Maestro</th>
+                            <th>Etiqueta</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="n in etiquetas">
+                            <td>{{n.IDMAESTRO}}</td>
+                            <td>{{n.ETIQUETA}}</td>
+                            <!--<td><a href="#editar_usuario/{{n.username}}"><i tittle="Editar" class="small mdi-content-create"></i></a><a href="#usuarios" ng-click="delEtiqueta(n.username, $index)"><i tittle="Eliminar" class="small mdi-action-delete"></i></a></td>-->
+                        </tr>
+                      
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-maestra').DataTable({
+                responsive: true,
+                "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            }
+        });
+    });
+    </script>
+    
+</div>
