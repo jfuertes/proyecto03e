@@ -24,10 +24,10 @@ var app = angular.module('entelApp', [
           caseInsensitiveMatch: true,
           controller: 'tabMaestrasController'
         })
-        .when('/exportar', {
-          templateUrl: 'views/exportar.html',
+        .when('/proyMacro', {
+          templateUrl: 'views/proyMacro.html',
           caseInsensitiveMatch: true,
-          controller: 'exportarController'
+          controller: 'proyMacroController'
         })
         .when('/carga_masiva', {
           templateUrl: 'views/carga_masiva.html',
