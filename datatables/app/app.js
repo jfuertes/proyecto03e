@@ -7,6 +7,7 @@ var app = angular.module('entelApp', [
   'ngAnimate',
   'datatables',
   'datatables.bootstrap',
+  'datatables.buttons',
   'Controllers']);
 
     app.config(['$routeProvider', function($routeProvider){
@@ -31,10 +32,10 @@ var app = angular.module('entelApp', [
           caseInsensitiveMatch: true,
           controller: 'proyMacroController'
         })
-        .when('/carga_masiva', {
-          templateUrl: 'views/carga_masiva.html',
+        .when('/exportar', {
+          templateUrl: 'views/exportar.html',
           caseInsensitiveMatch: true,
-          controller: 'cargaMasivaController'
+          controller: 'exportarController'
         })
         .otherwise({
           redirectTo: '/'

@@ -7,7 +7,7 @@
 (function(){
   'use strict';
 
-angular.module('Controllers', ['datatables', 'datatables.bootstrap']).run(function(DTDefaultOptions) {
+angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons']).run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
 
@@ -1231,8 +1231,22 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap']).run(functi
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
         .withBootstrap()
-
-
+        .withButtons([
+            'colvis',
+            'copy',
+            'print',
+            'excel',
+            {
+                text: 'Importar',
+                key: '1',
+                action: function (e, dt, node, config) {
+                    console.log(e);
+                    console.log(dt);
+                    console.log(node);
+                    console.log(config);
+                }
+            }
+        ]);
 
       $scope.persons = 
           [{
@@ -1286,5 +1300,44 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap']).run(functi
           }];
   })
 
+
+.controller('exportarController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+
+        $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withPaginationType('full_numbers')
+        .withDisplayLength(10)
+        .withBootstrap()
+        .withButtons([
+            'colvis',
+            'copy',
+            'print',
+            'excel',
+            {
+                text: 'Importar',
+                key: '1',
+                action: function (e, dt, node, config) {
+                    console.log(e);
+                    console.log(dt);
+                    console.log(node);
+                    console.log(config);
+                }
+            }
+        ]);
+
+
+    $scope.getEtiquetas= function(){
+       $http.post('api/getEtiqueta.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.etiquetas=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     
+    $scope.getEtiquetas();
+
+  })
   
 })();

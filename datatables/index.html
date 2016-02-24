@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="/angular-datatables-master/src/plugins/bootstrap/datatables.bootstrap.css">
     <link href="../css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
+
+    <!-- DataTables CSS buttons -->
+    <link rel="stylesheet" href="/angular-datatables-master/vendor/datatables-buttons/css/buttons.dataTables.css">
     
 </head>
 <body ng-app="entelApp">
@@ -75,10 +78,10 @@
                         <a href="#/proyMacro"><i class="fa fa-fw fa-file"></i> Ejemplo Datatables basico</a>
                     </li>
                     <li>
-                        <a href="#/tabMaestras"><i class="fa fa-fw fa-edit"></i> Tablas Maestras</a>
+                        <a href="#/tabMaestras"><i class="fa fa-fw fa-edit"></i> Exportar</a>
                     </li>
                     <li>
-                        <a href="#/exportar"><i class="fa fa-fw fa-download"></i> Usuarios</a>
+                        <a href="#/exportar"><i class="fa fa-fw fa-download"></i> con HTPP</a>
                     </li>
 
                 </ul>
@@ -129,8 +132,35 @@
     <script src="/vendor/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
     <!-- -->
 
+
+    <!-- DataTables JavaScript para exportar
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>-->
+
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="/angular-datatables-master/dist/plugins/buttons/angular-datatables.buttons.min.js"></script>
+
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.print.js"></script>
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.flash.js"></script>
+
     <script src="app/controllers.js"></script>
     <script src="app/app.js"></script>
+
+
+
+    
+
+
+
+
+
 
 
 
