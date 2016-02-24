@@ -1312,6 +1312,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             'copy',
             'print',
             'excel',
+            'csv',
+            'pdf',
             {
                 text: 'Importar',
                 key: '1',
