@@ -14,10 +14,10 @@ var app = angular.module('entelApp', [
           caseInsensitiveMatch: true,
           controller: 'mainController'
         })
-        .when('/nuevo', {
-          templateUrl: 'views/nuevo.html',
+        .when('/proymacro', {
+          templateUrl: 'views/proymacro.html',
           caseInsensitiveMatch: true,
-          controller: 'nuevoController'
+          controller: 'proymacroController'
         })
         .when('/tabMaestras', {
           templateUrl: 'views/tablasMaestras.html',
