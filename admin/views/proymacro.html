@@ -1,16 +1,16 @@
 <div class="container-fluid">
-     <!-- Page Heading -->
+	 <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                Gestión de proyectos MAcro
+                Gestión Proyectos Macro
             </h1>
             <ol class="breadcrumb">
                 <li>
                     <i class="fa fa-dashboard"></i><a href="#/">Proyectos</a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-file"></i> Tablas Maestras
+                    <i class="fa fa-file"></i> Proyectos MAcro
                 </li>
             </ol>
         </div>
@@ -18,33 +18,49 @@
      <!-- /.row -->
 
     <div class="row">
-        <div class="col-lg-12">
-            <h2>Proyectos Macro </h2>
-            <div class="table-responsive">
-                <div class="dataTable_wrapper">
+	    <div class="col-lg-12">
+	        <h2>Proyectos Macro </h2>
+	        <div class="table-responsive">
+	            <div class="dataTable_wrapper">
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>FirstName</th>
-                                <th>LastName</th>
+                                <th>Codigo</th>
+                                <th>Nombre de Proyecto Macro</th>
+                                <th>Estado del Proyecto</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="person in persons">
-                                <td>{{ person.id }}</td>
-                                <td>{{ person.firstName }}</td>
-                                <td>{{ person.lastName }}</td>
+                            <tr ng-repeat="pm in ProyMacro">
+                                <td>{{ pm.IDPROYMACRO }}</td>
+                                <td>{{ pm.NOMBREPROYMACRO }}</td>
+                                <td>{{ pm.ESTADOPM |filterActivo }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <!-- /.table-responsive -->
 
-            </div>
+	        </div>
+	    </div>
+	</div>
+	 <!-- /.row -->
+
+   <div class="row">
+        <div class="col-lg-12">
+            <h3>Nueva Proyecto Macro</h3></br>
+            <form ng-submit="formNewProyMacro(pm)">
+                <div class="col-md-4 col-md-offset-1">
+                    <input id="inputEtiqueta" class="col-lg-12" ng-model='pm.NOMBREPROYMACRO' type="text" placeholder="Nombre de Proyecto Macro">
+                </div>
+                <div class="col-md-3 col-md-offset-1">
+                    <button type="submit" class="col-lg-8 btn btn-primary">Agregar</button>
+                </div>
+            </form>
         </div>
     </div>
-     <!-- /.row -->
+
+
 
 </div>
 <!-- /.container-fluid -->
