@@ -17,6 +17,15 @@
     <link href="../css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
 
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
     <!-- DataTables CSS buttons -->
     <link rel="stylesheet" href="/angular-datatables-master/vendor/datatables-buttons/css/buttons.dataTables.css">
     
@@ -83,6 +92,9 @@
                     <li>
                         <a href="#/exportar"><i class="fa fa-fw fa-download"></i> con HTPP</a>
                     </li>
+                    <li>
+                        <a href="#/importar"><i class="fa fa-fw fa-download"></i> con Importacion</a>
+                    </li>
 
                 </ul>
             </div>
@@ -144,6 +156,16 @@
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.print.js"></script>
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.html5.js"></script>
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.flash.js"></script>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/highlightjs/highlight.pack.js"></script>
+    <script src="bower_components/angular-highlightjs/angular-highlightjs.js"></script>
+    <!-- endbower -->
+    <script src="bower_components/angular-csv-import/dist/angular-csv-import.js"></script>
+    <!-- endbuild -->
+
 
     <script src="app/controllers.js"></script>
     <script src="app/app.js"></script>

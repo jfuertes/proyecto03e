@@ -8,6 +8,11 @@ var app = angular.module('entelApp', [
   'datatables',
   'datatables.bootstrap',
   'datatables.buttons',
+
+  'ngResource',
+  'ngCsvImport',
+  'hljs',
+
   'Controllers']);
 
     app.config(['$routeProvider', function($routeProvider){
@@ -36,6 +41,11 @@ var app = angular.module('entelApp', [
           templateUrl: 'views/exportar.html',
           caseInsensitiveMatch: true,
           controller: 'exportarController'
+        })
+        .when('/importar', {
+          templateUrl: 'views/importar.html',
+          caseInsensitiveMatch: true,
+          controller: 'importarController'
         })
         .otherwise({
           redirectTo: '/'
