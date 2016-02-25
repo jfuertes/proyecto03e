@@ -5,11 +5,7 @@
 var app = angular.module('entelApp', [
   'ngRoute',
   'ngAnimate',
-   'ngTouch', 'ui.grid',
-    'ui.grid.selection', 'ui.grid.exporter',
-     'ui.grid.moveColumns', 'ui.grid.pagination',
-      'ui.grid.edit',
-      'datatables',
+  'datatables',
   'datatables.bootstrap',
   'datatables.buttons',
   'Controllers']);
@@ -21,21 +17,25 @@ var app = angular.module('entelApp', [
           caseInsensitiveMatch: true,
           controller: 'mainController'
         })
-        .when('/proymacro', {
-          templateUrl: 'views/proymacro.html',
+        .when('/nuevo', {
+          templateUrl: 'views/nuevo.html',
           caseInsensitiveMatch: true,
-          controller: 'proymacroController'
+          controller: 'nuevoController'
         })
         .when('/tabMaestras', {
           templateUrl: 'views/tablasMaestras.html',
           caseInsensitiveMatch: true,
           controller: 'tabMaestrasController'
         })
-   
-        .when('/carga_masiva', {
-          templateUrl: 'views/carga_masiva.html',
+        .when('/proyMacro', {
+          templateUrl: 'views/proyMacro.html',
           caseInsensitiveMatch: true,
-          controller: 'cargaMasivaController'
+          controller: 'proyMacroController'
+        })
+        .when('/exportar', {
+          templateUrl: 'views/exportar.html',
+          caseInsensitiveMatch: true,
+          controller: 'exportarController'
         })
         .otherwise({
           redirectTo: '/'

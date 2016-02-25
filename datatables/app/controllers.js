@@ -11,6 +11,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
 
+
+.controller('mainController', function ($scope) {
+})
 .controller('proyMacroController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions) {
 
       //DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');

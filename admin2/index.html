@@ -7,17 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link href="/vendor/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="/angular-datatables-master/src/plugins/bootstrap/datatables.bootstrap.css">
     <!--<link rel="stylesheet" href="angular-datatables.css">-->
-<link rel="stylesheet" href="../css/main.css">
+
     <!-- DataTables CSS -->
-
+    <link href="/vendor/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="/vendor/datatables/media/css/datatables.bootstrap.min.css">-->
+    <link rel="stylesheet" href="/angular-datatables-master/src/plugins/bootstrap/datatables.bootstrap.css">
     <link href="../css/sb-admin.css" rel="stylesheet">
-<link rel="stylesheet" href="/angular-datatables-master/vendor/datatables-buttons/css/buttons.dataTables.css">
+    <link rel="stylesheet" href="../css/main.css">
 
-
+    <!-- DataTables CSS buttons -->
+    <link rel="stylesheet" href="/angular-datatables-master/vendor/datatables-buttons/css/buttons.dataTables.css">
+    
 </head>
 <body ng-app="entelApp">
   <main>
@@ -73,14 +75,13 @@
                         <a href="#/"><i class="fa fa-fw fa-dashboard"></i> Inicio</a>
                     </li>
                     <li>
-                        <a href="#/proymacro"><i class="fa fa-fw fa-file"></i> Proyectos Macro</a>
-
+                        <a href="#/proyMacro"><i class="fa fa-fw fa-file"></i> Ejemplo Datatables basico</a>
                     </li>
                     <li>
-                        <a href="#/tabMaestras"><i class="fa fa-fw fa-edit"></i> Tablas Maestras</a>
+                        <a href="#/proymacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a>
                     </li>
                     <li>
-                        <a href="#/exportar"><i class="fa fa-fw fa-download"></i> Usuarios</a>
+                        <a href="#/tabMaestras"><i class="fa fa-fw fa-download"></i>Tablas Maestras</a>
                     </li>
 
                 </ul>
@@ -102,6 +103,7 @@
     <!-- angular -->
     <!-- DataTables JavaScript -->
     <script src="/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
+
     <script src="/vendor/angular/1.3.15/angular.min.js"></script>
     <!--<script src="/angular-datatables-master/vendor/angular/angular.min.js"></script>-->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
@@ -110,27 +112,32 @@
     <script src="/vendor/angular/1.3.15/angular-route.min.js"></script>
     <script src="/vendor/angular/ui-select/dist/select.js"></script>
     <script src='/vendor/angular/1.3.15/i18n/angular-locale_es-pe.js'></script>
-    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
-    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
-    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
-    <script src="http://ui-grid.info/release/ui-grid.js"></script>
-    <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css" type="text/css">
 
-<!--creo q deveriamos incluir https://angular-ui.github.io/bootstrap/#/alert para los alert a analizar...-->
     <!-- DataTables JavaScript -->
-     <script src="../js/bootstrap.min.js"></script>
+    
 
-     
- <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    
+    <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
     <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.options.js"></script>
     <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.tabletools.js"></script>
     <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js"></script>
     <!-- -->
     <script src="/angular-datatables-master/dist/angular-datatables.min.js"></script>
     <script src="/vendor/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <!-- -->
 
 
- <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <!-- DataTables JavaScript para exportar
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>-->
+
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
     <script src="/angular-datatables-master/dist/plugins/buttons/angular-datatables.buttons.min.js"></script>
 
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.colVis.js"></script>
@@ -138,13 +145,17 @@
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.html5.js"></script>
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.flash.js"></script>
 
-
-
-   
-
-
     <script src="app/controllers.js"></script>
     <script src="app/app.js"></script>
+
+
+
+    
+
+
+
+
+
 
 
 

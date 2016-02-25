@@ -7,7 +7,12 @@
 (function(){
   'use strict';
 
-  angular.module('Controllers', ['ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit', 'ui.grid.moveColumns', 'ui.grid.pagination'])
+  angular.module('Controllers', ['ngAnimate', 'ngTouch',
+   'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
+    'ui.grid.moveColumns', 'ui.grid.pagination','datatables',
+ 'datatables.bootstrap', 'datatables.buttons']).run(function(DTDefaultOptions) {
+    DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
+})
 
   
   .controller('mainController',['$scope', function ($scope) {
@@ -22,9 +27,79 @@
 
   }])
 
-  .controller('proyMacroController',['$scope', function ($scope) {
+  .controller('proyMacroController',['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions) {
+ $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withPaginationType('full_numbers')
+        .withDisplayLength(10)
+        .withBootstrap()
+        .withButtons([
+            'colvis',
+            'copy',
+            'print',
+            'excel',
+            {
+                text: 'Importar',
+                key: '1',
+                action: function (e, dt, node, config) {
+                    console.log(e);
+                    console.log(dt);
+                    console.log(node);
+                    console.log(config);
+                }
+            }
+        ]);
 
-    
+      $scope.persons = 
+          [{
+              "id": 860,
+              "firstName": "Superman",
+              "lastName": "Yoda"
+          }, {
+              "id": 870,
+              "firstName": "Foo",
+              "lastName": "Whateveryournameis"
+          }, {
+              "id": 590,
+              "firstName": "Toto",
+              "lastName": "Titi"
+          }, {
+              "id": 464,
+              "firstName": "Cartman",
+              "lastName": "Kyle"
+          }, {
+              "id": 505,
+              "firstName": "Superman",
+              "lastName": "Yoda"
+          }, {
+              "id": 308,
+              "firstName": "Louis",
+              "lastName": "Kyle"
+          }, {
+              "id": 184,
+              "firstName": "Toto",
+              "lastName": "Bar"
+          }, {
+              "id": 411,
+              "firstName": "Luke",
+              "lastName": "Yoda"
+          }, {
+              "id": 154,
+              "firstName": "Luke",
+              "lastName": "Moliku"
+          }, {
+              "id": 623,
+              "firstName": "Someone First Name",
+              "lastName": "Moliku"
+          }, {
+              "id": 499,
+              "firstName": "Luke",
+              "lastName": "Bar"
+          }, {
+              "id": 482,
+              "firstName": "Batman",
+              "lastName": "Lara"
+          }];
+ 
 
   }])
   .controller('tabMaestrasController',['$scope', '$http', function ($scope, $http) {

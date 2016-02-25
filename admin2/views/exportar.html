@@ -3,14 +3,14 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                Gestión de proyectos MAcro
+                Gestión con HTTP
             </h1>
             <ol class="breadcrumb">
                 <li>
-                    <i class="fa fa-dashboard"></i><a href="#/">Proyectos</a>
+                    <i class="fa fa-dashboard"></i><a href="#/">HTTP</a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-file"></i> Tablas Maestras
+                    <i class="fa fa-file"></i> Con HTTP
                 </li>
             </ol>
         </div>
@@ -26,15 +26,15 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>FirstName</th>
-                                <th>LastName</th>
+                                <th>Etiqueta</th>
+                                <th>Parametro</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="person in persons">
-                                <td>{{ person.id }}</td>
-                                <td>{{ person.firstName }}</td>
-                                <td>{{ person.lastName }}</td>
+                            <tr ng-repeat="n in etiquetas">
+                                <td>{{ n.IDMAESTRO }}</td>
+                                <td>{{ n.ETIQUETA }}</td>
+                                <td>{{ n.IDPARAMETRO }}</td>
                             </tr>
                         </tbody>
                     </table>
