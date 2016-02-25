@@ -9,6 +9,19 @@
         </div>
     </div>
      <!-- /.row -->
+  <div class="row">
+        <div class="col-md-12 ">
+        <h3>Seleccione el Proyecto Macro</h3>
+            <form ng-submit="formByProyMacro(pm)">
+                <select ng-model="pm.idProy">
+                    <option ng-repeat="pm in ProyMacro" value="{{pm.IDPROYMACRO}}">{{pm.NOMBREPROYMACRO}}</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Ver Parametros</button>
+            </form>
+        </div>
+    </div></br>
+
+
      <div class="row" ng-show="ShowTableParams">
         <div class="col-md-4 ">
             <button ng-click="agregarParam()" class="col-lg-8 btn btn-primary">Agregar Nuevo Parametro</button>
@@ -69,6 +82,14 @@
               </select>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Modulo:</label>
+            <div class="col-sm-10">
+              <select class="form-control"  ng-model="pa.IDMODULO">
+                  <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
+              </select>
+            </div>
+        </div>  
 
        <div class="form-group">
             <label class="control-label col-sm-2" >Tabla Maestra:</label>
@@ -91,12 +112,15 @@
         </div>
 
         <div class="form-group"> 
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-primary">Guardar Parametro</button>
             </div>
+            
         </div>
     </form>
-
+<div class="col-sm-offset-2 col-sm-2">
+              <button ng-click="volverParametro()" class="btn btn-primary">Cancelar</button>
+            </div>
 </div>
  
 
