@@ -148,17 +148,35 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
     };
-     
-    $scope.getParametro();
-
-     $scope.formNewProyMacro= function(pm){
-       $http.post('api/addProyMacro.php', {pm :pm} )
+    $scope.getiposDatos= function(){
+       $http.post('api/getTiposDatos.php' )
                 .success(function(data) {
                   console.log(data);
-                  $scope.addProyMacro=data;
+                  $scope.tiposDatos=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     
+    $scope.getParametro();
+    $scope.getiposDatos();
+
+     $scope.formNewParam= function(pa){
+      console.log(pa);
+       $http.post('api/addParametro.php', {pa :pa} )
+                .success(function(data) {
+                  console.log(data);
+                  //$scope.addProyMacro=data;
                   if(data="true"){
                     $scope.getParametro();
                     alert("registro de parametro exitoso");
+                     $scope.ShowTableParams=true;
+                     $("#formParametro").reset();
+                  }
+                  else{
+                    alert("error con el servidor intentelo mas tarde");
+                     $scope.ShowTableParams=true;
                   }
                   
                 })
