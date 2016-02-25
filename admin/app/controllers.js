@@ -158,13 +158,36 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
     };
+
+      $scope.getModulos= function(){
+       $http.post('api/getModulos.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     $scope.getProyMacro= function(){
+       $http.post('api/getProyMacro.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.ProyMacro=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
      
     $scope.getParametro();
     $scope.getiposDatos();
+    $scope.getModulos();
+    $scope.getProyMacro();
 
      $scope.formNewParam= function(pa){
       console.log(pa);
-       $http.post('api/addParametro.php', {pa :pa} )
+       $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
                 .success(function(data) {
                   console.log(data);
                   //$scope.addProyMacro=data;
@@ -172,7 +195,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.getParametro();
                     alert("registro de parametro exitoso");
                      $scope.ShowTableParams=true;
-                     $("#formParametro").reset();
+                    //$("#formParametro").reset();
                   }
                   else{
                     alert("error con el servidor intentelo mas tarde");
@@ -188,6 +211,24 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.agregarParam= function(){
         $scope.ShowTableParams=false;
     };
+
+     $scope.volverParametro= function(){
+        $scope.ShowTableParams=true;
+    };
+     $scope.formByProyMacro= function(pm){
+      console.log(pm);
+      $scope.IDPROYMACRO=pm.idProy;
+       $http.post('api/selectParamByProyMacro.php',{pm:pm})
+                .success(function(data) {
+                  console.log(data);
+                  $scope.Parametro=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+        
+    };
+    
 
   })
   
