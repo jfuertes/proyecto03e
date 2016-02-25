@@ -1,0 +1,3 @@
+*.txt
+*.sql
+api/config/config.php
