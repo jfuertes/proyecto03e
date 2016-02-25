@@ -17,6 +17,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       return estados[id];
     };
   })
+.filter('filterMaestro', function(){
+  return function(id){
+    var estados = ['No usa', 'Si usa'];
+      return estados[id];
+    };
+  })
 
 .controller('mainController', function ($scope) {
 })
@@ -115,6 +121,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 
 .controller('parametrosController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+  $scope.seleccionar=false;
+  $scope.showConsultaByProy=false;
    $scope.ShowTableParams=true;
                    $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
@@ -138,7 +146,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         ]);
 
 
-    $scope.getParametro= function(){
+  /*  $scope.getParametro= function(){
        $http.post('api/getParametro.php' )
                 .success(function(data) {
                   console.log(data);
@@ -147,7 +155,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
-    };
+    };*/
     $scope.getiposDatos= function(){
        $http.post('api/getTiposDatos.php' )
                 .success(function(data) {
@@ -180,32 +188,35 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
     };
      
-    $scope.getParametro();
+   // $scope.getParametro();
     $scope.getiposDatos();
     $scope.getModulos();
     $scope.getProyMacro();
 
      $scope.formNewParam= function(pa){
-      console.log(pa);
-       $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
-                .success(function(data) {
-                  console.log(data);
-                  //$scope.addProyMacro=data;
-                  if(data="true"){
-                    $scope.getParametro();
-                    alert("registro de parametro exitoso");
-                     $scope.ShowTableParams=true;
-                    //$("#formParametro").reset();
-                  }
-                  else{
-                    alert("error con el servidor intentelo mas tarde");
-                     $scope.ShowTableParams=true;
-                  }
-                  
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
+       if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
+          console.log(pa);
+           $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
+                    .success(function(data) {
+                      console.log(data);
+                      //$scope.addProyMacro=data;
+                      if(data="true"){
+                        $scope.formByProyMacro($scope.pmLocal);
+                         $scope.ShowTableParams=true;
+                         alert("registro de parametro exitoso");
+                        document.getElementById("formParametro").reset();
+                      }
+                      else{
+                        alert("error con el servidor intentelo mas tarde");
+                         $scope.ShowTableParams=true;
+                      }
+                      
+                    })
+                    .error(function(data) {
+                      console.log('Error: ' + data);
+                      });
+
+         }
     };
 
     $scope.agregarParam= function(){
@@ -217,11 +228,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
      $scope.formByProyMacro= function(pm){
       console.log(pm);
+
       $scope.IDPROYMACRO=pm.idProy;
+      $scope.pmLocal=pm;
        $http.post('api/selectParamByProyMacro.php',{pm:pm})
                 .success(function(data) {
                   console.log(data);
                   $scope.Parametro=data;
+                  $scope.NAMEPROYMACRO=data[0].NOMBREPROYMACRO;
+                  $scope.showConsultaByProy=true;
+                  
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
