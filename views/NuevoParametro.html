@@ -1,0 +1,66 @@
+<div class="row" ng-hide="ShowTableParams">
+<div class=" col-sm-2">
+              <button ng-click="volverParametro()" class="btn btn-primary">Cancelar</button>
+            </div></br>
+    <h3>Agregar Nuevo Parametro para {{NAMEPROYMACRO}} </h3></br>
+
+    <form id="formParametro" class="form-horizontal" role="form" ng-submit="formNewParam(pa)">
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Nombre de Parametro:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nombre" ng-model="pa.NOMBREPARAM">
+            </div>
+        </div>
+
+       <div class="form-group">
+            <label class="control-label col-sm-2" >Tipo de datos:</label>
+            <div class="col-sm-10">
+              <select class="form-control"  ng-model="pa.IDTIPODATO">
+              <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Modulo:</label>
+            <div class="col-sm-10">
+              <select class="form-control"  ng-model="pa.IDMODULO">
+              <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
+              </select>
+            </div>
+        </div>  
+
+       <div class="form-group">
+            <label class="control-label col-sm-2" >Tabla Maestra:</label>
+            <div class="col-sm-10">
+              <select class="form-control"  ng-model="pa.USAMAESTROPARAM">
+              <option ng-show="seleccionar">seleccionar</option>
+                  <option  value="1">Si usa maestro</option>
+                  <option  value="0">No usa maestro</option>
+              </select>
+            </div>
+        </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-2" >Estado:</label>
+            <div class="col-sm-10">
+              <select class="form-control"  ng-model="pa.ESTADOPARAM">
+              <option ng-show="seleccionar">seleccionar</option>
+                  <option  value="1">Activo</option>
+                  <option  value="0">Inactivo</option>
+              </select>
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <div class="col-sm-offset-2 col-sm-2">
+              <button type="submit" class="btn btn-primary">Guardar Parametro</button>
+            </div>
+            
+        </div>
+    </form>
+
+</div>
+ 
