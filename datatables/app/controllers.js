@@ -1344,5 +1344,63 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.getEtiquetas();
 
   })
+
+ .controller('importarController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+
+      $scope.dtOptions = DTOptionsBuilder.newOptions()
+      .withPaginationType('full_numbers')
+      .withDisplayLength(10)
+      .withBootstrap()
+      .withButtons([
+          'colvis',
+          'copy',
+          'print',
+          'excel',
+          'csv',
+          'pdf',
+          {
+              text: 'Importar',
+              key: '1',
+              action: function (e, dt, node, config) {
+                  console.log(e);
+                  console.log(dt);
+                  console.log(node);
+                  console.log(config);
+              }
+          }
+      ]);
+
+      $scope.csv = {
+          content: null,
+          header: true,
+          headerVisible: false,
+          separator: ',',
+          separatorVisible: false,
+          result: null,
+          encoding: 'ISO-8859-1',
+          encodingVisible: false,
+        };
+
+      var _lastGoodResult = '';
+
+    $scope.prueba = function (json, tabWidth) {
+          alert('prueba');
+          console.log($scope.csv.result);
+    };
+
+    $scope.getEtiquetas= function(){
+       $http.post('api/getEtiqueta.php' )
+                .success(function(data) {
+                  //console.log(data);
+                  $scope.etiquetas=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     
+    $scope.getEtiquetas();
+
+  })
   
 })();

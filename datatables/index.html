@@ -17,6 +17,10 @@
     <link href="../css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
 
+    <!-- bower:css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
     <!-- DataTables CSS buttons -->
     <link rel="stylesheet" href="/angular-datatables-master/vendor/datatables-buttons/css/buttons.dataTables.css">
     
@@ -83,6 +87,9 @@
                     <li>
                         <a href="#/exportar"><i class="fa fa-fw fa-download"></i> con HTPP</a>
                     </li>
+                    <li>
+                        <a href="#/importar"><i class="fa fa-fw fa-download"></i> con Importacion</a>
+                    </li>
 
                 </ul>
             </div>
@@ -144,6 +151,12 @@
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.print.js"></script>
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.html5.js"></script>
     <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.flash.js"></script>
+
+
+    <!-- build:js scripts/vendor.js -->
+    <script src="bower_components/angular-csv-import/dist/angular-csv-import.js"></script>
+    <!-- endbuild -->
+
 
     <script src="app/controllers.js"></script>
     <script src="app/app.js"></script>

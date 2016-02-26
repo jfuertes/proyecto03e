@@ -8,6 +8,7 @@ var app = angular.module('entelApp', [
   'datatables',
   'datatables.bootstrap',
   'datatables.buttons',
+  'ngCsvImport',
   'Controllers']);
 
     app.config(['$routeProvider', function($routeProvider){

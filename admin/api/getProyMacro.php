@@ -1,12 +1,13 @@
 <?php
-  require_once('../../api/config/mysql.php');
+  //require_once('../../api/config/mysql.php');
+	require_once('../../api/config/oracle.php');
 
 
 	$db  = new dbConnect();
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proymacro';
+		from proyred.proymacro';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
