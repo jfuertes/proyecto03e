@@ -1345,7 +1345,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
   })
 
- .controller('importarController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http, $parse) {
+ .controller('importarController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
 
       $scope.dtOptions = DTOptionsBuilder.newOptions()
       .withPaginationType('full_numbers')
@@ -1382,28 +1382,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         };
 
       var _lastGoodResult = '';
-      $scope.toPrettyJSON = function (json, tabWidth) {
-          var objStr = JSON.stringify(json);
-          var obj = null;
-          try {
-            obj = $parse(objStr)({});
-          } catch(e){
-            // eat $parse error
-            return _lastGoodResult;
-          }
 
-          var result = JSON.stringify(obj, null, Number(tabWidth));
-          _lastGoodResult = result;
-
-          console.log(result);
-          
-      };
-
+    $scope.prueba = function (json, tabWidth) {
+          alert('prueba');
+          console.log($scope.csv.result);
+    };
 
     $scope.getEtiquetas= function(){
        $http.post('api/getEtiqueta.php' )
                 .success(function(data) {
-                  console.log(data);
+                  //console.log(data);
                   $scope.etiquetas=data;
                 })
                 .error(function(data) {

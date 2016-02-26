@@ -48,7 +48,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             }
         ]);
 
-
     $scope.getProyMacro= function(){
        $http.post('api/getProyMacro.php' )
                 .success(function(data) {
@@ -133,16 +132,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             'copy',
             'print',
             'excel',
-            {
-                text: 'Importar',
-                key: '1',
-                action: function (e, dt, node, config) {
-                    console.log(e);
-                    console.log(dt);
-                    console.log(node);
-                    console.log(config);
-                }
-            }
+            'csv',
+            'pdf'
         ]);
 
 
@@ -197,24 +188,24 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
        if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
           console.log(pa);
            $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
-                    .success(function(data) {
-                      console.log(data);
-                      //$scope.addProyMacro=data;
-                      if(data="true"){
-                        $scope.formByProyMacro($scope.pmLocal);
-                         $scope.ShowTableParams=true;
-                         alert("registro de parametro exitoso");
-                        document.getElementById("formParametro").reset();
-                      }
-                      else{
-                        alert("error con el servidor intentelo mas tarde");
-                         $scope.ShowTableParams=true;
-                      }
-                      
-                    })
-                    .error(function(data) {
-                      console.log('Error: ' + data);
-                      });
+                .success(function(data) {
+                  console.log(data);
+                  //$scope.addProyMacro=data;
+                  if(data="true"){
+                    $scope.formByProyMacro($scope.pmLocal);
+                     $scope.ShowTableParams=true;
+                     alert("registro de parametro exitoso");
+                    document.getElementById("formParametro").reset();
+                  }
+                  else{
+                    alert("error con el servidor intentelo mas tarde");
+                     $scope.ShowTableParams=true;
+                  }
+                  
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
 
          }
     };
@@ -231,21 +222,48 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
       $scope.IDPROYMACRO=pm.idProy;
       $scope.pmLocal=pm;
-       $http.post('api/selectParamByProyMacro.php',{pm:pm})
-                .success(function(data) {
-                  console.log(data);
-                  $scope.Parametro=data;
-                  $scope.NAMEPROYMACRO=data[0].NOMBREPROYMACRO;
-                  $scope.showConsultaByProy=true;
-                  
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
+      $http.post('api/selectParamByProyMacro.php',{pm:pm})
+          .success(function(data) {
+            console.log(data);
+            $scope.Parametro=data;
+            $scope.NAMEPROYMACRO=data[0].NOMBREPROYMACRO;
+            $scope.showConsultaByProy=true;
+            
+          })
+          .error(function(data) {
+            console.log('Error: ' + data);
+            });
         
     };
-    
 
+    $scope.csv = {
+          content: null,
+          header: true,
+          headerVisible: false,
+          separator: ',',
+          separatorVisible: false,
+          result: null,
+          accept:'.csv, .xls, .xlsx',
+          encoding: 'ISO-8859-1',
+          encodingVisible: false,
+    };
+        
+    $scope.importar = function (json, tabWidth) {
+          var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
+
+          if ( confirm("¿Está seguro que desea cargar el archivo seleccionado?") ) {
+              $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+              .success(function(data) {
+                console.log(data);
+
+              })
+              .error(function(data) {
+                console.log('Error: ' + data);
+                });
+          }
+          console.log(objeto);
+    };
+    
   })
   
 })();
