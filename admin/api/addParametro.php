@@ -1,6 +1,6 @@
 <?php
-
-require_once('../../api/config/mysql.php');
+	//require_once('../../api/config/mysql.php');
+	require_once('../../api/config/oracle.php');
 	
 
 	$db  = new dbConnect();
@@ -19,10 +19,18 @@ require_once('../../api/config/mysql.php');
 	//var_dump($etiqueta);
 
 
-	$q = 'INSERT INTO parametro (`NOMBREPARAM`, `IDTIPODATO`, `USAMAESTROPARAM`, `ESTADOPARAM`) 
-				values (:NOMBREPARAM, :IDTIPODATO, :USAMAESTROPARAM, :ESTADOPARAM )';
+	$q = 'SELECT max(IDPARAMETRO) +1 as id_parametro from proyred.parametro';
+	$stmt = $dbh->prepare($q);
+	$stmt->execute();
+	$r=$stmt->fetch(PDO::FETCH_ASSOC);
+
+	$IDPARAMETRO=$r['ID_PARAMETRO'];
+
+	$q = 'INSERT INTO proyred.parametro (IDPARAMETRO, NOMBREPARAM, IDTIPODATO, USAMAESTROPARAM, ESTADOPARAM) 
+				values (:IDPARAMETRO, :NOMBREPARAM, :IDTIPODATO, :USAMAESTROPARAM, :ESTADOPARAM)';
 		
 		$stmt = $dbh->prepare($q);
+		$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
 		$stmt->bindParam(':NOMBREPARAM',  $NOMBREPARAM, PDO::PARAM_STR);
 		$stmt->bindParam(':IDTIPODATO',  $IDTIPODATO, PDO::PARAM_STR);
 		$stmt->bindParam(':USAMAESTROPARAM',  $USAMAESTROPARAM, PDO::PARAM_STR);
@@ -31,10 +39,10 @@ require_once('../../api/config/mysql.php');
 		$valor = $stmt->execute();
 		echo json_encode($valor);
 
-$IDPARAMETRO=$dbh->lastInsertId();
+	//$IDPARAMETRO=$dbh->lastInsertId();
 
 
-	$q = 'INSERT INTO pmparametro (`IDPROYMACRO`, `IDPARAMETRO`, `ESTADOPMPARAMETRO`, `ORDEN`, `IDMODULO`) 
+	$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO) 
 				values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO )';
 		
 		$stmt = $dbh->prepare($q);

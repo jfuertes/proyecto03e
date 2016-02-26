@@ -19,7 +19,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
   })
 .filter('filterMaestro', function(){
   return function(id){
-    var estados = ['No usa', 'Si usa'];
+    var estados = ['No', 'Si'];
       return estados[id];
     };
   })
@@ -244,7 +244,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           separatorVisible: false,
           result: null,
           accept:'.csv, .xls, .xlsx',
-          encoding: 'ISO-8859-1',
+          encoding: 'UTF16',
           encodingVisible: false,
     };
         
@@ -255,13 +255,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
               $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
               .success(function(data) {
                 console.log(data);
+                $scope.formByProyMacro($scope.pmLocal);
 
               })
               .error(function(data) {
                 console.log('Error: ' + data);
                 });
           }
-          console.log(objeto);
+          console.log($scope.csv.result);
     };
     
   })

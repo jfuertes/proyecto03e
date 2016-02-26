@@ -1,6 +1,7 @@
 <?php
 
-require_once('../../api/config/mysql.php');
+	//require_once('../../api/config/mysql.php');
+	require_once('../../api/config/oracle.php');
 	
 
 	$db  = new dbConnect();
@@ -12,7 +13,7 @@ require_once('../../api/config/mysql.php');
 	//var_dump($etiqueta);
 
 
-	$q = 'INSERT INTO MAESTRO (`ETIQUETA`) 
+	$q = 'INSERT INTO proyred.MAESTRO (ETIQUETA) 
 				values (:etiqueta)';
 		
 		$stmt = $dbh->prepare($q);
