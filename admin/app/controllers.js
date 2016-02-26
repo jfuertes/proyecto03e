@@ -120,6 +120,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 
 .controller('parametrosController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+  $scope.ShowEtiquetasByParam=false;
   $scope.seleccionar=false;
   $scope.showConsultaByProy=false;
    $scope.ShowTableParams=true;
@@ -215,8 +216,25 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
 
      $scope.volverParametro= function(){
+        $scope.ShowEtiquetasByParam=false;
         $scope.ShowTableParams=true;
     };
+
+  
+    $scope.ShowEtiquetasByParams= function(idpa, namepa){
+        $http.post('api/selectEtiqueByParam.php',{idpa:idpa})
+          .success(function(data){
+              console.log(data);
+              $scope.NAMEParametro=namepa;
+              $scope.EtiquetasbyParam=data;
+              $scope.ShowTableParams=false;
+              $scope.ShowEtiquetasByParam=true;
+          })
+          .error(function(data){
+            console.log("ERROR: "+data);
+          })
+    };
+
      $scope.formByProyMacro= function(pm){
       console.log(pm);
 

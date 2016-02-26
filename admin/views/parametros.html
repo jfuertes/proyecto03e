@@ -22,6 +22,10 @@
     </div></br>
 
 
+
+
+
+
      <div class="row" ng-show="ShowTableParams && showConsultaByProy">
         <div class="col-md-4 ">
             <button ng-click="agregarParam()" class="col-lg-8 btn btn-primary">Agregar Nuevo Parametro</button>
@@ -72,7 +76,7 @@
                                 <td>{{ pa.NOMBRETIPODATO }}</td>
                                 <td>{{ pa.ESTADOPARAM | filterActivo }}</td>
                                 <td>{{ pa.ORDEN  }}</td>
-                                <td>{{ pa.USAMAESTROPARAM |filterMaestro }}</td>
+                                <td>{{ pa.USAMAESTROPARAM |filterMaestro }}<button ng-click="ShowEtiquetasByParams(pa.IDPARAMETRO, pa.NOMBREPARAM)">ver etiquetas de tabla maestra</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -84,10 +88,11 @@
     </div>
      <!-- /.row -->
 
-<div class="row" ng-hide="ShowTableParams">
-<div class=" col-sm-2">
-              <button ng-click="volverParametro()" class="btn btn-primary">Cancelar</button>
-            </div></br>
+  <div class="row" ng-show="!ShowTableParams && !ShowEtiquetasByParam">
+    <div class=" col-sm-2">
+        <button ng-click="volverParametro()" class="btn btn-primary">Cancelar</button>
+    </div></br>
+    
     <h3>Agregar Nuevo Parametro para {{NAMEPROYMACRO}} </h3></br>
 
     <form id="formParametro" class="form-horizontal" role="form" ng-submit="formNewParam(pa)">
@@ -103,7 +108,7 @@
             <label class="control-label col-sm-2" >Tipo de datos:</label>
             <div class="col-sm-10">
               <select class="form-control"  ng-model="pa.IDTIPODATO">
-              <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-show="seleccionar">seleccionar</option>
                   <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
               </select>
             </div>
@@ -112,7 +117,7 @@
             <label class="control-label col-sm-2" >Modulo:</label>
             <div class="col-sm-10">
               <select class="form-control"  ng-model="pa.IDMODULO">
-              <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-show="seleccionar">seleccionar</option>
                   <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
               </select>
             </div>
@@ -122,7 +127,7 @@
             <label class="control-label col-sm-2" >Tabla Maestra:</label>
             <div class="col-sm-10">
               <select class="form-control"  ng-model="pa.USAMAESTROPARAM">
-              <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-show="seleccionar">seleccionar</option>
                   <option  value="1">Si usa maestro</option>
                   <option  value="0">No usa maestro</option>
               </select>
@@ -133,7 +138,7 @@
             <label class="control-label col-sm-2" >Estado:</label>
             <div class="col-sm-10">
               <select class="form-control"  ng-model="pa.ESTADOPARAM">
-              <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-show="seleccionar">seleccionar</option>
                   <option  value="1">Activo</option>
                   <option  value="0">Inactivo</option>
               </select>
@@ -144,12 +149,56 @@
             <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-primary">Guardar Parametro</button>
             </div>
-            
         </div>
     </form>
 
-</div>
+  </div>
  
+  <div class="row" ng-show="ShowEtiquetasByParam && !ShowTableParams">
+      <div class=" col-sm-2">
+        <button ng-click="volverParametro()" class="btn btn-primary">Volver</button>
+      </div></br>
+      <h3>Gestion de Etiquetas para  {{NAMEParametro}} </h3>
+       <div class="table-responsive">
+                <div class="dataTable_wrapper">
+                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>ID Tabla Maestra</th>
+                                <th>Etiqueta</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="etp in EtiquetasbyParam">
+                                <td>{{ etp.IDMAESTRO }}</td>
+                                <td>{{ etp.ETIQUETA  }}</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+
+            </div>
+
+
+     <div class="row">
+        <div class="col-lg-12">
+            <h3>Nueva Proyecto Macro</h3></br>
+            <form ng-submit="formNewet(et)">
+                <div class="col-md-4 col-md-offset-1">
+                    <input id="inputEtiqueta" class="col-lg-12" ng-model='et.ETIQUETA' type="text" placeholder="Nombre de Proyecto Macro">
+                </div>
+                <div class="col-md-3 col-md-offset-1">
+                    <button type="submit" class="col-lg-8 btn btn-primary">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+  </div>
+
 
 
 
