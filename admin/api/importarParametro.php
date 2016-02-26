@@ -25,12 +25,12 @@
 		$IDPROYMACRO=intval($rspta['pm']);
 		$ORDEN=0;
 
-		var_dump($NOMBREPARAM);
-		var_dump($IDTIPODATO);
-		var_dump($USAMAESTROPARAM);
-		var_dump($ESTADOPARAM);
-		var_dump($IDMODULO);
-		var_dump($IDPROYMACRO);
+		//var_dump($NOMBREPARAM);
+		//var_dump($IDTIPODATO);
+		//var_dump($USAMAESTROPARAM);
+		//var_dump($ESTADOPARAM);
+		//var_dump($IDMODULO);
+		//var_dump($IDPROYMACRO);
 
 		$q = 'SELECT max(IDPARAMETRO) +1 as ID_PARAMETRO from proyred.parametro';
 		$stmt = $dbh->prepare($q);
