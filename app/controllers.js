@@ -83,6 +83,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.ShowTablecomplete=true;
                   console.log(data);
                   $scope.Proyectos=data;
+                  $scope.ProyectosArray=[];
+                  $.each(data,function(index,value){
+                    $scope.ProyectosArray[index]=value.NOMBREPROY;
+                    $scope.Proyectos[index].param=[];
+                  });
+                  console.log( $scope.ProyectosArray);
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
@@ -93,6 +99,38 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.ShowTablecomplete=true;
                   console.log(data);
                   $scope.Params=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+            $http.post('admin/api/getValoresByMacroyMod.php',{pm:pm} )
+                .success(function(data) {
+                    $scope.ShowTablecomplete=true;
+                 console.log(data);
+                //  console.log(data[0]);
+                 // $scope.Valores=data;
+                  $.each(data,function(index,value){
+                    console.log( value);
+                    if( jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray )>0){
+                    //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
+                        var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
+                      /*  var nameparam=value.NOMBREPARAM;
+                        $scope.Proyectos[contador][nameparam]=value.VAL;
+                        console.log($scope.Proyectos[contador][nameparam]);
+
+                        */
+                        console.log(value.NOMBREPROY, value.VAL);
+                        
+
+                        $scope.Proyectos[contador].param[value.ORDEN-1]=value.VAL;//porque solo agrega un null a todos??
+                        console.log("!!!!!!!!!!---------"+$scope.Proyectos[contador].param);
+                    }
+                    //console.log($scope.Proyectos[contador].param);
+                  });
+                  
+                  console.log($scope.Proyectos);
+
+
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
