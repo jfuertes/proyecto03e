@@ -76,7 +76,7 @@
                                 <td>{{ pa.NOMBRETIPODATO }}</td>
                                 <td>{{ pa.ESTADOPARAM | filterActivo }}</td>
                                 <td>{{ pa.ORDEN  }}</td>
-                                <td>{{ pa.USAMAESTROPARAM |filterMaestro }}<button ng-click="ShowEtiquetasByParams(pa.IDPARAMETRO, pa.NOMBREPARAM)">ver etiquetas de tabla maestra</button></td>
+                                <td>{{ pa.USAMAESTROPARAM |filterMaestro }}<button ng-show="pa.USAMAESTROPARAM == 1" ng-click="ShowEtiquetasByParams(pa.IDPARAMETRO, pa.NOMBREPARAM)"><i class="fa fa-plus-circle"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -166,6 +166,7 @@
                             <tr>
                                 <th>ID Tabla Maestra</th>
                                 <th>Etiqueta</th>
+                                <th>Eliminar</th>
                                 
                             </tr>
                         </thead>
@@ -173,6 +174,7 @@
                             <tr ng-repeat="etp in EtiquetasbyParam">
                                 <td>{{ etp.IDMAESTRO }}</td>
                                 <td>{{ etp.ETIQUETA  }}</td>
+                                <td ng-click="deleteEtiqueta( etp.IDMAESTRO , $index )" ><i  class="fa fa-trash-o" style="cursor: pointer;"></i></td>
                                 
                             </tr>
                         </tbody>
@@ -186,7 +188,7 @@
      <div class="row">
         <div class="col-lg-12">
             <h3>Nueva Proyecto Macro</h3></br>
-            <form ng-submit="formNewet(et)">
+            <form id="formParametro" ng-submit="formNewet(et)">
                 <div class="col-md-4 col-md-offset-1">
                     <input id="inputEtiqueta" class="col-lg-12" ng-model='et.ETIQUETA' type="text" placeholder="Nombre de Proyecto Macro">
                 </div>

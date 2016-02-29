@@ -5,12 +5,13 @@
 	$dbh = $db->conectardb();
 
 	$rspta = json_decode(file_get_contents("php://input"));
-	$IDPARAMETRO= $rspta->idpa;
-	$q = 'SELECT IDPARAMETRO, ETIQUETA, IDMAESTRO
-			 from proyred.maestro ma where IDPARAMETRO= :IDPARAMETRO';
+	$IDPROYMACRO= $rspta->pm->idProy;
+	//var_dump($IDPROYMACRO);
+	$q = 'SELECT IDPROYECTO, NOMBREPROY, ESTADOPROY, CODPROYECTO
+			 from proyred.PROYECTO  where IDPROYMACRO= :IDPROYMACRO';
 
 	$stmt = $dbh->prepare($q);
-	$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
+	$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

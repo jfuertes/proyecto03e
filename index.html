@@ -7,11 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <!--<link rel="stylesheet" href="angular-datatables.css">-->
 
+    <!-- DataTables CSS -->
+    <link href="/vendor/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/plugins/morris.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="/vendor/datatables/media/css/datatables.bootstrap.min.css">-->
+    <link rel="stylesheet" href="/angular-datatables-master/src/plugins/bootstrap/datatables.bootstrap.css">
     <link href="css/sb-admin.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/main.css">
+    <!-- bower:css -->
+    <link rel="stylesheet" href="css/import.css">
+    <!-- endbuild -->
+    <!-- DataTables CSS buttons -->
+    <link rel="stylesheet" href="/angular-datatables-master/vendor/datatables-buttons/css/buttons.dataTables.css">
 
 </head>
 <body ng-app="entelApp">
@@ -65,7 +74,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="#/"><i class="fa fa-fw fa-dashboard"></i> Proyectos</a>
+                        <a href="#/proyectos"><i class="fa fa-fw fa-dashboard"></i> Proyectos</a>
                     </li>
                     <li>
                         <a href="#/nuevo"><i class="fa fa-fw fa-file"></i> Nuevo</a>
@@ -95,25 +104,48 @@
     
     </main>
 
-    <script src="/vendor/jquery-2.1.4.min.js"></script>
+       <script src="/vendor/jquery-2.1.4.min.js"></script>
     <!-- angular -->
-    <script src="/vendor/angular/1.3.15/angular.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <script src="/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
 
+    <script src="/vendor/angular/1.3.15/angular.min.js"></script>
+    <!--<script src="/angular-datatables-master/vendor/angular/angular.min.js"></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
     <script src="/vendor/angular/1.3.15/angular-animate.min.js"></script>
     <script src="/vendor/angular/1.3.15/angular-resource.min.js"></script>
     <script src="/vendor/angular/1.3.15/angular-route.min.js"></script>
-    
     <script src="/vendor/angular/ui-select/dist/select.js"></script>
     <script src='/vendor/angular/1.3.15/i18n/angular-locale_es-pe.js'></script>
 
-    <script src="js/bootstrap.min.js"></script>
+    <!-- DataTables JavaScript -->
+    
 
-    <!-- Morris Charts JavaScript 
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>-->
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+    <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.options.js"></script>
+    <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.tabletools.js"></script>
+    <script src="/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js"></script>
+    <!-- -->
+    <script src="/angular-datatables-master/dist/angular-datatables.min.js"></script>
+    <script src="/vendor/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="/angular-datatables-master/dist/plugins/buttons/angular-datatables.buttons.min.js"></script>
+
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.print.js"></script>
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="/angular-datatables-master/vendor/datatables-buttons/js/buttons.flash.js"></script>
+
+    <!-- build:js scripts/vendor.js -->
+    <script src="/vendor/angular-csv-import/dist/angular-csv-import.js"></script>
+    <!-- endbuild -->
 
     <script src="app/controllers.js"></script>
     <script src="app/app.js"></script>
+
 
 </body>
 </html>

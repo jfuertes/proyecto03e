@@ -226,6 +226,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           .success(function(data){
               console.log(data);
               $scope.NAMEParametro=namepa;
+              $scope.IDParametro=idpa;
               $scope.EtiquetasbyParam=data;
               $scope.ShowTableParams=false;
               $scope.ShowEtiquetasByParam=true;
@@ -282,6 +283,53 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           }
           console.log($scope.csv.result);
     };
+
+    $scope.formNewet= function(et){
+          console.log(et);
+           $http.post('api/addEtiqueta.php', {et :et, idpa : $scope.IDParametro} )
+                .success(function(data) {
+                  console.log(data);
+                  //$scope.addProyMacro=data;
+                  if(data="true"){
+                    $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
+                     alert("registro de Etiqueta exitoso");
+                    document.getElementById("formParametro").reset();
+                  }
+                  else{
+                    alert("error con el servidor intentelo mas tarde");
+                     $scope.ShowTableParams=true;
+                  }
+                  
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    }
+
+    $scope.deleteEtiqueta=function(idma, index){
+         console.log(idma);
+         if ( confirm("¿Está seguro que desea eliminar la etiqueta "+index+" ?") ) {
+             $http.post('api/deleteEtiqueta.php', { idma : idma} )
+                  .success(function(data) {
+                    console.log(data);
+                    //$scope.addProyMacro=data;
+                    if(data="true"){
+                      $scope.EtiquetasbyParam.splice(index,1);
+                     // $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
+                       
+                      document.getElementById("formParametro").reset();
+                    }
+                    else{
+                      alert("error con el servidor intentelo mas tarde");
+                       
+                    }
+                    
+                  })
+                  .error(function(data) {
+                    console.log('Error: ' + data);
+                    });
+          }
+    }
     
   })
   

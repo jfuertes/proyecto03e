@@ -5,19 +5,28 @@
 var app = angular.module('entelApp', [
   'ngRoute',
   'ngAnimate',
+    'datatables',
+  'datatables.bootstrap',
+  'datatables.buttons',
+  'ngCsvImport',
   'Controllers']);
 
     app.config(['$routeProvider', function($routeProvider){
       $routeProvider.
         when('/', {
-          templateUrl: 'views/home.html',
+          templateUrl: 'views/proyectos.html',
           caseInsensitiveMatch: true,
-          controller: 'mainController'
+          controller: 'proyectosController'
         })
         .when('/nuevo', {
           templateUrl: 'views/nuevo.html',
           caseInsensitiveMatch: true,
           controller: 'nuevoController'
+        })
+          .when('/proyectos', {
+          templateUrl: 'views/proyectos.html',
+          caseInsensitiveMatch: true,
+          controller: 'proyectosController'
         })
         .when('/editar', {
           templateUrl: 'views/editar.html',
