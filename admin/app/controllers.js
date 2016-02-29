@@ -7,7 +7,7 @@
 (function(){
   'use strict';
 
-angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons']).run(function(DTDefaultOptions) {
+angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap']).run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
 
@@ -27,26 +27,26 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 .controller('mainController', function ($scope) {
 })
 .controller('proyMacroController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
-                   $scope.dtOptions = DTOptionsBuilder.newOptions()
+     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
         .withBootstrap()
         .withButtons([
             'colvis',
             'copy',
-            'print',
-            'excel',
-            {
-                text: 'Importar',
-                key: '1',
-                action: function (e, dt, node, config) {
-                    console.log(e);
-                    console.log(dt);
-                    console.log(node);
-                    console.log(config);
-                }
-            }
+            'csv',
+            'pdf'
         ]);
+
+    $scope.alerts = [];
+
+    $scope.addAlert = function() {
+      $scope.alerts.push({msg: 'Another alert!'});
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
 
     $scope.getProyMacro= function(){
        $http.post('api/getProyMacro.php' )
@@ -61,20 +61,29 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
      
     $scope.getProyMacro();
 
-     $scope.formNewProyMacro= function(pm){
+    $scope.formNewProyMacro= function(pm){
        $http.post('api/addProyMacro.php', {pm :pm} )
                 .success(function(data) {
                   console.log(data);
                   $scope.addProyMacro=data;
                   if(data="true"){
+                    
                     $scope.getProyMacro();
-                    alert("registro de proyecto macro exitoso");
+                    $scope.pm.NOMBREPROYMACRO="";
+
+                    $('html,body').animate({
+                      scrollTop: $("#alerta").offset().top
+                      }, 0);
+
+                    $scope.alerts.push({msg: 'registro de proyecto macro exitoso!', type: 'success', tiempo: '3000'});
+
                   }
                   
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
-                  });
+                  $scope.alerts.push({msg: 'Error al crear proyecto macro', type: 'danger', tiempo: '3000'});
+                });
     };
 
   })
@@ -195,12 +204,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   if(data="true"){
                     $scope.formByProyMacro($scope.pmLocal);
                      $scope.ShowTableParams=true;
-                     alert("registro de parametro exitoso");
+                     $scope.alerts.push({msg: 'Registro de parametro exitoso.', type: 'success', tiempo: '3000'});
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                    alert("error con el servidor intentelo mas tarde");
-                     $scope.ShowTableParams=true;
+                      $scope.alerts.push({msg: 'error con el servidor intentelo mas tarde.', type: 'danger', tiempo: '3000'});
+                      $scope.ShowTableParams=true;
                   }
                   
                 })
@@ -293,6 +302,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   if(data="true"){
                     $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
                      alert("registro de Etiqueta exitoso");
+                     
                     document.getElementById("formParametro").reset();
                   }
                   else{
