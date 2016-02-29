@@ -14,9 +14,7 @@ var app = angular.module('entelApp', [
     app.config(['$routeProvider', function($routeProvider){
       $routeProvider.
         when('/', {
-          templateUrl: 'views/home.html',
-          caseInsensitiveMatch: true,
-          controller: 'mainController'
+          redirectTo: '/proyMacro'
         })
         .when('/nuevo', {
           templateUrl: 'views/nuevo.html',
