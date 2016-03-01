@@ -40,16 +40,18 @@
      <!-- /.row -->
 
     <div class="row" ng-show="ShowTableParams && ShowTablecomplete">
+
 	    <div class="col-lg-12">
-	        <h2>Proyectos Macro </h2>
+	        <h2>Proyectos del proyecto Macro y su modulo  </h2>
 	        <div class="table-responsive">
 	            <div class="dataTable_wrapper">
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
-                                <th>codigo del proyecto</th>
+                                <th>codigo del proyectos</th>
                                 <th>Nombre del proyecto</th>
                                 <th ng-repeat="pa in Params">{{pa.NOMBREPARAM}}</th>
+                                <th>editar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,6 +59,7 @@
                                 <td>{{ pro.CODPROYECTO }}</td>
                                 <td>{{ pro.NOMBREPROY }}</td>
                                 <td ng-repeat="par in pro.param track by $index">{{ par }}</td>
+                                <td ng-click="editarValores(pro,$index)"><i class="fa fa-pencil"></i></td>
                                 
                             </tr>
                         </tbody>
@@ -69,13 +72,21 @@
 	</div>
 	 <!-- /.row -->
 
-   <div class="row">
+   <div class="row" ng-show="EditarProyecto && !ShowTablecomplete">
+   <div class="col-lg-4"><button class="btn btn-primary" ng-click="volvertablaproyectos()">volver</button></div>
         <div class="col-lg-12">
-            <h3>Nuevo Proyecto Macro</h3></br>
-            <form ng-submit="getProyecByProyMacro(pm)">
+            <h3>Nuevo Proyecto</h3></br>
+            <form ng-submit="editProyecto(pro)">
                 <div class="col-md-4 col-md-offset-1">
-                    <input id="inputEtiqueta" class="col-lg-12" ng-model='pm.NOMBREPROYMACRO' type="text" placeholder="Nombre de Proyecto Macro">
+                    Codigo del Proyecto<input  class="col-lg-12" ng-model='pro.CODPROYECTO' type="text" placeholder="Nombre de Proyecto Macro">
                 </div>
+                <div class="col-md-4 col-md-offset-1">
+                    Nombre del Proyecto<input  class="col-lg-12" ng-model='pro.NOMBREPROY' type="text" placeholder="Nombre de Proyecto Macro">
+                </div>
+                <div class="col-md-4 col-md-offset-1" ng-repeat="(key, val) in Params">
+                    {{val.NOMBREPARAM}}<input  type="{{val.nombretipodato}}" class="col-lg-12" ng-model='pro[val.NOMBREPARAM]'  placeholder="Nombre de Proyecto Macro">
+                </div>
+
                 <div class="col-md-3 col-md-offset-1">
                     <button type="submit" class="col-lg-8 btn btn-primary">Agregar</button>
                 </div>

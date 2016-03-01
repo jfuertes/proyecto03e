@@ -78,15 +78,17 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.getModulos();
       
       $scope.getProyecByProyMacro=function(pm){
+        $scope.pmgetProyecByProyMacro=pm;
             $http.post('admin/api/getProyecByProyMacro.php',{pm:pm} )
                 .success(function(data) {
                     $scope.ShowTablecomplete=true;
                   console.log(data);
                   $scope.Proyectos=data;
                   $scope.ProyectosArray=[];
+                  $scope.valores={};
                   $.each(data,function(index,value){
                     $scope.ProyectosArray[index]=value.NOMBREPROY;
-                    $scope.Proyectos[index].param=[];
+                    $scope.Proyectos[index].param={};
                   });
                   console.log( $scope.ProyectosArray);
                 })
@@ -110,35 +112,64 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 //  console.log(data[0]);
                  // $scope.Valores=data;
                   $.each(data,function(index,value){
-                    console.log( value);
+                    //console.log( value);
                     if( jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray )>0){
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
-                      /*  var nameparam=value.NOMBREPARAM;
-                        $scope.Proyectos[contador][nameparam]=value.VAL;
+                        //var nameparam=value.NOMBREPARAM;
+                       /* $scope.Proyectos[contador][nameparam]=value.VAL;
                         console.log($scope.Proyectos[contador][nameparam]);
-
                         */
-                        console.log(value.NOMBREPROY, value.VAL);
-                        
+                        //console.log(value.NOMBREPROY, value.VAL);
+                       // $scope.Proyectos[contador].param[value.ORDEN-1]=value.VAL;
+                        $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
+                        //                  console.log("!!!!!!!!!!---------"+$scope.Proyectos[contador].param);
+                        $scope.valores[value.NOMBREPARAM]=value.IDVALOR;
+                        console.log($scope.valores);
 
-                        $scope.Proyectos[contador].param[value.ORDEN-1]=value.VAL;//porque solo agrega un null a todos??
-                        console.log("!!!!!!!!!!---------"+$scope.Proyectos[contador].param);
                     }
                     //console.log($scope.Proyectos[contador].param);
                   });
-                  
                   console.log($scope.Proyectos);
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+      };
+      $scope.editarValores=function(pro,index){
+        //alert(index);
+      //  alert($scope.Proyectos[index].CODPROYECTO);
+        $scope.pro=pro.param;
+        $scope.pro.CODPROYECTO=$scope.Proyectos[index].CODPROYECTO;
+        $scope.pro.NOMBREPROY=$scope.Proyectos[index].NOMBREPROY;
+        $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
+        $scope.pro.valores=$scope.valores;
+      alert(JSON.stringify($scope.pro));
+        $scope.EditarProyecto=true;
+        $scope.ShowTablecomplete=false;
+        $scope.ShowTableParams=false;
 
-
+      };
+      $scope.volvertablaproyectos=function(){
+          $scope.EditarProyecto=false;
+          $scope.ShowTablecomplete=true;
+          $scope.ShowTableParams=true;
+      }
+      $scope.editProyecto=function(pro){
+         console.log(JSON.stringify(pro));
+          $http.post('api/editProyecto.php',{pro:pro} )
+                .success(function(data) {
+                    $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                    $scope.ShowTablecomplete=true;
+                    $scope.ShowTableParams=true;
+                  console.log(data);
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
 
 
-
-      };
+      }
 
   })
 
