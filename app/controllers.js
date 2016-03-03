@@ -159,12 +159,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
         $scope.pro.valores=$scope.valores;
         $scope.pro.etiquetas=$scope.Etiquetas;
-      alert(JSON.stringify($scope.pro.etiquetas));
+      alert(JSON.stringify($scope.pro));
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
         $scope.ShowTableParams=false;
 
       };
+
       $scope.volvertablaproyectos=function(){
           $scope.EditarProyecto=false;
           $scope.ShowTablecomplete=true;

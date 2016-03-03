@@ -48,6 +48,7 @@
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
+                                <th>id del proyecto</th>
                                 <th>codigo del proyecto</th>
                                 <th>Nombre del proyecto</th>
                                 <th ng-repeat="pa in Params">{{pa.NOMBREPARAM}}</th>
@@ -56,6 +57,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="pro in Proyectos">
+                                <td>{{ pro.IDPROYECTO }}</td>
                                 <td>{{ pro.CODPROYECTO }}</td>
                                 <td>{{ pro.NOMBREPROY }}</td>
                                 <td ng-repeat="par in pro.param track by $index">{{ par }}</td>

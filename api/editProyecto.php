@@ -30,17 +30,19 @@
 		echo json_encode($valor);
 
 	foreach ($IDVALOR as $key => $value) {
+		var_dump($value);
 		var_dump($pro->$key);
 		var_dump($par[$cont]);
 		if($par[$cont]->IDTIPODATO=="1"){
+			$valoractual= floatval($pro->$key);
 			$q = 'UPDATE proyred.VALOR 
 				SET VALORSTR=:VALORSTR
 				WHERE IDVALOR=:IDVALOR';
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORSTR',  $pro->$key, PDO::PARAM_STR);
+			$stmt->bindParam(':VALORSTR',  $valoractual, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			echo json_encode($valor);
+			//echo json_encode($valor);
 		}
 		else if($par[$cont]->IDTIPODATO=="2"){
 			$valoractual= intval($pro->$key);
@@ -51,19 +53,18 @@
 			$stmt->bindParam(':VALORSTR',  $valoractual, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			echo json_encode($valor);
+			//echo json_encode($valor);
 		}
 
 		else if($par[$cont]->IDTIPODATO=="3"){
-			$valoractual= floatval($pro->$key);
 			$q = 'UPDATE proyred.VALOR 
-				SET VALORNUMBER=:VALORSTR
+				SET VALORSTR=:VALORSTR
 				WHERE IDVALOR=:IDVALOR';
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORSTR',  $valoractual, PDO::PARAM_STR);
+			$stmt->bindParam(':VALORSTR',  $pro->$key, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			echo json_encode($valor);
+			//echo json_encode($valor);
 		}
 
 		else{
@@ -74,7 +75,7 @@
 			$stmt->bindParam(':VALORSTR',  $pro->$key, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			echo json_encode($valor);
+			//echo json_encode($valor);
 
 			}
 		# code...

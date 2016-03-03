@@ -7,10 +7,6 @@
 	$id = $_POST['id'];
 	$estado = $_POST['estado'];
 
-	$q = 'INSERT INTO tb_info_adicional (id_nino, peso, talla, temperatura, hemoglobina, fecha_medicion, username, nutrientes, observaciones, created_at)
-		VALUES (:id_nino, :peso, :talla, :temperatura, :hemoglobina, :fecha_medicion, :username, :nutrientes, :observaciones, CURRENT_TIMESTAMP)';
-
-
 	$q = 'UPDATE proyred.proymacro
 		SET ESTADOPM=:estado
 		WHERE IDPROYMACRO=:id';

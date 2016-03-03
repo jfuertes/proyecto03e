@@ -50,7 +50,7 @@
 			$stmt->bindParam(':ESTADOPARAM',  $ESTADOPARAM, PDO::PARAM_STR);
 
 			$valor = $stmt->execute();
-			echo json_encode($valor);
+			//echo json_encode($valor);
 
 		//$IDPARAMETRO=$dbh->lastInsertId();
 
@@ -66,7 +66,7 @@
 			$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
 
 			$valor = $stmt->execute();
-			echo json_encode($valor);
+			//echo json_encode($valor);
 
 	}
 ?>
