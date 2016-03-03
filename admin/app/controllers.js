@@ -7,7 +7,7 @@
 (function(){
   'use strict';
 
-angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap']).run(function(DTDefaultOptions) {
+angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap', 'ngAnimate']).run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
 
@@ -26,7 +26,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 .controller('mainController', function ($scope) {
 })
-.controller('proyMacroController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
+
+// Controlador Gestión Proyecto Macro
+.controller('proyMacroController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
      $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
@@ -39,10 +41,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         ]);
 
     $scope.alerts = [];
-
-    $scope.addAlert = function() {
-      $scope.alerts.push({msg: 'Another alert!'});
-    };
 
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
@@ -59,7 +57,18 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
     };
      
-    $scope.getProyMacro();
+    $scope.cambioEstado= function(id, estado, $index){
+        
+      $http({method:'POST',url: 'api/estadoProyMacro.php', data: $.param({id: id, estado: estado}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+        .success(function(response) {
+          $scope.ProyMacro[$index].ESTADOPM=estado;
+          var NOMBREPROYMACRO=$scope.ProyMacro[$index].NOMBREPROYMACRO;
+          $scope.alerts.push({msg: 'Cambio de estado de proyecto macro '+ NOMBREPROYMACRO + ' exitoso.', type: 'success', tiempo: '3000'});
+      })
+      .error(function(response){
+
+      });
+    }
 
     $scope.formNewProyMacro= function(pm){
        $http.post('api/addProyMacro.php', {pm :pm} )
@@ -86,10 +95,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 });
     };
 
-  })
+    $scope.getProyMacro();
+  }])
 
-
-.controller('tabMaestrasController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+// Controlador Gestión tablas maestras
+.controller('tabMaestrasController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
           $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
@@ -97,18 +107,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         .withButtons([
             'colvis',
             'copy',
-            'print',
-            'excel',
-            {
-                text: 'Importar',
-                key: '1',
-                action: function (e, dt, node, config) {
-                    console.log(e);
-                    console.log(dt);
-                    console.log(node);
-                    console.log(config);
-                }
-            }
+            'excel'
         ]);
 
 
@@ -125,27 +124,30 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
      
     $scope.getEtiquetas();
 
-})
+}])
 
-
-.controller('parametrosController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
-  $scope.ShowEtiquetasByParam=false;
-  $scope.seleccionar=false;
-  $scope.showConsultaByProy=false;
-   $scope.ShowTableParams=true;
-                   $scope.dtOptions = DTOptionsBuilder.newOptions()
+// Controlador Gestión Parámetros
+.controller('parametrosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+    $scope.ShowEtiquetasByParam=false;
+    $scope.seleccionar=false;
+    $scope.showConsultaByProy=false;
+    $scope.ShowTableParams=true;
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
         .withBootstrap()
         .withButtons([
             'colvis',
             'copy',
-            'print',
-            'excel',
             'csv',
             'pdf'
         ]);
 
+    $scope.alerts = [];
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
 
   /*  $scope.getParametro= function(){
        $http.post('api/getParametro.php' )
@@ -247,20 +249,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
      $scope.formByProyMacro= function(pm){
       console.log(pm);
+      var result = $.grep($scope.ProyMacro, function(e){ return e.IDPROYMACRO == pm.idProy; });
+      $scope.NAMEPROYMACRO=result[0].NOMBREPROYMACRO;
 
       $scope.IDPROYMACRO=pm.idProy;
       $scope.pmLocal=pm;
+      $scope.showConsultaByProy=true;
+      
       $http.post('api/selectParamByProyMacro.php',{pm:pm})
           .success(function(data) {
             console.log(data);
-            $scope.Parametro=data;
-            $scope.NAMEPROYMACRO=data[0].NOMBREPROYMACRO;
-            $scope.showConsultaByProy=true;
-            
+            $scope.Parametro=data.data;
           })
           .error(function(data) {
             console.log('Error: ' + data);
-            });
+          });
         
     };
 
@@ -301,12 +304,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   //$scope.addProyMacro=data;
                   if(data="true"){
                     $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
-                     alert("registro de Etiqueta exitoso");
-                     
+                     $scope.alerts.push({msg: 'registro de etiqueta exitoso.', type: 'success', tiempo: '3000'});
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                    alert("error con el servidor intentelo mas tarde");
+                    $scope.alerts.push({msg: 'Error con el servidor. Inténtelo más tarde.', type: 'danger', tiempo: '3000'});
                      $scope.ShowTableParams=true;
                   }
                   
@@ -322,18 +324,15 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
              $http.post('api/deleteEtiqueta.php', { idma : idma} )
                   .success(function(data) {
                     console.log(data);
-                    //$scope.addProyMacro=data;
                     if(data="true"){
                       $scope.EtiquetasbyParam.splice(index,1);
+                      $scope.alerts.push({msg: 'La equiqueta seleccionada fue eliminada.', type: 'success', tiempo: '3000'});
                      // $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
-                       
                       document.getElementById("formParametro").reset();
                     }
                     else{
-                      alert("error con el servidor intentelo mas tarde");
-                       
+                      $scope.alerts.push({msg: 'Error con el servidor. Inténtelo más tarde.', type: 'danger', tiempo: '3000'});
                     }
-                    
                   })
                   .error(function(data) {
                     console.log('Error: ' + data);
@@ -341,6 +340,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           }
     }
     
-  })
+  }])
   
 })();

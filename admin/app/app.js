@@ -8,6 +8,7 @@ var app = angular.module('entelApp', [
   'datatables',
   'datatables.bootstrap',
   'datatables.buttons',
+  'ui.bootstrap',
   'ngCsvImport',
   'Controllers']);
 

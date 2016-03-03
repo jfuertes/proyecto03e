@@ -14,15 +14,18 @@
 		INNER JOIN proyred.modulo mo on mo.IDMODULO = pmp.IDMODULO
 		INNER JOIN proyred.tipodato td on td.IDTIPODATO = par.IDTIPODATO
 		INNER JOIN proyred.proymacro pm on pm.IDPROYMACRO = pmp.IDPROYMACRO
-			where pmp.IDPROYMACRO= :IDPROYMACRO';
+		where pmp.IDPROYMACRO= :IDPROYMACRO';
 
 
 	$stmt = $dbh->prepare($q);
 	$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$nrows=  $stmt->rowCount();
+
+	$respuesta = array('num_rows' => $nrows, 'data' => $r);	
 
 	//var_dump($r);
-	echo json_encode($r);
+	echo json_encode($respuesta);
 
 ?>
