@@ -176,9 +176,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
          console.log(JSON.stringify(pro));
           $http.post('api/editProyecto.php',{pro:pro, pa:$scope.Params} )
                 .success(function(data) {
-                    //$scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
-                    //$scope.ShowTablecomplete=true;
-                   // $scope.ShowTableParams=true;
+                    $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                    $scope.ShowTablecomplete=true;
+                    $scope.ShowTableParams=true;
                   console.log(data);
                 })
                 .error(function(data) {
