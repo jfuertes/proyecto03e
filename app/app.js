@@ -5,7 +5,7 @@
 var app = angular.module('entelApp', [
   'ngRoute',
   'ngAnimate',
-    'datatables',
+  'datatables',
   'datatables.bootstrap',
   'datatables.buttons',
   'ngCsvImport',

@@ -28,7 +28,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     
 
   }])
-  .controller(  'proyectosController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
+  .controller('proyectosController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
     $scope.ShowTableParams=true;
     $scope.ShowTablecomplete=false;
 
