@@ -17,8 +17,8 @@
 	//var_dump($IDVALORES);
 	
 //var_dump($NOMBREPROY);
-//var_dump($CODPROYECTO);
-
+var_dump($IDPROYECTO);
+echo "============";
 	$q = 'UPDATE proyred.PROYECTO 
 				SET NOMBREPROY=:NOMBREPROY, CODPROYECTO=:CODPROYECTO
 				WHERE IDPROYECTO=:IDPROYECTO';
@@ -33,19 +33,24 @@
 		var_dump($value);
 		var_dump($pro->$key);
 		var_dump($par[$cont]);
+
 		if($par[$cont]->IDTIPODATO=="1"){
 			$valoractual= floatval($pro->$key);
+
 			$q = 'UPDATE proyred.VALOR 
-				SET VALORSTR=:VALORSTR
+				SET VALORNUMBER=:VALORSTR
 				WHERE IDVALOR=:IDVALOR';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':VALORSTR',  $valoractual, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
+
 			//echo json_encode($valor);
+
 		}
 		else if($par[$cont]->IDTIPODATO=="2"){
-			$valoractual= intval($pro->$key);
+			
+			$valoractual= floatval($pro->$key);
 			$q = 'UPDATE proyred.VALOR 
 				SET VALORNUMBER=:VALORSTR
 				WHERE IDVALOR=:IDVALOR';

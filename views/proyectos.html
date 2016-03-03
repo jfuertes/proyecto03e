@@ -90,8 +90,9 @@
 
 
                             <input ng-show="pro.etiquetas[val.NOMBREPARAM].length==0"  type="{{val.nombretipodato}}" class="col-lg-12" ng-model='pro[val.NOMBREPARAM]'  placeholder="{{val.nombretipodato}}">
+
                             <select ng-show="!pro.etiquetas[val.NOMBREPARAM].length==0"  class="col-lg-12" ng-model='pro[val.NOMBREPARAM]'>
-                                <option ng-repeat="opt in pro.etiquetas[val.NOMBREPARAM]" value="opt">{{opt}}</option>
+                                <option ng-repeat="opt in pro.etiquetas[val.NOMBREPARAM]" value="{{opt}}">{{opt}}</option>
                             </select>
 
                 </div>
