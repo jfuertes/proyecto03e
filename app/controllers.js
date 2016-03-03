@@ -101,6 +101,18 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.ShowTablecomplete=true;
                   console.log(data);
                   $scope.Params=data;
+
+                      $http.post('api/getEtByparams.php',{params: $scope.Params} )
+                     
+                        .success(function(data) {
+                            //$scope.ShowTablecomplete=true;
+                          console.log(data);
+                          $scope.Etiquetas=data;
+                        })
+                        .error(function(data) {
+                          console.log('Error: ' + data);
+                          });
+
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
@@ -125,7 +137,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                         $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
                         //                  console.log("!!!!!!!!!!---------"+$scope.Proyectos[contador].param);
                         $scope.valores[value.NOMBREPARAM]=value.IDVALOR;
-                        console.log($scope.valores);
+                        //console.log($scope.valores);
 
                     }
                     //console.log($scope.Proyectos[contador].param);
@@ -135,6 +147,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
+               // console.log($scope.Params);
+
       };
       $scope.editarValores=function(pro,index){
         //alert(index);
@@ -144,7 +158,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.NOMBREPROY=$scope.Proyectos[index].NOMBREPROY;
         $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
         $scope.pro.valores=$scope.valores;
-      alert(JSON.stringify($scope.pro));
+        $scope.pro.etiquetas=$scope.Etiquetas;
+      alert(JSON.stringify($scope.pro.etiquetas));
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
         $scope.ShowTableParams=false;
@@ -157,11 +172,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       }
       $scope.editProyecto=function(pro){
          console.log(JSON.stringify(pro));
-          $http.post('api/editProyecto.php',{pro:pro} )
+          $http.post('api/editProyecto.php',{pro:pro, pa:$scope.Params} )
                 .success(function(data) {
-                    $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
-                    $scope.ShowTablecomplete=true;
-                    $scope.ShowTableParams=true;
+                    //$scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                    //$scope.ShowTablecomplete=true;
+                   // $scope.ShowTableParams=true;
                   console.log(data);
                 })
                 .error(function(data) {
