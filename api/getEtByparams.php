@@ -35,7 +35,7 @@ foreach ($params as $key => $value) {
 	}
 
 	else{
-		array_push($salida->$nameparam, null);
+		array_push($salida->$nameparam, "nada");
 	}
 	# code...
 }

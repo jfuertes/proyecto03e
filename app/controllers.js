@@ -85,10 +85,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log(data);
                   $scope.Proyectos=data;
                   $scope.ProyectosArray=[];
-                  $scope.valores={};
+                  $scope.valores=[];
+
                   $.each(data,function(index,value){
                     $scope.ProyectosArray[index]=value.NOMBREPROY;
                     $scope.Proyectos[index].param={};
+                    $scope.valores[index]={};
                   });
                   console.log( $scope.ProyectosArray);
                 })
@@ -124,7 +126,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 //  console.log(data[0]);
                  // $scope.Valores=data;
                   $.each(data,function(index,value){
-                    //console.log( value);
+                    console.log( value.IDVALOR);
                     if( jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray )>0){
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
@@ -136,7 +138,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                        // $scope.Proyectos[contador].param[value.ORDEN-1]=value.VAL;
                         $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
                         //                  console.log("!!!!!!!!!!---------"+$scope.Proyectos[contador].param);
-                        $scope.valores[value.NOMBREPARAM]=value.IDVALOR;
+                        $scope.valores[contador][value.NOMBREPARAM]=value.IDVALOR;
                         //console.log($scope.valores);
 
                     }
@@ -157,9 +159,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.CODPROYECTO=$scope.Proyectos[index].CODPROYECTO;
         $scope.pro.NOMBREPROY=$scope.Proyectos[index].NOMBREPROY;
         $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
-        $scope.pro.valores=$scope.valores;
+        $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
-      alert(JSON.stringify($scope.pro.etiquetas));
+      alert(JSON.stringify($scope.pro));
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
         $scope.ShowTableParams=false;
