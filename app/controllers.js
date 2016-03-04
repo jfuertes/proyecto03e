@@ -10,7 +10,24 @@
 angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons']).run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
-  .filter('filternull', function(){
+  .filter('filtertipoDato', function(){
+  return function(id){
+    
+    if(id== "1"){
+      return "number";
+    }
+    else if(id== "2"){
+      return "number";
+    }
+     else if(id== "3"){
+      return "text";
+    }
+    else{
+      return "date";
+    }
+    };
+  })
+ .filter('filternull', function(){
   return function(id){
     
     if(id==null){
@@ -21,6 +38,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     }
     };
   })
+
+
+
   .controller('mainController',['$scope', '$http', function ($scope, $http) {
     
     /*
@@ -41,6 +61,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
   .controller('proyectosController',['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
     $scope.ShowTableParams=true;
     $scope.ShowTablecomplete=false;
+    $scope.NuevoProyecto=false;
 
       $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
@@ -114,7 +135,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                      
                         .success(function(data) {
                             //$scope.ShowTablecomplete=true;
-                          //console.log(data);
+                          console.log(data);
                           $scope.Etiquetas=data;
                         })
                         .error(function(data) {
@@ -133,32 +154,33 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 //  console.log(data[0]);
                  // $scope.Valores=data;
                   $.each(data,function(index,value){
-
-                    if( jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray )>0){
+                   /// console.log(value.NOMBREPROY);
+                   // console.log(value.NOMBREPARAM);
+                     //   console.log(value.VAL);
+                    
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
                         //var nameparam=value.NOMBREPARAM;
                        /* $scope.Proyectos[contador][nameparam]=value.VAL;
                         console.log($scope.Proyectos[contador][nameparam]);
                         */
-                        //console.log(value.NOMBREPROY, value.VAL);
+                        
                        // $scope.Proyectos[contador].param[value.ORDEN-1]=value.VAL;
                         $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
+                        //console.log( $scope.Proyectos[contador].param);
                         //                  console.log("!!!!!!!!!!---------"+$scope.Proyectos[contador].param);
                         $scope.valores[contador][value.NOMBREPARAM]=value.IDVALOR;
                         //console.log($scope.valores);
 
-                    }
+                    
                     //console.log($scope.Proyectos[contador].param);
                   });
                   console.log($scope.Proyectos);
-                 
+                  //$scope.ordenar($scope.Params, $scope.Proyectos);
+                 // var $scope.desorden=$scope.Proyectos;
+                  //var $scope.orden=$scope.Params;
+                // console.log(desorden);
 
-
-
-
-
-                  
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
@@ -167,11 +189,15 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
                console.log( 'fin');
 
+
+
+ 
+
       };
       $scope.editarValores=function(pro,index){
         //alert(index);
       //  alert($scope.Proyectos[index].CODPROYECTO);
-        $scope.pro=pro.param;
+        $scope.pro=pro.param;//falta castear para que reconoscca como entero al momento de editar!!!! no olvidar
         $scope.pro.CODPROYECTO=$scope.Proyectos[index].CODPROYECTO;
         $scope.pro.NOMBREPROY=$scope.Proyectos[index].NOMBREPROY;
         $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
@@ -190,6 +216,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           $scope.EditarProyecto=false;
           $scope.ShowTablecomplete=true;
           $scope.ShowTableParams=true;
+          $scope.NuevoProyecto=false;
       }
       $scope.editProyecto=function(pro){
          console.log(JSON.stringify(pro));
@@ -203,6 +230,25 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
+      }
+
+      $scope.agregarProyecto= function(){
+        $scope.ShowTablecomplete=false;
+        $scope.NuevoProyecto=true;
+      }
+      $scope.guardarProyecto=function(pro){
+         console.log(JSON.stringify(pro));
+          $http.post('api/addProyecto.php',{pro:pro, pa:$scope.Params, pm: $scope.pmgetProyecByProyMacro} )
+                .success(function(data) {
+                    $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                    $scope.ShowTablecomplete=true;
+                    $scope.ShowTableParams=true;
+                  console.log(data);
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+
       }
 
   }])
