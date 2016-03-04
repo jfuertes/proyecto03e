@@ -42,6 +42,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
     $scope.alerts = [];
 
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
     };
@@ -63,7 +71,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         .success(function(response) {
           $scope.ProyMacro[$index].ESTADOPM=estado;
           var NOMBREPROYMACRO=$scope.ProyMacro[$index].NOMBREPROYMACRO;
-          $scope.alerts.push({msg: 'Cambio de estado de proyecto macro '+ NOMBREPROYMACRO + ' exitoso.', type: 'success', tiempo: '3000'});
+          $scope.newAlert('Cambio de estado de proyecto macro '+ NOMBREPROYMACRO + ' exitoso.','success','3000');
       })
       .error(function(response){
 
@@ -84,14 +92,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                       scrollTop: $("#alerta").offset().top
                       }, 0);
 
-                    $scope.alerts.push({msg: 'registro de proyecto macro exitoso!', type: 'success', tiempo: '3000'});
+                    $scope.newAlert('registro de proyecto macro exitoso!.','success','3000');
 
                   }
                   
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
-                  $scope.alerts.push({msg: 'Error al crear proyecto macro', type: 'danger', tiempo: '3000'});
+                  $scope.newAlert('Error al crear proyecto macro.','danger','3000');
                 });
     };
 
@@ -144,6 +152,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         ]);
 
     $scope.alerts = [];
+
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
 
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
@@ -206,11 +222,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   if(data="true"){
                     $scope.formByProyMacro($scope.pmLocal);
                      $scope.ShowTableParams=true;
-                     $scope.alerts.push({msg: 'Registro de parametro exitoso.', type: 'success', tiempo: '3000'});
+                     $scope.newAlert('Registro de parametro exitoso.','success','3000');
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                      $scope.alerts.push({msg: 'error con el servidor intentelo mas tarde.', type: 'danger', tiempo: '3000'});
+                      $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
                       $scope.ShowTableParams=true;
                   }
                   
@@ -280,18 +296,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
         
     $scope.importar = function (json, tabWidth) {
-          var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
+          if($scope.csv.result){
+            var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
-          if ( confirm("¿Está seguro que desea cargar el archivo seleccionado?") ) {
-              $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
-              .success(function(data) {
-                console.log(data);
-                $scope.formByProyMacro($scope.pmLocal);
-
-              })
-              .error(function(data) {
-                console.log('Error: ' + data);
-                });
+            if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.formByProyMacro($scope.pmLocal);
+                  $scope.csv.result=null;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+            }
+            console.log('resultado:' + $scope.csv.result);
           }
           console.log($scope.csv.result);
     };
@@ -304,11 +323,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   //$scope.addProyMacro=data;
                   if(data="true"){
                     $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
-                     $scope.alerts.push({msg: 'registro de etiqueta exitoso.', type: 'success', tiempo: '3000'});
+                     $scope.newAlert('registro de etiqueta exitoso.','success','3000');
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                    $scope.alerts.push({msg: 'Error con el servidor. Inténtelo más tarde.', type: 'danger', tiempo: '3000'});
+                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
                      $scope.ShowTableParams=true;
                   }
                   
@@ -326,18 +345,32 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     console.log(data);
                     if(data="true"){
                       $scope.EtiquetasbyParam.splice(index,1);
-                      $scope.alerts.push({msg: 'La equiqueta seleccionada fue eliminada.', type: 'success', tiempo: '3000'});
+                      $scope.newAlert('La equiqueta seleccionada fue eliminada.','success','3000');
                      // $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
                       document.getElementById("formParametro").reset();
                     }
                     else{
-                      $scope.alerts.push({msg: 'Error con el servidor. Inténtelo más tarde.', type: 'danger', tiempo: '3000'});
+                      $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
                     }
                   })
                   .error(function(data) {
                     console.log('Error: ' + data);
                     });
           }
+    }
+
+    $scope.cambioEstadoParam= function(idParam, idProyMacro, estado, $index){
+       
+      $http({method:'POST',url: 'api/estadoParametro.php', data: $.param({idParam: idParam, idProyMAcro: idProyMacro, estado: estado}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+        .success(function(response) {
+          $scope.Parametro[$index].ESTADOPMPARAMETRO=estado;
+          
+          $scope.newAlert('Cambio de estado de parámetro exitoso.','success','3000');
+          //$scope.alerts.push({msg: 'Cambio de estado de parámetro exitoso.', type: 'success', tiempo: '3000'});
+      })
+      .error(function(response){
+
+      });
     }
     
   }])

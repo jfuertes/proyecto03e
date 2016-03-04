@@ -38,7 +38,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     
 
   }])
-  .controller('proyectosController', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
+  .controller('proyectosController',['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
     $scope.ShowTableParams=true;
     $scope.ShowTablecomplete=false;
 
@@ -49,19 +49,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         .withButtons([
             'colvis',
             'copy',
-            'print',
-            'excel',
-            {
-                text: 'Importar',
-                key: '1',
-                action: function (e, dt, node, config) {
-                    console.log(e);
-                    console.log(dt);
-                    console.log(node);
-                    console.log(config);
-                }
-            }
+            'csv'
         ]);
+      $scope.dtColumnDefs = [
+        DTColumnDefBuilder.newColumnDef(0),
+        DTColumnDefBuilder.newColumnDef(1),
+        DTColumnDefBuilder.newColumnDef(2).notSortable()
+    ];
 
        $scope.getProyMacro= function(){
             $http.post('admin/api/getProyMacro.php' )
@@ -89,9 +83,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       
       $scope.getProyecByProyMacro=function(pm){
         $scope.pmgetProyecByProyMacro=pm;
+        console.log(pm);
+        console.log( 'inicio');
             $http.post('admin/api/getProyecByProyMacro.php',{pm:pm} )
                 .success(function(data) {
-                    $scope.ShowTablecomplete=true;
+                  $scope.ShowTablecomplete=true;
                   console.log(data);
                   $scope.Proyectos=data;
                   $scope.ProyectosArray=[];
@@ -111,14 +107,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             $http.post('admin/api/getParamsByMacroyMod.php',{pm:pm} )
                 .success(function(data) {
                     $scope.ShowTablecomplete=true;
+                  console.log('param');
                   console.log(data);
                   $scope.Params=data;
-
                       $http.post('api/getEtByparams.php',{params: $scope.Params} )
                      
                         .success(function(data) {
                             //$scope.ShowTablecomplete=true;
-                          console.log(data);
+                          //console.log(data);
                           $scope.Etiquetas=data;
                         })
                         .error(function(data) {
@@ -129,14 +125,15 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
+
             $http.post('admin/api/getValoresByMacroyMod.php',{pm:pm} )
                 .success(function(data) {
                     $scope.ShowTablecomplete=true;
-                 console.log(data);
+                 //console.log(data);
                 //  console.log(data[0]);
                  // $scope.Valores=data;
                   $.each(data,function(index,value){
-                   // console.log( value.IDVALOR);
+
                     if( jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray )>0){
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
@@ -168,6 +165,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
                // console.log($scope.Params);
 
+               console.log( 'fin');
+
       };
       $scope.editarValores=function(pro,index){
         //alert(index);
@@ -178,13 +177,15 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
-      alert(JSON.stringify(pro.param));
-      alert(JSON.stringify($scope.Params));
+
+        //alert(JSON.stringify($scope.pro));
+
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
         $scope.ShowTableParams=false;
 
       };
+
       $scope.volvertablaproyectos=function(){
           $scope.EditarProyecto=false;
           $scope.ShowTablecomplete=true;
@@ -202,11 +203,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
-
-
       }
 
-  })
+  }])
 
   .controller('editarController',['$scope', function ($scope) {
 
