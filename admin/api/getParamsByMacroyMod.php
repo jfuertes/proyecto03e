@@ -7,9 +7,11 @@
 	$rspta = json_decode(file_get_contents("php://input"));
 	$IDPROYMACRO= $rspta->pm->idProy;
 	$IDMODULO= $rspta->pm->idMod;
+	
 	//var_dump($IDMODULO);
 	//var_dump($IDPROYMACRO);
 	//var_dump($IDPROYMACRO);
+
 	$q = 'SELECT p.idparametro,p.nombreparam ,pm.orden,pm.idproymacro,p.idtipodato,tp.nombretipodato,p.usamaestroparam
             from proyred.pmparametro pm
             inner join proyred.parametro p on pm.idparametro=p.idparametro            
