@@ -79,7 +79,7 @@
 	</div>
 	 <!-- /.row -->
 
-   <div class="row" ng-show="EditarProyecto && !ShowTablecomplete">
+   <div class="row" ng-show="EditarProyecto && !ShowTablecomplete && !NuevoProyecto">
         <div class="form-group">
             <h3>Editar Proyecto</h3></br>
                 <div class="col-lg-10 col-md-offset-1">
@@ -87,7 +87,7 @@
                         <label class="control-label">Codigo del Proyecto</label>
                     </div>
                     <div class="col-lg-4">
-                        <input class="form-control" ng-model='pro.CODPROYECTO' type="text" placeholder="Nombre de Proyecto Macro">
+                        <input class="form-control" ng-model='pro.CODPROYECTO' type="text" placeholder="Codigo del Proyecto ">
                     </div>
                 </div>
 
@@ -96,7 +96,7 @@
                         <label class="control-label">Nombre del Proyecto</label>
                     </div>
                     <div class="col-lg-4">
-                        <input class="form-control" ng-model='pro.NOMBREPROY' type="text" placeholder="Nombre de Proyecto Macro">
+                        <input class="form-control" ng-model='pro.NOMBREPROY' type="text" placeholder="Nombre del Proyecto ">
                     </div>
                 </div>
 
@@ -170,7 +170,7 @@
 <!-- /.container-fluid -->
 
 
-<div class="row" ng-show="NuevoProyecto && !ShowTablecomplete">
+<div class="row" ng-show="NuevoProyecto && !ShowTablecomplete && !EditarProyecto">
     <div class="form-group">
             <h3>Nuevo Proyecto</h3></br>
                 <div class="col-lg-10 col-md-offset-1">
@@ -178,7 +178,7 @@
                         <label class="control-label">Codigo del Proyecto</label>
                     </div>
                     <div class="col-lg-4">
-                        <input class="form-control" ng-model='pro.CODPROYECTO' type="text" placeholder="Nombre de Proyecto Macro">
+                        <input class="form-control" ng-model='pron.CODPROYECTO' type="text" placeholder="Codigo del Proyecto ">
                     </div>
                 </div>
 
@@ -187,7 +187,7 @@
                         <label class="control-label">Nombre del Proyecto</label>
                     </div>
                     <div class="col-lg-4">
-                        <input class="form-control" ng-model='pro.NOMBREPROY' type="text" placeholder="Nombre de Proyecto Macro">
+                        <input class="form-control" ng-model='pron.NOMBREPROY' type="text" placeholder="Nombre del Proyecto ">
                     </div>
                 </div>
 
@@ -199,14 +199,14 @@
                         <input class="form-control"
                         type="{{val.IDTIPODATO | filtertipoDato}}"
                         ng-show="Etiquetas[val.NOMBREPARAM].length==0"
-                        ng-model='pro[val.NOMBREPARAM]'
+                        ng-model='pron[val.NOMBREPARAM]'
                         placeholder="{{val.nombretipodato}}">
 
                     </div>
                     <div class="col-lg-4" ng-show="!Etiquetas[val.NOMBREPARAM].length==0">
                         <select class="form-control"
                         ng-show="!Etiquetas[val.NOMBREPARAM].length==0"
-                        ng-model='pro[val.NOMBREPARAM]'>
+                        ng-model='pron[val.NOMBREPARAM]'>
                             <option ng-repeat="opt in Etiquetas[val.NOMBREPARAM]"
                             value="{{opt}}">{{opt}}</option>
                         </select>
@@ -216,7 +216,7 @@
 
                 <div class="col-lg-10 col-md-offset-1">
                     <div class="col-lg-3">
-                        <button type="submit" ng-click="guardarProyecto(pro)" class="col-lg-8 btn btn-primary">Agregar</button>
+                        <button type="submit" ng-click="guardarProyecto(pron)" class="col-lg-8 btn btn-primary">Agregar</button>
                     </div>
                     <div class="col-lg-4">
                        <button class="btn btn-primary" ng-click="volvertablaproyectos()">Volver</button>

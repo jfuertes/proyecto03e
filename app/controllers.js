@@ -31,7 +31,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
   return function(id){
     
     if(id==null){
-      return "No Data";
+      return " ";
     }
     else{
       return id;
@@ -204,8 +204,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
 
-        //alert(JSON.stringify($scope.pro));
-
+       // alert(JSON.stringify($scope.pro.etiquetas));
+        console.log($scope.pro.etiquetas);
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
         $scope.ShowTableParams=false;
@@ -236,10 +236,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.agregarProyecto= function(){
         $scope.ShowTablecomplete=false;
         $scope.NuevoProyecto=true;
+        $scope.EditarProyecto=false;
       }
-      $scope.guardarProyecto=function(pro){
-         console.log(JSON.stringify(pro));
-          $http.post('api/addProyecto.php',{pro:pro, pa:$scope.Params, pm: $scope.pmgetProyecByProyMacro} )
+      $scope.guardarProyecto=function(pron){
+         console.log(pron);
+          $http.post('api/addProyecto.php',{pro:pron, pa:$scope.Params, pm: $scope.pmgetProyecByProyMacro} )
                 .success(function(data) {
                     $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
                     $scope.ShowTablecomplete=true;

@@ -6,7 +6,8 @@
 
 	$rspta = json_decode(file_get_contents("php://input"));
 		$params= $rspta->params;
-		//var_dump($rspta);
+		//var_dump($params);
+		//echo "--------------------------\n";
 	//var_dump($IDPROYMACRO);
 		$salida=(object)[];
 		foreach ($params as $key => $value) {
@@ -16,7 +17,8 @@
 		//var_dump($salida);
 		//echo "00000000000000000000000000000000";
 foreach ($params as $key => $value) {
-
+//echo $value->USAMAESTROPARAM;
+//echo $value->NOMBREPARAM;
 	if($value->USAMAESTROPARAM =="1"){
 			$q = 'SELECT ETIQUETA from proyred.maestro
 					where IDPARAMETRO= :IDPARAMETRO';
@@ -32,12 +34,16 @@ foreach ($params as $key => $value) {
 				array_push($salida->$nameparam, $value["ETIQUETA"]);
 			}
 			
+			///echo "IF";
 	}
 
 	else{
-		array_push($salida->$nameparam, "nada");
+		$nameparam=$value->NOMBREPARAM;
+		//array_push($salida->$nameparam, null);
+		//echo "else";
 	}
 	# code...
+	//echo "=============\n";
 }
 	//var_dump($r);
 //echo "======================";
