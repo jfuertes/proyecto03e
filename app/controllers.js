@@ -10,7 +10,17 @@
 angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons']).run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
-  
+  .filter('filternull', function(){
+  return function(id){
+    
+    if(id==null){
+      return "No Data";
+    }
+    else{
+      return id;
+    }
+    };
+  })
   .controller('mainController',['$scope', '$http', function ($scope, $http) {
     
     /*
@@ -126,7 +136,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 //  console.log(data[0]);
                  // $scope.Valores=data;
                   $.each(data,function(index,value){
-                    console.log( value.IDVALOR);
+                   // console.log( value.IDVALOR);
                     if( jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray )>0){
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
@@ -145,6 +155,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     //console.log($scope.Proyectos[contador].param);
                   });
                   console.log($scope.Proyectos);
+                 
+
+
+
+
+
+                  
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
@@ -161,7 +178,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
-      alert(JSON.stringify($scope.pro));
+      alert(JSON.stringify(pro.param));
+      alert(JSON.stringify($scope.Params));
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
         $scope.ShowTableParams=false;

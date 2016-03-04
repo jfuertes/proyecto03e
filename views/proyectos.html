@@ -55,10 +55,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="pro in Proyectos">
+                            <tr ng-repeat="proy in Proyectos">
                                 <td>{{ pro.CODPROYECTO }}</td>
                                 <td>{{ pro.NOMBREPROY }}</td>
-                                <td ng-repeat="par in pro.param track by $index">{{ par }}</td>
+                                <td ng-repeat="par in pro.param">{{ par | filternull }}</td>
                                 <td ng-click="editarValores(pro,$index)"><i class="fa fa-pencil"></i></td>
                                 
                             </tr>
