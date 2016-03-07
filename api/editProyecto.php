@@ -30,35 +30,38 @@ echo "============";
 		echo json_encode($valor);
 
 	foreach ($IDVALOR as $key => $value) {
-		var_dump($value);
+		//var_dump($value);
+		//var_dump($pro->$key);
 		var_dump($pro->$key);
-		var_dump($par[$cont]);
-
+		var_dump($par[$cont]->IDTIPODATO);
+echo "-----------\n";
 		if($par[$cont]->IDTIPODATO=="1"){
 			$valoractual= floatval($pro->$key);
 
 			$q = 'UPDATE proyred.VALOR 
-				SET VALORNUMBER=:VALORSTR
+				SET VALORNUMBER=:VALORNUMBER
 				WHERE IDVALOR=:IDVALOR';
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORSTR',  $valoractual, PDO::PARAM_STR);
+			$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-
+			echo json_encode($valor);
 			//echo json_encode($valor);
 
 		}
 		else if($par[$cont]->IDTIPODATO=="2"){
 			
 			$valoractual= floatval($pro->$key);
+			var_dump($valoractual);
+			var_dump($value);
 			$q = 'UPDATE proyred.VALOR 
-				SET VALORNUMBER=:VALORSTR
+				SET VALORNUMBER=:VALORNUMBER
 				WHERE IDVALOR=:IDVALOR';
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORSTR',  $valoractual, PDO::PARAM_STR);
+			$stmt->bindParam(':VALORNUMBER',  $pro->$key, PDO::PARAM_INT);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			//echo json_encode($valor);
+			echo json_encode($valor);
 		}
 
 		else if($par[$cont]->IDTIPODATO=="3"){
@@ -69,7 +72,7 @@ echo "============";
 			$stmt->bindParam(':VALORSTR',  $pro->$key, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			//echo json_encode($valor);
+			echo json_encode($valor);
 		}
 
 		else{
@@ -77,10 +80,10 @@ echo "============";
 				SET VALORDATE=:VALORSTR
 				WHERE IDVALOR=:IDVALOR';
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORSTR',  $pro->$key, PDO::PARAM_STR);
+			$stmt->bindParam(':VALORDATE',  $pro->$key, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-			//echo json_encode($valor);
+			echo json_encode($valor);
 
 			}
 		# code...
