@@ -32,9 +32,9 @@ echo "============";
 	foreach ($IDVALOR as $key => $value) {
 		//var_dump($value);
 		//var_dump($pro->$key);
-		var_dump($pro->$key);
-		var_dump($par[$cont]->IDTIPODATO);
-echo "-----------\n";
+		echo "valor: ".($pro->$key);
+		echo ", tipo de dato: ".($par[$cont]->IDTIPODATO);
+
 		if($par[$cont]->IDTIPODATO=="1"){
 			$valoractual= floatval($pro->$key);
 
@@ -55,11 +55,11 @@ echo "-----------\n";
 			var_dump($valoractual);
 			var_dump($value);
 			$q = 'UPDATE proyred.VALOR 
-				SET VALORNUMBER=:VALORNUMBER
-				WHERE IDVALOR=:IDVALOR';
+				SET VALORNUMBER='.$valoractual.'
+				WHERE IDVALOR='.$value;
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORNUMBER',  $pro->$key, PDO::PARAM_INT);
-			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
+			//$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 			echo json_encode($valor);
 		}
@@ -88,6 +88,8 @@ echo "-----------\n";
 			}
 		# code...
 			$cont++;
+
+			echo "-----------\n";
 	}
 
 ?>
