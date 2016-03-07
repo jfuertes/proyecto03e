@@ -17,8 +17,8 @@
 	//var_dump($IDVALORES);
 	
 //var_dump($NOMBREPROY);
-var_dump($IDPROYECTO);
-echo "============";
+//var_dump($IDPROYECTO);
+//echo "============";
 	$q = 'UPDATE proyred.PROYECTO 
 				SET NOMBREPROY=:NOMBREPROY, CODPROYECTO=:CODPROYECTO
 				WHERE IDPROYECTO=:IDPROYECTO';
@@ -32,18 +32,18 @@ echo "============";
 	foreach ($IDVALOR as $key => $value) {
 		//var_dump($value);
 		//var_dump($pro->$key);
-		echo "valor: ".($pro->$key);
-		echo ", tipo de dato: ".($par[$cont]->IDTIPODATO);
+		///echo "valor: ".($pro->$key);
+		// ", tipo de dato: ".($par[$cont]->IDTIPODATO);
 
 		if($par[$cont]->IDTIPODATO=="1"){
 			$valoractual= floatval($pro->$key);
 
 			$q = 'UPDATE proyred.VALOR 
-				SET VALORNUMBER=:VALORNUMBER
-				WHERE IDVALOR=:IDVALOR';
+				SET VALORNUMBER='.$valoractual.'
+				WHERE IDVALOR='.$value;
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
-			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
+			//$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 			echo json_encode($valor);
 			//echo json_encode($valor);
@@ -52,8 +52,8 @@ echo "============";
 		else if($par[$cont]->IDTIPODATO=="2"){
 			
 			$valoractual= floatval($pro->$key);
-			var_dump($valoractual);
-			var_dump($value);
+			//var_dump($valoractual);
+			//var_dump($value);
 			$q = 'UPDATE proyred.VALOR 
 				SET VALORNUMBER='.$valoractual.'
 				WHERE IDVALOR='.$value;
@@ -76,12 +76,19 @@ echo "============";
 		}
 
 		else{
-			$q = 'UPDATE proyred.VALOR 
-				SET VALORDATE=:VALORSTR
-				WHERE IDVALOR=:IDVALOR';
+			//formato de oracle para fecha 12/21/2015
+			//$value.
+			list($fecha, $hora) = split("T", $pro->$key);
+			list($year, $month, $day) = split("-", $fecha);
+			$valoractual= $day."-".$month."-".$year;
+			//$valoractual = strtotime($valoractual);
+			echo $value;
+			$q = "UPDATE proyred.VALOR 
+				SET VALORDATE='".$valoractual."'
+				WHERE IDVALOR=".$value;
 			$stmt = $dbh->prepare($q);
-			$stmt->bindParam(':VALORDATE',  $pro->$key, PDO::PARAM_STR);
-			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORDATE',  $pro->$key, PDO::PARAM_STR);
+			//$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 			echo json_encode($valor);
 
@@ -89,7 +96,6 @@ echo "============";
 		# code...
 			$cont++;
 
-			echo "-----------\n";
 	}
 
 ?>

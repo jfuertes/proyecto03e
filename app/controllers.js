@@ -39,6 +39,25 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
   })
 
+  .filter('filterfecha', function(){
+  return function(id){
+  if((typeof id) == 'object'){
+    Date.prototype.yyyymmdd = function() {
+       var yyyy = this.getFullYear().toString();
+       var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+       var dd  = this.getDate().toString();
+       return (dd[1]?dd:"0"+dd[0]) +"/"+ (mm[1]?mm:"0"+mm[0]) +"/"+ yyyy; // padding
+      };
+
+        return id.yyyymmdd();
+  }
+    else{
+      return id;
+    }
+    };
+  })
+ 
+
 
 
   .controller('mainController',['$scope', '$http', function ($scope, $http) {
@@ -158,7 +177,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                    /// console.log(value.NOMBREPROY);
                    // console.log(value.NOMBREPARAM);
                      //   console.log(value.VAL);
-                    console.log(value.IDPARAMETRO);
+                    //console.log(value.IDPARAMETRO);
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
                         // contador de parametro usando el value.IDPARAMETRO  
@@ -172,8 +191,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                           contPara++;
 
                         });
-                        console.log(paracont);
-                        console.log($scope.Params[paracont].IDTIPODATO);
+                       // console.log(paracont);
+                        //console.log($scope.Params[paracont].IDTIPODATO);
                         //var nameparam=value.NOMBREPARAM;
                        if($scope.Params[paracont].IDTIPODATO==1){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseInt(value.VAL);
@@ -181,14 +200,32 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                        }
                        else if($scope.Params[paracont].IDTIPODATO==2){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseFloat(value.VAL);
-                          console.log(value.VAL);
-                          console.log(contador);
+                         // console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
+                          //console.log(value.VAL);
+                          //console.log(contador);
                        }
                        else if($scope.Params[paracont].IDTIPODATO==3){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
+                          //console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
                        }
-                       else{
-                          $scope.Proyectos[paracont].param[value.NOMBREPARAM]=value.VAL;
+                       else if ($scope.Params[paracont].IDTIPODATO==4){
+                         // $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
+                         if(value.VAL){
+                         var res = value.VAL.split("/");
+                          //var fechaactual=res[2]+"-"+res[1]+"-"+res[0];
+                         var fechaactual = new Date(res[2], res[1], res[0]);//cambiar a que muestre solo esos valores
+
+                          $scope.Proyectos[contador].param[value.NOMBREPARAM]=fechaactual;
+                        }
+                        else{
+                            $scope.Proyectos[contador].param[value.NOMBREPARAM]="";
+                        }
+                          //console.log(value.VAL);
+                          //console.log(fechaactual);
+                         // console.log(value.NOMBREPARAM);
+                          //console.log( $scope.Proyectos[paracont].param);
+                          //console.log( $scope.Proyectos[contador].param[value.NOMBREPARAM]);
+                          //console.log( $scope.Proyectos[contador]);
 
                        }
                         
@@ -229,7 +266,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
 
-       // alert(JSON.stringify($scope.pro.etiquetas));
+        alert(typeof $scope.pro["Fecha Modificacion Plan"]);
         console.log($scope.pro);
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
