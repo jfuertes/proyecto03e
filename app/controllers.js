@@ -181,16 +181,24 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                        }
                        else if($scope.Params[paracont].IDTIPODATO==2){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseFloat(value.VAL);
+                         // console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
                           //console.log(value.VAL);
                           //console.log(contador);
                        }
                        else if($scope.Params[paracont].IDTIPODATO==3){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
+                          //console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
                        }
-                       else{
-                          $scope.Proyectos[paracont].param[value.NOMBREPARAM]=value.VAL;
-                          console.log(value.VAL)
-                          //console.log(value.VAL)
+                       else if ($scope.Params[paracont].IDTIPODATO==4){
+                         // $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
+                          var fechaactual=value.VAL;
+                          $scope.Proyectos[contador].param[value.NOMBREPARAM]=fechaactual;
+                          console.log(value.VAL);
+                          console.log(fechaactual);
+                         // console.log(value.NOMBREPARAM);
+                          //console.log( $scope.Proyectos[paracont].param);
+                          //console.log( $scope.Proyectos[contador].param[value.NOMBREPARAM]);
+                          //console.log( $scope.Proyectos[contador]);
 
                        }
                         
