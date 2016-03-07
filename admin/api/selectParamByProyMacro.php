@@ -8,7 +8,7 @@
 	$rspta = json_decode(file_get_contents("php://input"));
 	$IDPROYMACRO= $rspta->pm->idProy;
 	
-	$q = 'SELECT pm.IDPROYMACRO, pmp.IDPARAMETRO , par.NOMBREPARAM, mo.IDMODULO, mo.NOMBREMODULO, td.NOMBRETIPODATO, pmp.ESTADOPMPARAMETRO,  pmp.ORDEN, par.USAMAESTROPARAM, pm.NOMBREPROYMACRO
+	$q = 'SELECT pm.IDPROYMACRO, pmp.IDPARAMETRO , par.NOMBREPARAM, mo.IDMODULO, mo.NOMBREMODULO, td.NOMBRETIPODATO, pmp.ESTADOPMPARAMETRO,  pmp.ORDEN, par.USAMAESTROPARAM, pm.NOMBREPROYMACRO, par.IDTIPODATO, pmp.ESTADOPMPARAMETRO
 		from proyred.pmparametro pmp
 		INNER JOIN proyred.parametro par on pmp.IDPARAMETRO = par.IDPARAMETRO
 		INNER JOIN proyred.modulo mo on mo.IDMODULO = pmp.IDMODULO

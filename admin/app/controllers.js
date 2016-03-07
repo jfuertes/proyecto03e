@@ -24,6 +24,20 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
   })
 
+.directive('stringToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        return '' + value;
+      });
+      ngModel.$formatters.push(function(value) {
+        return parseFloat(value, 10);
+      });
+    }
+  }
+})
+
 .controller('mainController', function ($scope) {
 })
 
@@ -140,6 +154,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.seleccionar=false;
     $scope.showConsultaByProy=false;
     $scope.ShowTableParams=true;
+    $scope.editParams=false;
+
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
@@ -238,13 +254,47 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
          }
     };
 
+    $scope.formEditParam= function(pa){
+      console.log(pa);
+       $http.post('api/editParametro.php', {pa :pa} )
+            .success(function(data) {
+              console.log(data);
+              //$scope.addProyMacro=data;
+              if(data="true"){
+                $scope.formByProyMacro($scope.pmLocal);
+                 $scope.ShowTableParams=true;
+                 $scope.editParams=false;
+                 $scope.newAlert('Cambios del parámetro guardados exitosamente.','success','3000');
+                document.getElementById("formParametro").reset();
+              }
+              else{
+                  $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                  $scope.ShowTableParams=true;
+              }
+              
+            })
+            .error(function(data) {
+              console.log('Error: ' + data);
+              });
+
+    };
+
     $scope.agregarParam= function(){
         $scope.ShowTableParams=false;
+        $scope.editParams=false;
+    };
+
+    $scope.editarParam= function(pa){
+        $scope.ShowTableParams=false;
+        $scope.editParams=true;
+        console.log(pa);
+        $scope.ParamSelect=pa;
     };
 
      $scope.volverParametro= function(){
         $scope.ShowEtiquetasByParam=false;
         $scope.ShowTableParams=true;
+        $scope.editParams=false;
     };
 
   
@@ -275,6 +325,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $http.post('api/selectParamByProyMacro.php',{pm:pm})
           .success(function(data) {
             console.log(data);
+            console.log('aca es');
             $scope.Parametro=data.data;
           })
           .error(function(data) {
