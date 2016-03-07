@@ -247,7 +247,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           $scope.NuevoProyecto=false;
       }
       $scope.editProyecto=function(pro){
-         console.log(JSON.stringify(pro));
+          console.log(JSON.stringify(pro));
+          //$http({method:'POST',url: 'api/editProyecto2.php', data: $.param({pro:pro, pa:$scope.Params}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
           $http.post('api/editProyecto.php',{pro:pro, pa:$scope.Params} )
                 .success(function(data) {
                     $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);

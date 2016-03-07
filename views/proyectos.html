@@ -59,10 +59,12 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="(key , proy) in Proyectos">
-                                <td>{{ proy.CODPROYECTO }}</td>
-                                <td>{{ proy.NOMBREPROY }}</td>
+                                <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.CODPROYECTO }}</a></td>
+                                <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.NOMBREPROY }}</a></td>
                                 <td ng-repeat="pa in Params">{{ proy.param[pa.NOMBREPARAM] | filternull }}</td>
-                                <td ng-click="editarValores(proy,$index)"><i class="fa fa-pencil"></i></td>
+                                <td>
+                                    <a href="" title="Editar" ng-click="editarValores(proy,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a>
+                                </td>
                                 
                             </tr>
                         </tbody>
