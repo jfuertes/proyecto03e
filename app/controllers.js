@@ -158,7 +158,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                    /// console.log(value.NOMBREPROY);
                    // console.log(value.NOMBREPARAM);
                      //   console.log(value.VAL);
-                    console.log(value.IDPARAMETRO);
+                    //console.log(value.IDPARAMETRO);
                     //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                         var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
                         // contador de parametro usando el value.IDPARAMETRO  
@@ -172,8 +172,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                           contPara++;
 
                         });
-                        console.log(paracont);
-                        console.log($scope.Params[paracont].IDTIPODATO);
+                       // console.log(paracont);
+                        //console.log($scope.Params[paracont].IDTIPODATO);
                         //var nameparam=value.NOMBREPARAM;
                        if($scope.Params[paracont].IDTIPODATO==1){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseInt(value.VAL);
@@ -181,14 +181,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                        }
                        else if($scope.Params[paracont].IDTIPODATO==2){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseFloat(value.VAL);
-                          console.log(value.VAL);
-                          console.log(contador);
+                          //console.log(value.VAL);
+                          //console.log(contador);
                        }
                        else if($scope.Params[paracont].IDTIPODATO==3){
                           $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
                        }
                        else{
                           $scope.Proyectos[paracont].param[value.NOMBREPARAM]=value.VAL;
+                          console.log(value.VAL)
+                          //console.log(value.VAL)
 
                        }
                         
@@ -229,7 +231,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
 
-       // alert(JSON.stringify($scope.pro.etiquetas));
+        alert(JSON.stringify($scope.pro));
         console.log($scope.pro);
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
