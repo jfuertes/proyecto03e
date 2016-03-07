@@ -330,14 +330,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
 
       $scope.importar = function (json, tabWidth) {
-          /*if($scope.csv.result){
+          if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
             if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
-                $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+                $http.post('api/importarProyecto.php', {va :objeto, pm : $scope.pmgetProyecByProyMacro, pa : $scope.Params } )
                 .success(function(data) {
                   console.log(data);
-                  $scope.formByProyMacro($scope.pmLocal);
+                  $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
                   $scope.csv.result=null;
                 })
                 .error(function(data) {
@@ -345,7 +345,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
             }
             console.log('resultado:' + $scope.csv.result);
-          }*/
+          }
           console.log($scope.csv.result);
     };
 
