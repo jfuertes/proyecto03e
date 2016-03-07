@@ -56,16 +56,19 @@
 				$r=$stmt->fetch(PDO::FETCH_ASSOC);
 				$IDVALOR=$r['IDVALOR'];
 			}
-			else{
+			
+			if($IDVALOR==NULL || $nuevoproyecto==1){
 				$q = 'SELECT max(IDVALOR) +1 as IDVALOR from proyred.valor';
 				$stmt = $dbh->prepare($q);
 				$stmt->execute();
 				$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
 				$IDVALOR=$r['IDVALOR'];
-
 			}
-			echo "$IDVALOR\n";
+			//echo "parametro: ".$pa['IDPARAMETRO']."\n";
+			//echo "proyecto:  $IDPROYECTO\n";
+			//echo "IDVALOR:  $IDVALOR\n";
+
 			//ya se tiene el idvalor
 			if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
 				$nombrevalor="VALORNUMBER";
@@ -89,11 +92,11 @@
 			 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 			 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
-			var_dump($q);
-			var_dump($IDVALOR);
-			var_dump($pa['IDPARAMETRO']);
-			var_dump($IDPROYECTO);
-			var_dump($v[$pa['NOMBREPARAM']]);
+			//var_dump($q);
+			//var_dump($IDVALOR);
+			//var_dump($pa['IDPARAMETRO']);
+			//var_dump($IDPROYECTO);
+			//var_dump($v[$pa['NOMBREPARAM']]);
 
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
