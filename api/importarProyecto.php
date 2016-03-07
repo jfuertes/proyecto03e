@@ -1,6 +1,6 @@
 <?php
 	//require_once('../../api/config/mysql.php');
-	require_once('../../api/config/oracle.php');
+	require_once('../api/config/oracle.php');
 
 	
 
@@ -9,13 +9,13 @@
 
 	$rspta = json_decode(file_get_contents("php://input"), true);
 
-	var_dump($rspta);
+	//var_dump($rspta);
 
 	foreach ($rspta['va'] as $v) {
 	
 		$IDPROYECTO= $v['id del proyecto'];
 		$CODPROY= $v['codigo del proyecto'];
-		$NAMEPROY= $v['nombre del proyecto'];
+		$NAMEPROY= $v['Nombre del proyecto'];
 		$ESTADOPROY=1;
 		$nuevoproyecto=0;
 
@@ -36,10 +36,10 @@
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 			$stmt->bindParam(':NOMBREPROY',  $NAMEPROY, PDO::PARAM_STR);
 			$stmt->bindParam(':ESTADOPROY',  $ESTADOPROY, PDO::PARAM_STR);
-			$stmt->bindParam(':IDPROYMACRO',  $pm->idProy, PDO::PARAM_STR);
+			$stmt->bindParam(':IDPROYMACRO',  $rspta['pm']['idProy'], PDO::PARAM_STR);
 			$stmt->bindParam(':CODPROYECTO',  $CODPROY, PDO::PARAM_STR);
 			$valor = $stmt->execute();
-				echo json_encode($valor);
+			echo json_encode($valor);
 		}
 
 		foreach ($rspta['pa'] as $pa) {
@@ -64,7 +64,8 @@
 
 				$IDVALOR=$r['IDVALOR'];
 
-				}
+			}
+			echo "$IDVALOR\n";
 			//ya se tiene el idvalor
 			if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
 				$nombrevalor="VALORNUMBER";
@@ -77,19 +78,30 @@
 			}
 
 			$q= "MERGE INTO PROYRED.VALOR vl
-			  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR ".$nombrevalor." FROM dual) src
+			  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR $nombrevalor FROM dual) src
 			     ON( vl.IDVALOR= src.IDVALOR)
 			 WHEN MATCHED THEN
-			   UPDATE SET VALORSTR = src.VALORSTR 
+			   UPDATE SET $nombrevalor = src.$nombrevalor 
 			 WHEN NOT MATCHED THEN
-			   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, VALORSTR) 
-			     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.VALORSTR)";
+			   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+			     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+
+			 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+			 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
+
+			var_dump($q);
+			var_dump($IDVALOR);
+			var_dump($pa['IDPARAMETRO']);
+			var_dump($IDPROYECTO);
+			var_dump($v[$pa['NOMBREPARAM']]);
+
+			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 			$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 			$valor = $stmt->execute();
-				echo json_encode($valor);
+			echo json_encode($valor);
 
 		}
 			//echo json_encode($valor);
