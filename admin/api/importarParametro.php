@@ -9,7 +9,7 @@
 
 	$rspta = json_decode(file_get_contents("php://input"), true);
 
-	//var_dump($rspta);
+	var_dump($rspta);
 
 	foreach ($rspta['pa'] as $v) {
 	
@@ -23,14 +23,16 @@
 			else $ESTADOPARAM=0;
 		$IDMODULO= intval($v['Módulo']);
 		$IDPROYMACRO=intval($rspta['pm']);
-		$ORDEN=0;
+		$ORDEN=intval($v['orden']);
 
-		//var_dump($NOMBREPARAM);
-		//var_dump($IDTIPODATO);
-		//var_dump($USAMAESTROPARAM);
-		//var_dump($ESTADOPARAM);
-		//var_dump($IDMODULO);
-		//var_dump($IDPROYMACRO);
+		/*var_dump($NOMBREPARAM);
+		var_dump($IDTIPODATO);
+		var_dump($USAMAESTROPARAM);
+		var_dump($ESTADOPARAM);
+		var_dump($IDMODULO);
+		var_dump($IDPROYMACRO);
+		var_dump($ORDEN);
+*/
 
 		$q = 'SELECT max(IDPARAMETRO) +1 as ID_PARAMETRO from proyred.parametro';
 		$stmt = $dbh->prepare($q);

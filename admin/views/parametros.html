@@ -40,14 +40,14 @@
     </div></br>
 
 
-     <div class="row" ng-show="ShowTableParams && showConsultaByProy">
+     <div class="row" ng-show="ShowTableParams && showConsultaByProy && !editParams">
         <div class="col-md-4 ">
             <button ng-click="agregarParam()" class="col-lg-8 btn btn-primary">Agregar Nuevo Parametro</button>
         </div>
     </div>
 
 
-    <div class="row" ng-show="ShowTableParams && showConsultaByProy">
+    <div class="row" ng-show="ShowTableParams && showConsultaByProy && !editParams">
         <div class="col-lg-12">
             <h2>Parametros de {{NAMEPROYMACRO}} </h2>
             </br>
@@ -97,7 +97,12 @@
 
                                   <a href="" ng-show="pa.ESTADOPMPARAMETRO==0" title="Activar" ng-click="cambioEstadoParam(pa.IDPARAMETRO, pa.IDPROYMACRO, 1, $index)"><span class="glyphicon glyphicon-off" style="font-size: 20px; color:red"></a>
 
+                                  <a href="" title="Editar" ng-click="editarParam(pa,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a>
+
                                   <a href="" ng-show="pa.USAMAESTROPARAM==1" title="Lista Maestro" ng-click="ShowEtiquetasByParams(pa.IDPARAMETRO, pa.NOMBREPARAM)"><span class="glyphicon glyphicon-th-list" style="font-size: 20px"></a>
+
+                                 
+
                                 </td>
                             </tr>
                         </tbody>
@@ -110,7 +115,8 @@
     </div>
      <!-- /.row -->
 
-  <div class="row" ng-show="!ShowTableParams && !ShowEtiquetasByParam">
+  <!-- Nuevo Par+ametro -->
+  <div class="row" ng-show="!ShowTableParams && !ShowEtiquetasByParam && !editParams">
     
     <h3>Agregar Nuevo Parametro para {{NAMEPROYMACRO}} </h3></br>
 
@@ -166,15 +172,92 @@
 
         <div class="form-group"> 
             <div class="col-sm-offset-2 col-sm-6">
-              <button type="submit" class="btn btn-primary col-sm-3">Guardar Parametro</button>
+              <button type="submit" class="btn btn-primary col-sm-4">Guardar Parametro</button>
               <div class="col-sm-2"></div>
-              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-sm-3">Cancelar</button>
+              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-sm-4">Cancelar</button>
             </div>
         </div>
     </form>
 
   </div>
- 
+  <!-- /.Nuevo Parámetro -->
+
+  <!-- Editar Parámetro -->
+  <div class="row" ng-show="!ShowTableParams && !ShowEtiquetasByParam && editParams">
+    
+    <h3>Editar Parametro del Proyecto Macro {{NAMEPROYMACRO}}: </h3></br>
+
+    <form id="formEParametro" class="form-horizontal" role="form" ng-submit="formEditParam(ParamSelect)">
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Nombre de Parametro:</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Nombre" ng-model="ParamSelect.NOMBREPARAM">
+            </div>
+        </div>
+
+       <div class="form-group">
+            <label class="control-label col-sm-2" >Tipo de datos:</label>
+            <div class="col-sm-4">
+              <select class="form-control"  ng-model="ParamSelect.IDTIPODATO">
+                  <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Modulo:</label>
+            <div class="col-sm-4">
+              <select class="form-control"  ng-model="ParamSelect.IDMODULO">
+                  <option ng-show="seleccionar">seleccionar</option>
+                  <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
+              </select>
+            </div>
+        </div>  
+
+       <div class="form-group">
+            <label class="control-label col-sm-2" >Tabla Maestra:</label>
+            <div class="col-sm-4">
+              <select class="form-control"  ng-model="ParamSelect.USAMAESTROPARAM">
+                  <option ng-show="seleccionar">seleccionar</option>
+                  <option  value="1">Si usa maestro</option>
+                  <option  value="0">No usa maestro</option>
+              </select>
+            </div>
+        </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-2" >Estado:</label>
+            <div class="col-sm-4">
+              <select class="form-control"  ng-model="ParamSelect.ESTADOPMPARAMETRO">
+                  <option ng-show="seleccionar">seleccionar</option>
+                  <option  value="1">Activo</option>
+                  <option  value="0">Inactivo</option>
+              </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" >Orden:</label>
+            <div class="col-sm-2">
+              <input type="number"  string-to-number class="form-control" ng-model="ParamSelect.ORDEN">
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <div class="col-sm-offset-2 col-sm-6">
+              <button type="submit" class="btn btn-primary col-sm-4">Guardar Parametro</button>
+              <div class="col-sm-2"></div>
+              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-sm-4">Cancelar</button>
+            </div>
+        </div>
+    </form>
+
+  </div>
+  <!-- /.Editar Parámetro -->
+
+
+ <!-- Tabla maestra -->
   <div class="row" ng-show="ShowEtiquetasByParam && !ShowTableParams">
   </br>
       <h3>Gestion de Etiquetas para  {{NAMEParametro}} </h3>
@@ -223,7 +306,7 @@
 
   </div>
 
-
+  <!-- /.Tabla maestra -->
 
 
 </div>

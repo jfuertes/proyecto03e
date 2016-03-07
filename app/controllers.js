@@ -252,6 +252,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
                     $scope.ShowTablecomplete=true;
                     $scope.ShowTableParams=true;
+                    $scope.EditarProyecto=false;
                   console.log(data);
                 })
                 .error(function(data) {
