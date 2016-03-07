@@ -45,9 +45,31 @@
     <div class="row" ng-show="ShowTableParams && ShowTablecomplete">
 
 	    <div class="col-lg-12">
-	        <h2>Proyectos del proyecto Macro y su modulo  </h2>
-	        <div class="table-responsive">
-	            <div class="dataTable_wrapper">
+	        <h2>Listado de Proyectos </h2>
+	        
+            <div class="table-responsive">
+	               
+                <h4>Importar Parámetros: </h4>
+                <div class=" col-lg-12">
+                    <div class="row">
+                        <ng-csv-import
+                              class="import"
+                              content="csv.content"
+                              header="csv.header" 
+                              header-visible="csv.headerVisible" 
+                              separator="csv.separator"
+                              separator-visible="csv.separatorVisible"
+                              result="csv.result"
+                              accept="csv.accept"
+                              encoding="csv.encoding"
+                              encoding-visible="csv.encodingVisible">
+                        </ng-csv-import><button type="button" ng-click="importar()" class="btn btn-primary col-lg-3">Importar Proyectos</button>
+                    </div>
+                </div>
+            </div>
+                </br></br>
+            <div class="table-responsive">
+                <div class="dataTable_wrapper">
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
@@ -81,6 +103,7 @@
 	</div>
 	 <!-- /.row -->
 
+    <!-- /.row -->
    <div class="row" ng-show="EditarProyecto && !ShowTablecomplete && !NuevoProyecto">
         <div class="form-group">
             <h3>Editar Proyecto</h3></br>

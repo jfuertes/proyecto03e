@@ -280,6 +280,38 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
       }
 
+      $scope.csv = {
+          content: null,
+          header: true,
+          headerVisible: false,
+          separator: ',',
+          separatorVisible: false,
+          result: null,
+          accept:'.csv, .xls, .xlsx',
+          encoding: 'UTF16',
+          encodingVisible: false,
+    };
+
+      $scope.importar = function (json, tabWidth) {
+          /*if($scope.csv.result){
+            var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
+
+            if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.formByProyMacro($scope.pmLocal);
+                  $scope.csv.result=null;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+            }
+            console.log('resultado:' + $scope.csv.result);
+          }*/
+          console.log($scope.csv.result);
+    };
+
   }])
 
   .controller('editarController',['$scope', function ($scope) {
