@@ -1,6 +1,6 @@
 <?php
 	//require_once('../../api/config/mysql.php');
-	require_once('../../api/config/oracle.php');
+	require_once('../api/config/oracle.php');
 
 	
 
@@ -15,7 +15,7 @@
 	
 		$IDPROYECTO= $v['id del proyecto'];
 		$CODPROY= $v['codigo del proyecto'];
-		$NAMEPROY= $v['nombre del proyecto'];
+		$NAMEPROY= $v['Nombre del proyecto'];
 		$ESTADOPROY=1;
 		$nuevoproyecto=0;
 
@@ -36,10 +36,12 @@
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 			$stmt->bindParam(':NOMBREPROY',  $NAMEPROY, PDO::PARAM_STR);
 			$stmt->bindParam(':ESTADOPROY',  $ESTADOPROY, PDO::PARAM_STR);
-			$stmt->bindParam(':IDPROYMACRO',  $pm->idProy, PDO::PARAM_STR);
+			$stmt->bindParam(':IDPROYMACRO',  $rspta['pa'][0]["IDPROYMACRO"], PDO::PARAM_STR);
 			$stmt->bindParam(':CODPROYECTO',  $CODPROY, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 				echo json_encode($valor);
+				echo "creado nuevo proyecto";
+
 		}
 
 		foreach ($rspta['pa'] as $pa) {
@@ -55,6 +57,10 @@
 				$stmt->execute();
 				$r=$stmt->fetch(PDO::FETCH_ASSOC);
 				$IDVALOR=$r['IDVALOR'];
+				echo "===========";
+				echo $pa['IDPARAMETRO'];
+				echo  $IDPROYECTO;
+				echo "===========";
 			}
 			else{
 				$q = 'SELECT max(IDVALOR) +1 as IDVALOR from proyred.valor';
@@ -63,8 +69,12 @@
 				$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
 				$IDVALOR=$r['IDVALOR'];
-
+				echo "**";
 				}
+
+
+				echo "===========";
+				echo $IDVALOR;
 			//ya se tiene el idvalor
 			if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
 				$nombrevalor="VALORNUMBER";
@@ -80,16 +90,17 @@
 			  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR ".$nombrevalor." FROM dual) src
 			     ON( vl.IDVALOR= src.IDVALOR)
 			 WHEN MATCHED THEN
-			   UPDATE SET VALORSTR = src.VALORSTR 
+			   UPDATE SET ".$nombrevalor." = src.".$nombrevalor." 
 			 WHEN NOT MATCHED THEN
-			   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, VALORSTR) 
-			     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.VALORSTR)";
+			   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, ".$nombrevalor.") 
+			     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.".$nombrevalor.")";
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 			$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 			$valor = $stmt->execute();
 				echo json_encode($valor);
+				echo $v[$pa['NOMBREPARAM']];
 
 		}
 			//echo json_encode($valor);
