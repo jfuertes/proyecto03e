@@ -7,7 +7,8 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.parametro';
+		from proyred.parametro
+		where ESTADOPARAM=1';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);

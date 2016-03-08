@@ -7,7 +7,8 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.modulo';
+		from proyred.modulo 
+		';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);

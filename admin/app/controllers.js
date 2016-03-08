@@ -172,6 +172,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             'copy',
             'excel'
         ]);
+        $scope.ShowTableUser=true;
+
 
         $scope.alerts = [];
          $scope.newAlert = function(mensaje, tipo, tiempo) {
@@ -196,7 +198,129 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
     };
+     $scope.getModulos= function(){
+       $http.post('api/getModulos.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     $scope.getProyMacro= function(){
+       $http.post('api/getProyMacro.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.ProyMacro=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
     $scope.getUsuarios();
+    $scope.getModulos();
+    $scope.getProyMacro();
+
+       $scope.editarUser= function(u){
+        $scope.ShowTableUser=false;
+        $scope.editUser=true;
+        console.log(u);
+        $scope.ue=u;
+    };
+
+    $scope.volverUser=function(){
+       $scope.ShowTableUser=true;
+        $scope.ShowTableParams=true;
+        $scope.editUser=false;
+
+    };
+
+    $scope.formEditUser= function(ue){
+      console.log(ue);
+       $http.post('api/editUsuario.php', {ue :ue} )
+            .success(function(data) {
+              console.log(data);
+              //$scope.addProyMacro=data;
+              if(data="true"){
+               
+                 $scope.ShowTableUser=true;
+                 $scope.editUser=false;
+                 $scope.newAlert('Cambios del Usuario guardados exitosamente.','success','3000');
+                document.getElementById("formEParametro").reset();
+                $scope.getUsuarios();
+              }
+              else{
+                  $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                  $scope.ShowTableParams=true;
+              }
+              
+            })
+            .error(function(data) {
+              console.log('Error: ' + data);
+              });
+
+    };
+    $scope.ShowAccesobyUsuario=function(iduser, NOMBREUS){
+      $http.post('api/selectAccesobyUsuario.php',{iduser:iduser})
+          .success(function(data){
+              console.log(data);
+              $scope.NAMEUSER=NOMBREUS;
+              $scope.iduser=iduser;
+              $scope.AccesobyUsuario=data;
+              $scope.ShowTableUser=false;
+              $scope.ShowAccesosbyUsuario=true;
+          })
+          .error(function(data){
+            console.log("ERROR: "+data);
+          })
+
+    };
+    $scope.deleteAcceso=function(idacceso, index){
+            console.log(idacceso);
+         if ( confirm("¿Está seguro que desea eliminar el acceso "+idacceso+" ?") ) {
+             $http.post('api/deleteAcceso.php', { idacceso : idacceso} )
+                  .success(function(data) {
+                    console.log(data);
+                    if(data="true"){
+                      $scope.AccesobyUsuario.splice(index,1);
+                      $scope.newAlert('El acceso seleccionado fue eliminado.','success','3000');
+                     // $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
+                      //document.getElementById("formParametro").reset();
+                    }
+                    else{
+                      $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                    }
+                  })
+                  .error(function(data) {
+                    console.log('Error: ' + data);
+                    });
+          }
+
+    };
+
+    $scope.formNewAcc=function(acc){
+       console.log(acc);
+           $http.post('api/addAcceso.php', {acc :acc, idpa : $scope.iduser} )
+                .success(function(data) {
+                  console.log(data);
+                  //$scope.addProyMacro=data;
+                  if(data="true"){
+                    $scope.ShowAccesobyUsuario($scope.iduser, $scope.NAMEUSER);
+                     $scope.newAlert('registro de Acceso exitoso.','success','3000');
+                    document.getElementById("formNewAcc").reset();
+                    $scope.seleccionar=true;
+                  }
+                  else{
+                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                     $scope.ShowTableParams=true;
+                  }
+                  
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
 
     $scope.cambioEstadoUser= function(iduser, estado, $index){
       console.log(iduser);
