@@ -6,8 +6,11 @@
 
 	$rspta = json_decode(file_get_contents("php://input"));
 	$IDUSUARIO= $rspta->iduser;
-	$q = 'SELECT IDACCESO, IDPROYMACRO, IDMODULO, TIPOUS, PRIVILEGIO
-			 from proyred.ACCESO ma where IDUSUARIO= :IDUSUARIO';
+	$q = 'SELECT acc.IDACCESO, pm.NOMBREPROYMACRO, mo.NOMBREMODULO, TIPOUS, PRIVILEGIO
+from proyred.ACCESO acc
+INNER JOIN proyred.PROYMACRO pm on acc.IDPROYMACRO= pm.IDPROYMACRO
+INNER JOIN proyred.MODULO mo on acc.IDMODULO= mo.IDMODULO
+			   where acc.IDUSUARIO= :IDUSUARIO';
 
 	$stmt = $dbh->prepare($q);
 	$stmt->bindParam(':IDUSUARIO',  $IDUSUARIO, PDO::PARAM_STR);

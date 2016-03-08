@@ -35,6 +35,7 @@
                                 <th>LDAP</th>
                                 <th>Email</th>
                                 <th>IDarea</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
 
                             </tr>
@@ -48,6 +49,7 @@
                                 <td>{{ u.LDAP }}</td>
                                 <td>{{ u.EMAIL }}</td>
                                 <td>{{ u.IDAREA }}</td>
+                                <td>{{ u.ESTADO | filterActivo }}</td>
                                  <td><a href="" ng-show="u.ESTADO==1" title="Desactivar" ng-click="cambioEstadoUser(u.IDUSUARIO, 0, $index)"><span class="glyphicon glyphicon-off" style="font-size: 20px"></a>
 
                                   <a href="" ng-show="u.ESTADO==0" title="Activar" ng-click="cambioEstadoUser(u.IDUSUARIO, 1, $index)"><span class="glyphicon glyphicon-off" style="font-size: 20px; color:red"></a>
@@ -128,9 +130,9 @@
                         <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                             <thead>
                                 <tr>
-                                    <th>IDACCESO</th>
-                                    <th>IDPROYMACRO</th>
-                                    <th>IDMODULO</th>
+                                   
+                                    <th>Nombre de proyecto</th>
+                                    <th>Nombre de modulo</th>
                                     <th>TIPOUS</th>
                                     <th>PRIVILEGIO</th>
                                     <th>Acciones</th>
@@ -139,9 +141,9 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="acu in AccesobyUsuario">
-                                    <td>{{ acu.IDACCESO }}</td>
-                                    <td>{{ acu.IDPROYMACRO  }}</td>
-                                    <td>{{ acu.IDMODULO  }}</td>
+                                    
+                                    <td>{{ acu.NOMBREPROYMACRO  }}</td>
+                                    <td>{{ acu.NOMBREMODULO  }}</td>
                                     <td>{{ acu.TIPOUS  }}</td>
                                     <td>{{ acu.PRIVILEGIO  }}</td>
                                     <td>
