@@ -231,7 +231,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
     $scope.volverUser=function(){
        $scope.ShowTableUser=true;
-        $scope.ShowTableParams=true;
+        $scope.ShowAccesosbyUsuario=false;
         $scope.editUser=false;
 
     };
