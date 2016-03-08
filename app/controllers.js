@@ -264,7 +264,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
 
-        alert(typeof $scope.pro["Fecha Modificacion Plan"]);
+        //alert(typeof $scope.pro["Fecha Modificacion Plan"]);
         console.log($scope.pro);
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
