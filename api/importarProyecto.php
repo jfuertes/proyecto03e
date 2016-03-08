@@ -140,9 +140,19 @@
 
 			}
 			else{
+				//manipular fecha
+				var_dump($IDVALOR);
+			var_dump($pa['IDPARAMETRO']);
+			var_dump($IDPROYECTO);
+			var_dump($v[$pa['NOMBREPARAM']]);
+
+				list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
+				$month=$month-1;
+			$valoractual= $day."-".$month."-".$year;
+			echo "$valoractual";
 				$nombrevalor="VALORDATE";
 				$q= "MERGE INTO PROYRED.VALOR vl
-			  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR $nombrevalor FROM dual) src
+			  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' ".$nombrevalor." FROM dual) src
 			     ON( vl.IDVALOR= src.IDVALOR)
 			 WHEN MATCHED THEN
 
@@ -154,17 +164,17 @@
 			 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 			 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
-			//var_dump($q);
-			//var_dump($IDVALOR);
-			//var_dump($pa['IDPARAMETRO']);
-			//var_dump($IDPROYECTO);
+			var_dump($q);
+			var_dump($IDVALOR);
+			var_dump($pa['IDPARAMETRO']);
+			var_dump($IDPROYECTO);
 			//var_dump($v[$pa['NOMBREPARAM']]);
 
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-			$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 			$valor = $stmt->execute();
 
 			echo json_encode($valor);
