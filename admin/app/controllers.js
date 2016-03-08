@@ -229,29 +229,32 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.getProyMacro();
 
      $scope.formNewParam= function(pa){
-       if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
-          console.log(pa);
-           $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
+       console.log($scope.pa);
+       if($scope.pa.IDTIPODATO && $scope.pa.USAMAESTROPARAM && $scope.pa.ESTADOPARAM && $scope.pa.IDMODULO){
+           if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
+              console.log(pa);
+               $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
                 .success(function(data) {
                   console.log(data);
                   //$scope.addProyMacro=data;
-                  if(data="true"){
+                  if(data.success){
                     $scope.formByProyMacro($scope.pmLocal);
-                     $scope.ShowTableParams=true;
-                     $scope.newAlert('Registro de parametro exitoso.','success','3000');
+                    $scope.ShowTableParams=true;
+                    $scope.newAlert(data.success,'success','3000');
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                      $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
-                      $scope.ShowTableParams=true;
+                    $scope.newAlert(data.Error,'danger','3000');
                   }
-                  
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
-
-         }
+                  console.log('Error: ' + data.Error);
+                });
+           }
+        }
+        else{
+            $scope.newAlert('Debe completar todos los campos','danger','3000');
+        }
     };
 
     $scope.formEditParam= function(pa){
@@ -282,6 +285,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.agregarParam= function(){
         $scope.ShowTableParams=false;
         $scope.editParams=false;
+        $scope.pa={};
+
+       //alert($scope.IDPROYMACRO);
+        $http({method:'POST',url: 'api/ultimoOrden.php', data: $.param({id: $scope.IDPROYMACRO}), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+          .success(function(response) {
+            $scope.pa.ORDEN=response.ORDEN;
+        })
+          .error(function(response){
+        });
+
     };
 
     $scope.editarParam= function(pa){
@@ -314,24 +327,26 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
 
      $scope.formByProyMacro= function(pm){
-      console.log(pm);
-      var result = $.grep($scope.ProyMacro, function(e){ return e.IDPROYMACRO == pm.idProy; });
-      $scope.NAMEPROYMACRO=result[0].NOMBREPROYMACRO;
+      //console.log(pm);
+      if(pm){
+        var result = $.grep($scope.ProyMacro, function(e){ return e.IDPROYMACRO == pm.idProy; });
+        $scope.NAMEPROYMACRO=result[0].NOMBREPROYMACRO;
 
-      $scope.IDPROYMACRO=pm.idProy;
-      $scope.pmLocal=pm;
-      $scope.showConsultaByProy=true;
-      
-      $http.post('api/selectParamByProyMacro.php',{pm:pm})
+        $scope.IDPROYMACRO=pm.idProy;
+        $scope.pmLocal=pm;
+        $scope.showConsultaByProy=true;
+        
+        $http.post('api/selectParamByProyMacro.php',{pm:pm})
           .success(function(data) {
-            console.log(data);
-            console.log('aca es');
-            $scope.Parametro=data.data;
+              $scope.Parametro=data.data;
           })
           .error(function(data) {
-            console.log('Error: ' + data);
+              console.log('Error: ' + data);
           });
-        
+      }
+      else{
+         $scope.newAlert('Seleccione un Proyecto Macro.','warning','3000');
+      }
     };
 
     $scope.csv = {
@@ -364,6 +379,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
             }
             console.log('resultado:' + $scope.csv.result);
+          }
+          else{
+              $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
           }
           console.log($scope.csv.result);
     };
