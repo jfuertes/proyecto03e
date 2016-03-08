@@ -46,7 +46,7 @@
         </div>
     </div>
 
-
+    <!-- Lista de Parámetros -->
     <div class="row" ng-show="ShowTableParams && showConsultaByProy && !editParams">
         <div class="col-lg-12">
             <h2>Parametros de {{NAMEPROYMACRO}} </h2>
@@ -101,8 +101,6 @@
 
                                   <a href="" ng-show="pa.USAMAESTROPARAM==1" title="Lista Maestro" ng-click="ShowEtiquetasByParams(pa.IDPARAMETRO, pa.NOMBREPARAM)"><span class="glyphicon glyphicon-th-list" style="font-size: 20px"></a>
 
-                                 
-
                                 </td>
                             </tr>
                         </tbody>
@@ -113,9 +111,10 @@
             </div>
         </div>
     </div>
+    <!-- /. Lista de Parámetros -->
      <!-- /.row -->
 
-  <!-- Nuevo Par+ametro -->
+  <!-- Nuevo Parámetro -->
   <div class="row" ng-show="!ShowTableParams && !ShowEtiquetasByParam && !editParams">
     
     <h3>Agregar Nuevo Parametro para {{NAMEPROYMACRO}} </h3></br>
@@ -123,25 +122,25 @@
     <form id="formParametro" class="form-horizontal" role="form" ng-submit="formNewParam(pa)">
 
         <div class="form-group">
-            <label class="control-label col-sm-2" >Nombre de Parametro:</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" placeholder="Nombre" ng-model="pa.NOMBREPARAM">
+            <label class="control-label col-lg-2" >Nombre de Parametro:</label>
+            <div class="col-lg-4">
+              <input type="text" class="form-control" placeholder="Nombre" ng-model="pa.NOMBREPARAM" required>
             </div>
         </div>
 
        <div class="form-group">
-            <label class="control-label col-sm-2" >Tipo de datos:</label>
-            <div class="col-sm-4">
-              <select class="form-control"  ng-model="pa.IDTIPODATO">
+            <label class="control-label col-lg-2" >Tipo de datos:</label>
+            <div class="col-lg-4">
+              <select class="form-control" ng-model="pa.IDTIPODATO" required>
                   <option ng-show="seleccionar">seleccionar</option>
                   <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
               </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" >Modulo:</label>
-            <div class="col-sm-4">
-              <select class="form-control"  ng-model="pa.IDMODULO">
+            <label class="control-label col-lg-2" >Modulo:</label>
+            <div class="col-lg-4">
+              <select class="form-control"  ng-model="pa.IDMODULO" required>
                   <option ng-show="seleccionar">seleccionar</option>
                   <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
               </select>
@@ -149,9 +148,9 @@
         </div>  
 
        <div class="form-group">
-            <label class="control-label col-sm-2" >Tabla Maestra:</label>
-            <div class="col-sm-4">
-              <select class="form-control"  ng-model="pa.USAMAESTROPARAM">
+            <label class="control-label col-lg-2" >Tabla Maestra:</label>
+            <div class="col-lg-4">
+              <select class="form-control"  ng-model="pa.USAMAESTROPARAM" required>
                   <option ng-show="seleccionar">seleccionar</option>
                   <option  value="1">Si usa maestro</option>
                   <option  value="0">No usa maestro</option>
@@ -160,9 +159,9 @@
         </div>
 
          <div class="form-group">
-            <label class="control-label col-sm-2" >Estado:</label>
-            <div class="col-sm-4">
-              <select class="form-control"  ng-model="pa.ESTADOPARAM">
+            <label class="control-label col-lg-2" >Estado:</label>
+            <div class="col-lg-4">
+              <select class="form-control"  ng-model="pa.ESTADOPARAM" required>
                   <option ng-show="seleccionar">seleccionar</option>
                   <option  value="1">Activo</option>
                   <option  value="0">Inactivo</option>
@@ -170,11 +169,18 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="control-label col-lg-2">Orden:</label>
+            <div class="col-lg-1">
+              <input type="number" string-to-number class="form-control" ng-model="pa.ORDEN" required>
+            </div>
+        </div>
+
         <div class="form-group"> 
-            <div class="col-sm-offset-2 col-sm-6">
-              <button type="submit" class="btn btn-primary col-sm-4">Guardar Parametro</button>
-              <div class="col-sm-2"></div>
-              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-sm-4">Cancelar</button>
+            <div class="col-lg-offset-2 col-lg-6">
+              <button type="submit" class="btn btn-primary col-lg-4">Guardar Parametro</button>
+              <div class="col-lg-2"></div>
+              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-lg-4">Cancelar</button>
             </div>
         </div>
     </form>
@@ -190,15 +196,15 @@
     <form id="formEParametro" class="form-horizontal" role="form" ng-submit="formEditParam(ParamSelect)">
 
         <div class="form-group">
-            <label class="control-label col-sm-2" >Nombre de Parametro:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-lg-2" >Nombre de Parametro:</label>
+            <div class="col-lg-4">
               <input type="text" class="form-control" placeholder="Nombre" ng-model="ParamSelect.NOMBREPARAM">
             </div>
         </div>
 
        <div class="form-group">
-            <label class="control-label col-sm-2" >Tipo de datos:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-lg-2" >Tipo de datos:</label>
+            <div class="col-lg-4">
               <select class="form-control"  ng-model="ParamSelect.IDTIPODATO">
                   <option ng-show="seleccionar">seleccionar</option>
                   <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
@@ -206,8 +212,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" >Modulo:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-lg-2" >Modulo:</label>
+            <div class="col-lg-4">
               <select class="form-control"  ng-model="ParamSelect.IDMODULO">
                   <option ng-show="seleccionar">seleccionar</option>
                   <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
@@ -216,8 +222,8 @@
         </div>  
 
        <div class="form-group">
-            <label class="control-label col-sm-2" >Tabla Maestra:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-lg-2" >Tabla Maestra:</label>
+            <div class="col-lg-4">
               <select class="form-control"  ng-model="ParamSelect.USAMAESTROPARAM">
                   <option ng-show="seleccionar">seleccionar</option>
                   <option  value="1">Si usa maestro</option>
@@ -227,8 +233,8 @@
         </div>
 
          <div class="form-group">
-            <label class="control-label col-sm-2" >Estado:</label>
-            <div class="col-sm-4">
+            <label class="control-label col-lg-2" >Estado:</label>
+            <div class="col-lg-4">
               <select class="form-control"  ng-model="ParamSelect.ESTADOPMPARAMETRO">
                   <option ng-show="seleccionar">seleccionar</option>
                   <option  value="1">Activo</option>
@@ -238,17 +244,17 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" >Orden:</label>
-            <div class="col-sm-2">
+            <label class="control-label col-lg-2" >Orden:</label>
+            <div class="col-lg-2">
               <input type="number"  string-to-number class="form-control" ng-model="ParamSelect.ORDEN">
             </div>
         </div>
 
         <div class="form-group"> 
-            <div class="col-sm-offset-2 col-sm-6">
-              <button type="submit" class="btn btn-primary col-sm-4">Guardar Parametro</button>
-              <div class="col-sm-2"></div>
-              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-sm-4">Cancelar</button>
+            <div class="col-lg-offset-2 col-lg-6">
+              <button type="submit" class="btn btn-primary col-lg-4">Guardar Parametro</button>
+              <div class="col-lg-2"></div>
+              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-lg-4">Cancelar</button>
             </div>
         </div>
     </form>
