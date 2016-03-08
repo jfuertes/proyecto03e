@@ -365,20 +365,28 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
-            if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
-                $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
-                .success(function(data) {
-                  console.log(data);
-                  $scope.formByProyMacro($scope.pmLocal);
-                  $scope.csv.result=null;
+            if(objeto[0]['ID Parámetro'] && objeto[0]['Nombre Parámetro'] && objeto[0]['Módulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
+              if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                  $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+                  .success(function(data) {
+                      if(data.success){
+                        $scope.formByProyMacro($scope.pmLocal);
 
-                  //validacion pendiente
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
+                        $scope.newAlert(data.success,'success','5000');
+                      }
+                      else{
+                        $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
+                      }
+                  })
+                  .error(function(data) {
+                    console.log('Error: ' + data);
                   });
+              }
+              console.log('resultado:' + $scope.csv.result);
             }
-            console.log('resultado:' + $scope.csv.result);
+            else{
+                $scope.newAlert('Error: el archivo a importar debe contener los campos: ID Parámetro, Nombre Parámetro, Módulo, Tipo de dato, Estado, Orden, Tabla maestra. Debe respetar los acentos y mayúsculas','danger','5000');
+            }
           }
           else{
               $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
