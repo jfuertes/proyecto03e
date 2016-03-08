@@ -39,6 +39,20 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 })
 
 .controller('mainController', function ($scope) {
+   $scope.alerts = [];
+
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+
 })
 
 // Controlador Gestión Proyecto Macro
@@ -147,6 +161,64 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.getEtiquetas();
 
 }])
+
+.controller('usuariosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+          $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withPaginationType('full_numbers')
+        .withDisplayLength(10)
+        .withBootstrap()
+        .withButtons([
+            'colvis',
+            'copy',
+            'excel'
+        ]);
+
+        $scope.alerts = [];
+         $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+
+    $scope.getUsuarios= function(){
+       $http.post('api/getUsuarios.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.usuarios=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+    $scope.getUsuarios();
+
+    $scope.cambioEstadoUser= function(iduser, estado, $index){
+      console.log(iduser);
+      console.log(estado);
+      console.log($index);
+       
+      $http({method:'POST',url: 'api/estadoUser.php', data: $.param({iduser: iduser, estado: estado}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+        .success(function(response) {
+          $scope.usuarios[$index].ESTADO=estado;
+          
+          $scope.newAlert('Cambio de estado de Usuario exitoso.','success','3000');
+          //$scope.alerts.push({msg: 'Cambio de estado de parámetro exitoso.', type: 'success', tiempo: '3000'});
+      })
+      .error(function(response){
+
+      });
+    }
+
+
+}])
+
+
 
 // Controlador Gestión Parámetros
 .controller('parametrosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
