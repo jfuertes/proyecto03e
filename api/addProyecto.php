@@ -60,12 +60,12 @@
 			$valoractual= floatval($pro->$nameparam);
 
 			$q = 'INSERT INTO proyred.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, VALORNUMBER)
-				VALUES (:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORNUMBER)';
+				VALUES (:IDVALOR, :IDPARAMETRO, :IDPROYECTO, '.$valoractual.')';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-			$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 
 			echo json_encode($valor);
@@ -76,12 +76,12 @@
 			$valoractual= floatval($pro->$nameparam);
 
 			$q = 'INSERT INTO proyred.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, VALORNUMBER)
-				VALUES (:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORNUMBER)';
+				VALUES (:IDVALOR, :IDPARAMETRO, :IDPROYECTO, '.$valoractual.')';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-			$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 
 			echo json_encode($valor);
@@ -101,13 +101,17 @@
 		}
 
 		else{
+
+			list($fecha, $hora) = split("T", $pro->$nameparam);
+			list($year, $month, $day) = split("-", $fecha);
+			$valoractual= $day."-".$month."-".$year;
 			$q = 'INSERT INTO proyred.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, VALORDATE)
-				VALUES (:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORDATE)';
+				VALUES (:IDVALOR, :IDPARAMETRO, :IDPROYECTO, '.$valoractual.')';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
 			$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-			$stmt->bindParam(':VALORDATE', $pro->$nameparam, PDO::PARAM_STR);
+			//$stmt->bindParam(':VALORDATE', $pro->$nameparam, PDO::PARAM_STR);
 			$valor = $stmt->execute();
 			echo json_encode($valor);
 

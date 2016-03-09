@@ -39,6 +39,20 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 })
 
 .controller('mainController', function ($scope) {
+   $scope.alerts = [];
+
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+
 })
 
 // Controlador Gestión Proyecto Macro
@@ -148,6 +162,188 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 }])
 
+.controller('usuariosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+          $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withPaginationType('full_numbers')
+        .withDisplayLength(10)
+        .withBootstrap()
+        .withButtons([
+            'colvis',
+            'copy',
+            'excel'
+        ]);
+        $scope.ShowTableUser=true;
+
+
+        $scope.alerts = [];
+         $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+
+    $scope.getUsuarios= function(){
+       $http.post('api/getUsuarios.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.usuarios=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     $scope.getModulos= function(){
+       $http.post('api/getModulos.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+     $scope.getProyMacro= function(){
+       $http.post('api/getProyMacro.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.ProyMacro=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+    $scope.getUsuarios();
+    $scope.getModulos();
+    $scope.getProyMacro();
+
+       $scope.editarUser= function(u){
+        $scope.ShowTableUser=false;
+        $scope.editUser=true;
+        console.log(u);
+        $scope.ue=u;
+    };
+
+    $scope.volverUser=function(){
+       $scope.ShowTableUser=true;
+        $scope.ShowAccesosbyUsuario=false;
+        $scope.editUser=false;
+
+    };
+
+    $scope.formEditUser= function(ue){
+      console.log(ue);
+       $http.post('api/editUsuario.php', {ue :ue} )
+            .success(function(data) {
+              console.log(data);
+              //$scope.addProyMacro=data;
+              if(data="true"){
+               
+                 $scope.ShowTableUser=true;
+                 $scope.editUser=false;
+                 $scope.newAlert('Cambios del Usuario guardados exitosamente.','success','3000');
+                document.getElementById("formEParametro").reset();
+                $scope.getUsuarios();
+              }
+              else{
+                  $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                  $scope.ShowTableParams=true;
+              }
+              
+            })
+            .error(function(data) {
+              console.log('Error: ' + data);
+              });
+
+    };
+    $scope.ShowAccesobyUsuario=function(iduser, NOMBREUS){
+      $http.post('api/selectAccesobyUsuario.php',{iduser:iduser})
+          .success(function(data){
+              console.log(data);
+              $scope.NAMEUSER=NOMBREUS;
+              $scope.iduser=iduser;
+              $scope.AccesobyUsuario=data;
+              $scope.ShowTableUser=false;
+              $scope.ShowAccesosbyUsuario=true;
+          })
+          .error(function(data){
+            console.log("ERROR: "+data);
+          })
+
+    };
+    $scope.deleteAcceso=function(idacceso, index){
+            console.log(idacceso);
+         if ( confirm("¿Está seguro que desea eliminar el acceso "+idacceso+" ?") ) {
+             $http.post('api/deleteAcceso.php', { idacceso : idacceso} )
+                  .success(function(data) {
+                    console.log(data);
+                    if(data="true"){
+                      $scope.AccesobyUsuario.splice(index,1);
+                      $scope.newAlert('El acceso seleccionado fue eliminado.','success','3000');
+                     // $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
+                      //document.getElementById("formParametro").reset();
+                    }
+                    else{
+                      $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                    }
+                  })
+                  .error(function(data) {
+                    console.log('Error: ' + data);
+                    });
+          }
+
+    };
+
+    $scope.formNewAcc=function(acc){
+       console.log(acc);
+           $http.post('api/addAcceso.php', {acc :acc, idpa : $scope.iduser} )
+                .success(function(data) {
+                  console.log(data);
+                  //$scope.addProyMacro=data;
+                  if(data="true"){
+                    $scope.ShowAccesobyUsuario($scope.iduser, $scope.NAMEUSER);
+                     $scope.newAlert('registro de Acceso exitoso.','success','3000');
+                    document.getElementById("formNewAcc").reset();
+                    $scope.seleccionar=true;
+                  }
+                  else{
+                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                     $scope.ShowTableParams=true;
+                  }
+                  
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+    };
+
+    $scope.cambioEstadoUser= function(iduser, estado, $index){
+      console.log(iduser);
+      console.log(estado);
+      console.log($index);
+       
+      $http({method:'POST',url: 'api/estadoUser.php', data: $.param({iduser: iduser, estado: estado}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+        .success(function(response) {
+          $scope.usuarios[$index].ESTADO=estado;
+          
+          $scope.newAlert('Cambio de estado de Usuario exitoso.','success','3000');
+          //$scope.alerts.push({msg: 'Cambio de estado de parámetro exitoso.', type: 'success', tiempo: '3000'});
+      })
+      .error(function(response){
+
+      });
+    }
+
+
+}])
+
+
+
 // Controlador Gestión Parámetros
 .controller('parametrosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
     $scope.ShowEtiquetasByParam=false;
@@ -229,29 +425,32 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.getProyMacro();
 
      $scope.formNewParam= function(pa){
-       if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
-          console.log(pa);
-           $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
+       console.log($scope.pa);
+       if($scope.pa.IDTIPODATO && $scope.pa.USAMAESTROPARAM && $scope.pa.ESTADOPARAM && $scope.pa.IDMODULO){
+           if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
+              console.log(pa);
+               $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
                 .success(function(data) {
                   console.log(data);
                   //$scope.addProyMacro=data;
-                  if(data="true"){
+                  if(data.success){
                     $scope.formByProyMacro($scope.pmLocal);
-                     $scope.ShowTableParams=true;
-                     $scope.newAlert('Registro de parametro exitoso.','success','3000');
+                    $scope.ShowTableParams=true;
+                    $scope.newAlert(data.success,'success','3000');
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                      $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
-                      $scope.ShowTableParams=true;
+                    $scope.newAlert(data.Error,'danger','3000');
                   }
-                  
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
-
-         }
+                  console.log('Error: ' + data.Error);
+                });
+           }
+        }
+        else{
+            $scope.newAlert('Debe completar todos los campos','danger','3000');
+        }
     };
 
     $scope.formEditParam= function(pa){
@@ -282,6 +481,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.agregarParam= function(){
         $scope.ShowTableParams=false;
         $scope.editParams=false;
+        $scope.pa={};
+
+       //alert($scope.IDPROYMACRO);
+        $http({method:'POST',url: 'api/ultimoOrden.php', data: $.param({id: $scope.IDPROYMACRO}), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+          .success(function(response) {
+            $scope.pa.ORDEN=response.ORDEN;
+        })
+          .error(function(response){
+        });
+
     };
 
     $scope.editarParam= function(pa){
@@ -314,24 +523,26 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
 
      $scope.formByProyMacro= function(pm){
-      console.log(pm);
-      var result = $.grep($scope.ProyMacro, function(e){ return e.IDPROYMACRO == pm.idProy; });
-      $scope.NAMEPROYMACRO=result[0].NOMBREPROYMACRO;
+      //console.log(pm);
+      if(pm){
+        var result = $.grep($scope.ProyMacro, function(e){ return e.IDPROYMACRO == pm.idProy; });
+        $scope.NAMEPROYMACRO=result[0].NOMBREPROYMACRO;
 
-      $scope.IDPROYMACRO=pm.idProy;
-      $scope.pmLocal=pm;
-      $scope.showConsultaByProy=true;
-      
-      $http.post('api/selectParamByProyMacro.php',{pm:pm})
+        $scope.IDPROYMACRO=pm.idProy;
+        $scope.pmLocal=pm;
+        $scope.showConsultaByProy=true;
+        
+        $http.post('api/selectParamByProyMacro.php',{pm:pm})
           .success(function(data) {
-            console.log(data);
-            console.log('aca es');
-            $scope.Parametro=data.data;
+              $scope.Parametro=data.data;
           })
           .error(function(data) {
-            console.log('Error: ' + data);
+              console.log('Error: ' + data);
           });
-        
+      }
+      else{
+         $scope.newAlert('Seleccione un Proyecto Macro.','warning','3000');
+      }
     };
 
     $scope.csv = {
@@ -350,20 +561,31 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
-            if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
-                $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
-                .success(function(data) {
-                  console.log(data);
-                  $scope.formByProyMacro($scope.pmLocal);
-                  $scope.csv.result=null;
+            if(objeto[0]['ID Parámetro'] && objeto[0]['Nombre Parámetro'] && objeto[0]['Módulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
+              if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                  $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+                  .success(function(data) {
+                      if(data.success){
+                        $scope.formByProyMacro($scope.pmLocal);
 
-                  //validacion pendiente
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
+                        $scope.newAlert(data.success,'success','5000');
+                      }
+                      else{
+                        $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
+                      }
+                  })
+                  .error(function(data) {
+                    console.log('Error: ' + data);
                   });
+              }
+              console.log('resultado:' + $scope.csv.result);
             }
-            console.log('resultado:' + $scope.csv.result);
+            else{
+                $scope.newAlert('Error: el archivo a importar debe contener los campos: ID Parámetro, Nombre Parámetro, Módulo, Tipo de dato, Estado, Orden, Tabla maestra. Debe respetar los acentos y mayúsculas','danger','5000');
+            }
+          }
+          else{
+              $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
           }
           console.log($scope.csv.result);
     };

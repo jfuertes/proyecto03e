@@ -7,7 +7,9 @@
 (function(){
   'use strict';
 
-angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons']).run(function(DTDefaultOptions) {
+angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons'])
+
+.run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
 })
   .filter('filtertipoDato', function(){
@@ -40,26 +42,22 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
   })
 
   .filter('filterfecha', function(){
-  return function(id){
-  if((typeof id) == 'object'){
-    Date.prototype.yyyymmdd = function() {
-       var yyyy = this.getFullYear().toString();
-       var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-       var dd  = this.getDate().toString();
-       return (dd[1]?dd:"0"+dd[0]) +"/"+ (mm[1]?mm:"0"+mm[0]) +"/"+ yyyy; // padding
-      };
+    return function(id){
+      if((typeof id) == 'object'){
+        Date.prototype.yyyymmdd = function() {
+           var yyyy = this.getFullYear().toString();
+           var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+           var dd  = this.getDate().toString();
+           return (dd[1]?dd:"0"+dd[0]) +"/"+ (mm[1]?mm:"0"+mm[0]) +"/"+ yyyy; // padding
+          };
 
-        return id.yyyymmdd();
-  }
-    else{
-      return id;
-    }
+            return id.yyyymmdd();
+      }
+      else{
+        return id;
+      }
     };
   })
- 
-
-
-
   .controller('mainController',['$scope', '$http', function ($scope, $http) {
     
     /*
@@ -266,7 +264,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.pro.valores=$scope.valores[index];
         $scope.pro.etiquetas=$scope.Etiquetas;
 
-        alert(typeof $scope.pro["Fecha Modificacion Plan"]);
+        //alert(typeof $scope.pro["Fecha Modificacion Plan"]);
         console.log($scope.pro);
         $scope.EditarProyecto=true;
         $scope.ShowTablecomplete=false;
