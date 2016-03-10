@@ -31,6 +31,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
         if(count($rx)==1){
             if($rx[0]['LDAP']=='SI'){
                 session_start();
+                $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                 $_SESSION['login']=$rx[0]['LOGINUS'];
                 $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                 $_SESSION['apellidous']=$rx[0]['APELLIDO'];
@@ -39,11 +40,12 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
             }else{
                 if($rx[0]['IDAREA']==null && $rx[0]['CLAVE']==$pass){
                     session_start();
+                    $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                     $_SESSION['login']=$rx[0]['LOGINUS'];
                     $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                     $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                     $_SESSION['emailus']=$rx[0]['EMAIL'];
-                    echo "{\"acceso\":\"true\",\"url\":\"admin/index.html\"}";
+                    echo "{\"acceso\":\"true\",\"url\":\"usuario/index.php\"}";
                 }else{
                     echo "{\"acceso\":\"false\"}";
                 }

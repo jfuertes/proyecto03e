@@ -1,3 +1,15 @@
+<?php
+    session_start();
+    if(isset($_SESSION['login'])){    
+        //echo "entro";
+        //echo "acceso correcto".$_SESSION['login'];
+    }else{
+        //echo "salio";
+        header('location:../index.php');
+        break;
+    }
+    
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -51,7 +63,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo "Bienvenido: ".$_SESSION['login']; ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#/"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -64,7 +76,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#/"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <div ng-controller="cabecera"><a href="#/" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a></div>
                         </li>
                     </ul>
                 </li>
