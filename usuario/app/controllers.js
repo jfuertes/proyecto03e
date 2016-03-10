@@ -160,7 +160,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.getModulos();
       $scope.getModulosbyproymacro=function(){
        // alert($scope.pm.idProy);
-        $scope.getModulosbyPMandUser($scope.pm.idProy);
+         if($scope.pm.hasOwnProperty('idProy')){
+          $scope.getModulosbyPMandUser($scope.pm.idProy);
+        }
       }
       $scope.getProyecByProyMacro=function(pm){
         $scope.pmgetProyecByProyMacro=pm;
@@ -291,6 +293,26 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                // console.log($scope.Params);
 
                console.log( 'fin');
+
+               //verificar accesos de R y RW
+               $http.post('api/getAccesbyProys.php',{pm:pm} )
+                .success(function(data) {
+                  if(data.PRIVILEGIO=="RW"){
+                    console.log(data.PRIVILEGIO);
+                    $scope.ShowWrite=true;
+                  }
+                  else if(data.PRIVILEGIO=="R"){
+                    console.log(data.PRIVILEGIO);
+                    $scope.ShowWrite=false;
+                  }
+                  else{
+                    console.log("error salio:"+data.PRIVILEGIO);
+                  }
+
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
 
 
 

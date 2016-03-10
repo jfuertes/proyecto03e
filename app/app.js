@@ -1,51 +1,28 @@
-(function(){
+angular.module('main',[])
+.controller('ControllerLogin',['$scope','$http',function($scope,$http){
+    this.postForm = function(){
+        var encodedString = 'login='+encodeURIComponent(this.inputData.login)+"&clave="+encodeURIComponent(this.inputData.clave);        
+        console.log(encodedString);
+        $http(
+              {
+                  method: 'POST',
+                  url: 'api/check-login.php',
+                  data: encodedString,
+                  headers: {'Content-Type':'application/x-www-form-urlencoded'}
+              }              
+            )
+            .success(function(data,status,headers,config){
+                console.log(data);                
+                if(data.acceso === 'true'){
+                    window.location.href = data.url;
+                }else{
+                    $scope.errorMsg = 'Login incorrecto';
+                }
+            })
+            .error(function(data,status,headers,config){
+                console.log(status);
+                $scope.errorMsg = 'No se pudo enviar la solicitud';
+            })
+    };
+}]);
 
-'use strict';
-
-var app = angular.module('entelApp', [
-  'ngRoute',
-  'ngAnimate',
-  'datatables',
-  'datatables.bootstrap',
-  'datatables.buttons',
-  'ngCsvImport',
-  'Controllers']);
-
-    app.config(['$routeProvider', function($routeProvider){
-      $routeProvider.
-        when('/', {
-          templateUrl: 'views/proyectos.html',
-          caseInsensitiveMatch: true,
-          controller: 'proyectosController'
-        })
-        .when('/nuevo', {
-          templateUrl: 'views/nuevo.html',
-          caseInsensitiveMatch: true,
-          controller: 'nuevoController'
-        })
-          .when('/proyectos', {
-          templateUrl: 'views/proyectos.html',
-          caseInsensitiveMatch: true,
-          controller: 'proyectosController'
-        })
-        .when('/editar', {
-          templateUrl: 'views/editar.html',
-          caseInsensitiveMatch: true,
-          controller: 'editarController'
-        })
-        .when('/exportar', {
-          templateUrl: 'views/exportar.html',
-          caseInsensitiveMatch: true,
-          controller: 'exportarController'
-        })
-        .when('/carga_masiva', {
-          templateUrl: 'views/carga_masiva.html',
-          caseInsensitiveMatch: true,
-          controller: 'cargaMasivaController'
-        })
-        .otherwise({
-          redirectTo: '/'
-        });
-
-      }])
-})();

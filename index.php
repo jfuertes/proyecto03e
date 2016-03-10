@@ -20,8 +20,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1">        
         <title>Sistema de Gesti&oacute;n de Proyectos</title>
-        <script src="js/angular.min.js"></script>
-        <script src="js/app.js"></script>
+        <script src="/vendor/angular/angular.min.js"></script>
+        <script src="app/app.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <style type="text/css">
             .login-form{

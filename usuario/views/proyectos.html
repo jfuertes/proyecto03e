@@ -42,7 +42,7 @@
             <div class="table-responsive">
 	               
                 <h4>Importar Proyectos: </h4>
-                <div class=" col-lg-12">
+                <div class=" col-lg-12" ng-show="ShowWrite">
                     <div class="row">
                         <ng-csv-import
                               class="import"
@@ -79,7 +79,7 @@
                                 <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.NOMBREPROY }}</a></td>
                                 <td ng-repeat="pa in Params">{{ proy.param[pa.NOMBREPARAM] | filternull | filterfecha}}</td>
                                 <td>
-                                    <a href="" title="Editar" ng-click="editarValores(proy,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a>
+                                    <div ng-show="ShowWrite"><a href="" title="Editar" ng-click="editarValores(proy,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a></div>
                                 </td>
                                 
                             </tr>
@@ -90,7 +90,7 @@
 
 	        </div>
         </br></br>
-        <div class="table-responsive">
+        <div class="table-responsive" ng-show="ShowWrite">
              <div class="col-lg-6 col-lg-offset-1 col-xs-12">
                 <button ng-click="agregarProyecto()" class="col-lg-4 btn btn-primary">Agregar Nuevo Proyecto</button>
             </div>
