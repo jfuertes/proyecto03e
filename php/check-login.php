@@ -20,7 +20,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
         $login=$_POST['login'];
         $pass=md5($_POST['clave']);
         $csql="select * from proyred.usuario where upper(loginus)=upper('$login')";
-         $stmt = $dbh->prepare($csql);
+        $stmt = $dbh->prepare($csql);
         $stmt->execute();
         $rx = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

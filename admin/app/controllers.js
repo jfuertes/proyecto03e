@@ -116,10 +116,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.getProyMacro();
                     $scope.pm.NOMBREPROYMACRO="";
 
-                    $('html,body').animate({
-                      scrollTop: $("#alerta").offset().top
-                      }, 0);
-
                     $scope.newAlert('registro de proyecto macro exitoso!.','success','3000');
 
                   }
@@ -172,11 +168,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             'copy',
             'excel'
         ]);
-        $scope.ShowTableUser=true;
+    $scope.ShowTableUser=true;
+    $scope.NuevoUsuario=false;
 
 
-        $scope.alerts = [];
-         $scope.newAlert = function(mensaje, tipo, tiempo) {
+    $scope.alerts = [];
+
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
         $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
 
         $('html,body').animate({
@@ -208,7 +206,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
     };
-     $scope.getProyMacro= function(){
+    
+    $scope.getProyMacro= function(){
        $http.post('api/getProyMacro.php' )
                 .success(function(data) {
                   console.log(data);
@@ -218,21 +217,72 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
     };
+
+    $scope.getAreas= function(){
+       $http.post('api/getAreas.php' )
+          .success(function(data) {
+            console.log(data);
+            $scope.Areas=data;
+          })
+          .error(function(data) {
+            console.log('Error: ' + data);
+            });
+    };
+
     $scope.getUsuarios();
     $scope.getModulos();
     $scope.getProyMacro();
+    $scope.getAreas();
 
-       $scope.editarUser= function(u){
+     $scope.editarUser= function(u){
         $scope.ShowTableUser=false;
         $scope.editUser=true;
         console.log(u);
         $scope.ue=u;
     };
 
+    $scope.agregarUsuario= function(){
+        $scope.ShowTableUser=false;
+        $scope.editUser=false;
+        $scope.NuevoUsuario=true;
+    };
+
     $scope.volverUser=function(){
-       $scope.ShowTableUser=true;
+        $scope.ShowTableUser=true;
         $scope.ShowAccesosbyUsuario=false;
         $scope.editUser=false;
+        $scope.NuevoUsuario=false;
+    };
+    
+    $scope.formNewUser= function(nu){
+      console.log(nu);
+
+      if(nu.LDAP){
+         $http.post('api/nuevoUsuario.php', {nu :nu} )
+              .success(function(data) {
+                console.log(data);
+                if(data="true"){
+                 
+                   $scope.ShowTableUser=true;
+                   $scope.editUser=false;
+                   $scope.NuevoUsuario=false;
+                   $scope.newAlert('Usuario creado exitosamente.','success','3000');
+                  document.getElementById("formEParametro").reset();
+                  $scope.getUsuarios();
+                  delete $scope.nu;
+                }
+                else{
+                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                }
+                
+              })
+              .error(function(data) {
+                console.log('Error: ' + data);
+                });
+        }
+        else{
+            $scope.newAlert('Debe completar el campo LDAP.','warning','3000');
+        }
 
     };
 
