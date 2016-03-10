@@ -1,3 +1,18 @@
+<?php
+    session_start();
+    if(isset($_SESSION['login'])){    
+          header('location: usuario/index.php');
+          break;
+        //echo "entro";
+        //echo "acceso correcto".$_SESSION['login'];
+    }else{
+        //echo "salio";
+      
+        //break;
+    }
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

@@ -59,6 +59,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
   })
   .controller('mainController',['$scope', '$http', function ($scope, $http) {
+    logout
     
     /*
       $http({method:'POST',url: 'api/getProy.php',headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
@@ -71,6 +72,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 */
 
   }])
+  .controller('cabecera', ['$scope', '$http', function($scope, $http) {
+    $scope.logout = function(){
+      //alert("saliendo");
+    $http.post ('api/logout.php')
+        .success(function(data) {
+          console.log(data);
+           location.reload();
+                //
+            })
+        .error(function(data) {
+                console.log('Error: ' + data);
+        });
+};
+
+}])
   .controller('nuevoController',['$scope', function ($scope) {
     
 
@@ -105,6 +121,19 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
       };
+
+        $scope.getProyMacrobyUser= function(){
+            $http.post('api/getProyMacrobyUser.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.ProyMacrobyUser=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+      };
+
+      
        $scope.getModulos= function(){
             $http.post('../admin/api/getModulos.php' )
                 .success(function(data) {
@@ -115,10 +144,24 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
       };
+       $scope.getModulosbyPMandUser= function(ProyMacro){
+            $http.post('api/getModulosbyPMandUser.php',{ProyMacro:ProyMacro} )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+      };
 
       $scope.getProyMacro();
+      $scope.getProyMacrobyUser();
       $scope.getModulos();
-      
+      $scope.getModulosbyproymacro=function(){
+       // alert($scope.pm.idProy);
+        $scope.getModulosbyPMandUser($scope.pm.idProy);
+      }
       $scope.getProyecByProyMacro=function(pm){
         $scope.pmgetProyecByProyMacro=pm;
         console.log(pm);
