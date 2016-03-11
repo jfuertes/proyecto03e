@@ -11,7 +11,11 @@
 	$NOMBREUS= $rspta->nu->NOMBREUS;
 	$APELLIDO= $rspta->nu->APELLIDO;
 	$LDAP= $rspta->nu->LDAP;
+<<<<<<< HEAD
 	$IDAREA = isset($rspta->nu->IDAREA)?$rspta->nu->IDAREA:'';
+=======
+	$NOMBREPARAM = isset($rspta->nu->IDAREA)?$rspta->nu->IDAREA:'';
+>>>>>>> 8c9d6c0301b4fcc8808d5f422c216abab68face7
 	$EMAIL= $rspta->nu->EMAIL;
 	$ESTADO= 1;
 

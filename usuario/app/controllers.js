@@ -111,6 +111,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         DTColumnDefBuilder.newColumnDef(2).notSortable()
     ];
 
+
     $scope.alerts = [];
 
     $scope.newAlert = function(mensaje, tipo, tiempo) {
@@ -179,6 +180,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         }
       }
       $scope.getProyecByProyMacro=function(pm){
+<<<<<<< HEAD
         if(pm && pm.idProy && pm.idMod){
             $scope.pmgetProyecByProyMacro=pm;
             console.log(pm);
@@ -375,6 +377,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 console.log('Error: ' + data);
                 });
     }
+
 
       $scope.csv = {
           content: null,

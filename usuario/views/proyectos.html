@@ -9,17 +9,20 @@
         </div>
     </div>
 
+
     <!-- Alertas -->
     <div>
         <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="{{alert.tiempo}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     </div>
     <!-- /Alertas -->
 
+
       <div class="row" ng-show=" ShowTableParams && !NuevoProyecto && !EditarProyecto">
         <div class="form-group">
             <div class="col-lg-4">
                 <h3>Seleccione el Proyecto Macro</h3>
                     <select class="form-control" ng-model="pm.idProy" ng-change="getModulosbyproymacro()">
+
                         <option ng-repeat="pm in ProyMacrobyUser" value="{{pm.IDPROYMACRO}}">{{pm.NOMBREPROYMACRO}}</option>
                     </select>
             </div>
@@ -76,6 +79,7 @@
                                 <th>Nombre del proyecto</th>
                                 <th ng-repeat="pa in Params">{{pa.NOMBREPARAM}}</th>
                                 <th ng-show="ShowWrite"></th>
+
                             </tr>
                         </thead>
                         <tbody>

@@ -24,7 +24,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="/vendor/datatables/media/css/datatables.bootstrap.min.css">-->
     <link rel="stylesheet" href="../vendor/angular-datatables-master/src/plugins/bootstrap/datatables.bootstrap.css">
-    
+
     <link href="../css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <!-- bower:css -->
@@ -53,6 +53,7 @@
                 <a class="navbar-brand" href="#/">
                     <img alt="Brand" src="../img/entel.gif">  Gestión de Proyectos de Red
                 </a>
+
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
