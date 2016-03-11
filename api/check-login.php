@@ -6,11 +6,8 @@ header('Content-Type: application/json');
  * and open the template in the editor.
  */
 //include_once 'controlador.php';
-<<<<<<< HEAD
     require_once('../api/config/oracle.php');
-=======
-    require_once('../usuario/api/config/oracle.php');
->>>>>>> 8c9d6c0301b4fcc8808d5f422c216abab68face7
+
 
     $db  = new dbConnect();
     $dbh = $db->conectardb();

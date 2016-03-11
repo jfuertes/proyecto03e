@@ -180,7 +180,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         }
       }
       $scope.getProyecByProyMacro=function(pm){
-<<<<<<< HEAD
         if(pm && pm.idProy && pm.idMod){
             $scope.pmgetProyecByProyMacro=pm;
             console.log(pm);
