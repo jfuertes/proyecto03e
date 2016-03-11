@@ -1,6 +1,6 @@
 <?php
 
-require_once('config/oracle.php');
+require_once('../../api/config/oracle.php');
 
 	$db = new dbConnect();
 	$dbh = $db->conectardb();
@@ -9,7 +9,8 @@ require_once('config/oracle.php');
 	//echo "ola";
 	$rspta = json_decode(file_get_contents("php://input"));
 		$ProyMacro= $rspta->ProyMacro;
-	$q= 'SELECT acc.IDMODULO, mo.NOMBREMODULO
+	$q= 'SELECT DISTINCT acc.IDMODULO, mo.NOMBREMODULO
+
 		 FROM proyred.ACCESO acc
 		inner join proyred.MODULO mo on acc.IDMODULO=mo.IDMODULO
 		where acc.IDUSUARIO=:IDUSUARIO and acc.IDPROYMACRO=:IDPROYMACRO';

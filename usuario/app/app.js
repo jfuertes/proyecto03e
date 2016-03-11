@@ -8,6 +8,7 @@ var app = angular.module('entelApp', [
   'datatables',
   'datatables.bootstrap',
   'datatables.buttons',
+  'ui.bootstrap',
   'ngCsvImport',
   'Controllers']);
 
@@ -18,30 +19,10 @@ var app = angular.module('entelApp', [
           caseInsensitiveMatch: true,
           controller: 'proyectosController'
         })
-        .when('/nuevo', {
-          templateUrl: 'views/nuevo.html',
-          caseInsensitiveMatch: true,
-          controller: 'nuevoController'
-        })
           .when('/proyectos', {
           templateUrl: 'views/proyectos.html',
           caseInsensitiveMatch: true,
           controller: 'proyectosController'
-        })
-        .when('/editar', {
-          templateUrl: 'views/editar.html',
-          caseInsensitiveMatch: true,
-          controller: 'editarController'
-        })
-        .when('/exportar', {
-          templateUrl: 'views/exportar.html',
-          caseInsensitiveMatch: true,
-          controller: 'exportarController'
-        })
-        .when('/carga_masiva', {
-          templateUrl: 'views/carga_masiva.html',
-          caseInsensitiveMatch: true,
-          controller: 'cargaMasivaController'
         })
         .otherwise({
           redirectTo: '/'

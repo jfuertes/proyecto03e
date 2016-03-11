@@ -8,7 +8,6 @@
         header('location:../index.php');
         break;
     }
-    
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -17,7 +16,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="../css/style.css">
 
     <!-- DataTables CSS -->
@@ -25,6 +24,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="/vendor/datatables/media/css/datatables.bootstrap.min.css">-->
     <link rel="stylesheet" href="../vendor/angular-datatables-master/src/plugins/bootstrap/datatables.bootstrap.css">
+
     <link href="../css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <!-- bower:css -->
@@ -50,33 +50,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/">Gestión de Proyectos de Red</a>
+                <a class="navbar-brand" href="#/">
+                    <img alt="Brand" src="../img/entel.gif">  Gestión de Proyectos de Red
+                </a>
+
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo "Bienvenido: ".$_SESSION['login']; ?><b class="caret"></b></a>
+                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo " ".$_SESSION['nombreus']." ".$_SESSION['apellidous']; ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#/"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#/"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#/"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                            <a href="#/"><i class="fa fa-fw fa-user"></i> Contraseña</a>
                         </li>
                         <li class="divider"></li>
-                        <li>
+                        <!--li>
                             <div ng-controller="cabecera"><a href="#/" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a></div>
+                        </li-->
+                        <li>
+                            <a href="#/" ng-controller="cabecera" ng-click="logout()" ><i class="fa fa-fw fa-power-off"></i> Salir</a>
                         </li>
                     </ul>
                 </li>
@@ -86,9 +78,6 @@
                 <ul class="nav navbar-nav side-nav">
                     <li>
                         <a href="#/proyectos"><i class="fa fa-fw fa-dashboard"></i> Proyectos</a>
-                    </li>
-                    <li>
-                        <a href="#/nuevo"><i class="fa fa-fw fa-file"></i> Nuevo</a>
                     </li>
 
                 </ul>
@@ -106,7 +95,7 @@
     
     </main>
 
-       <script src="../vendor/jquery-2.1.4.min.js"></script>
+    <script src="../vendor/jquery-2.1.4.min.js"></script>
     <!-- angular -->
     <!-- DataTables JavaScript -->
     <script src="../vendor/datatables/media/js/jquery.dataTables.min.js"></script>
@@ -123,6 +112,7 @@
     <!-- DataTables JavaScript -->
     
     <script src="../vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../vendor/angular-bootstrap/ui-bootstrap-tpls-1.2.4.min.js"></script>
     
     <script src="../vendor/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
     <script src="../vendor/angular-datatables-master/src/plugins/bootstrap/angular-datatables.bootstrap.options.js"></script>
