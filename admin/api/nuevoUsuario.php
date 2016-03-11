@@ -1,6 +1,6 @@
 <?php
 	//require_once('../../api/config/mysql.php');
-	require_once('../../usuario/api/config/oracle.php');
+	require_once('../../api/config/oracle.php');
 	
 	$db  = new dbConnect();
 	$dbh = $db->conectardb();
@@ -11,7 +11,7 @@
 	$NOMBREUS= $rspta->nu->NOMBREUS;
 	$APELLIDO= $rspta->nu->APELLIDO;
 	$LDAP= $rspta->nu->LDAP;
-	$NOMBREPARAM = isset($rspta->nu->IDAREA)?$rspta->nu->IDAREA:'';
+	$IDAREA = isset($rspta->nu->IDAREA)?$rspta->nu->IDAREA:'';
 	$EMAIL= $rspta->nu->EMAIL;
 	$ESTADO= 1;
 

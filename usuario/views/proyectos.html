@@ -9,11 +9,17 @@
         </div>
     </div>
 
+    <!-- Alertas -->
+    <div>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="{{alert.tiempo}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </div>
+    <!-- /Alertas -->
+
       <div class="row" ng-show=" ShowTableParams && !NuevoProyecto && !EditarProyecto">
         <div class="form-group">
             <div class="col-lg-4">
                 <h3>Seleccione el Proyecto Macro</h3>
-                    <select class="form-control" ng-model="pm.idProy" ng-click="getModulosbyproymacro()">
+                    <select class="form-control" ng-model="pm.idProy" ng-change="getModulosbyproymacro()">
                         <option ng-repeat="pm in ProyMacrobyUser" value="{{pm.IDPROYMACRO}}">{{pm.NOMBREPROYMACRO}}</option>
                     </select>
             </div>
@@ -69,17 +75,17 @@
                                 <th>codigo del proyecto</th>
                                 <th>Nombre del proyecto</th>
                                 <th ng-repeat="pa in Params">{{pa.NOMBREPARAM}}</th>
-                                <th>editar</th>
+                                <th ng-show="ShowWrite"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="(key , proy) in Proyectos">
-                                <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.IDPROYECTO }}</a></td>
+                                <td><a href="" title="Editar" ng-click="editarValores(proy,$index) && ShowWrite">{{ proy.IDPROYECTO }}</a></td>
                                 <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.CODPROYECTO }}</a></td>
                                 <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.NOMBREPROY }}</a></td>
                                 <td ng-repeat="pa in Params">{{ proy.param[pa.NOMBREPARAM] | filternull | filterfecha}}</td>
-                                <td>
-                                    <div ng-show="ShowWrite"><a href="" title="Editar" ng-click="editarValores(proy,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a></div>
+                                <td ng-show="ShowWrite">
+                                    <div ><a href="" title="Editar" ng-click="editarValores(proy,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a></div>
                                 </td>
                                 
                             </tr>
