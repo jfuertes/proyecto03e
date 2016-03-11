@@ -31,6 +31,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
     
         if(count($rx)==1){
             if($rx[0]['LDAP']=='SI'){
+                //acceso a webservice 
                 session_start();
                 $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                 $_SESSION['login']=$rx[0]['LOGINUS'];

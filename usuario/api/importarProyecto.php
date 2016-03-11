@@ -11,9 +11,10 @@
 	//var_dump($rspta);
 
 	foreach ($rspta['va'] as $v) {
-		echo "cadafila";
+		echo "##############cadafila\n";
 	
 		$IDPROYECTO= $v['id del proyecto'];
+		echo $IDPROYECTO;
 		$CODPROY= $v['codigo del proyecto'];
 		$NAMEPROY= $v['Nombre del proyecto'];
 		$ESTADOPROY=1;
@@ -69,7 +70,8 @@
 					echo  $IDPROYECTO;
 					echo "===========";
 				}
-				
+				var_dump($IDVALOR);
+				var_dump($nuevoproyecto);
 				if($IDVALOR==NULL || $nuevoproyecto==1){
 					$q = 'SELECT max(IDVALOR) +1 as IDVALOR from proyred.valor';
 					$stmt = $dbh->prepare($q);
@@ -77,6 +79,8 @@
 					$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
 					$IDVALOR=$r['IDVALOR'];
+
+					echo "||||nuevo valor|||||";
 				}
 				//echo "parametro: ".$pa['IDPARAMETRO']."\n";
 				//echo "proyecto:  $IDPROYECTO\n";
@@ -86,8 +90,12 @@
 				//ya se tiene el idvalor
 				if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
 					$nombrevalor="VALORNUMBER";
+
+					if ($v[$pa['NOMBREPARAM']]==null || $v[$pa['NOMBREPARAM']]=="NaN"){
+						$valoractual=null;
+					
 					$q= "MERGE INTO PROYRED.VALOR vl
-				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, ".$v[$pa['NOMBREPARAM']]." $nombrevalor FROM dual) src
+				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' $nombrevalor FROM dual) src
 				     ON( vl.IDVALOR= src.IDVALOR)
 				 WHEN MATCHED THEN
 
@@ -95,7 +103,21 @@
 				 WHEN NOT MATCHED THEN
 				   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 				     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+				 }
+					else  if($v[$pa['NOMBREPARAM']]!=null )
+					{
+						$valoractual=$v[$pa['NOMBREPARAM']];
+							$q= "MERGE INTO PROYRED.VALOR vl
+				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, ".$valoractual." $nombrevalor FROM dual) src
+				     ON( vl.IDVALOR= src.IDVALOR)
+				 WHEN MATCHED THEN
 
+				   UPDATE SET $nombrevalor = src.$nombrevalor 
+				 WHEN NOT MATCHED THEN
+				   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+				     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+					}
+					
 				 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 				 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
@@ -103,7 +125,10 @@
 				echo " id valor: ".$IDVALOR;
 				echo "idparametro ".$pa['IDPARAMETRO'];
 				echo "idproyecto:".$IDPROYECTO;
-				echo "valor :  ".$v[$pa['NOMBREPARAM']];
+				echo "valor :  ".$valoractual;
+				var_dump($valoractual);
+
+				
 
 				$stmt = $dbh->prepare($q);
 				$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
@@ -135,6 +160,7 @@
 				echo "idparametro ".$pa['IDPARAMETRO'];
 				echo "idproyecto:".$IDPROYECTO;
 				echo "valor :  ".$v[$pa['NOMBREPARAM']];
+				var_dump($v[$pa['NOMBREPARAM']]);
 
 				$stmt = $dbh->prepare($q);
 				$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
@@ -148,13 +174,20 @@
 				}
 				else{
 					//manipular fecha
-				
-
+				if($v[$pa['NOMBREPARAM']]!=null){
 					list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
-					$month=$month-1;
+					$month=$month;
 				$valoractual= $day."-".$month."-".$year;
 				echo "valor actual: $valoractual";
 					$nombrevalor="VALORDATE";
+				}
+				else{
+					$nombrevalor="VALORDATE";
+					$valoractual=null;
+
+				}
+
+					
 					$q= "MERGE INTO PROYRED.VALOR vl
 				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' ".$nombrevalor." FROM dual) src
 				     ON( vl.IDVALOR= src.IDVALOR)
