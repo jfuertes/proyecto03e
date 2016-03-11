@@ -351,30 +351,25 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
     $scope.formNewAcc=function(acc){
        console.log(acc);
-       if(acc && acc.IDPROYMACRO && acc.IDMODULO && acc.TIPOUS && acc.PRIVILEGIO){
-         $http.post('api/addAcceso.php', {acc :acc, idpa : $scope.iduser} )
-              .success(function(data) {
-                console.log(data);
-                //$scope.addProyMacro=data;
-                if(data="true"){
-                  $scope.ShowAccesobyUsuario($scope.iduser, $scope.NAMEUSER);
-                   $scope.newAlert('registro de Acceso exitoso.','success','3000');
-                  document.getElementById("formNewAcc").reset();
-                  $scope.seleccionar=true;
-                }
-                else{
-                  $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
-                   $scope.ShowTableParams=true;
-                }
-                
-              })
-              .error(function(data) {
-                console.log('Error: ' + data);
-                });
-        }
-        else{
-          $scope.newAlert('Debe seleecionar todos los campos.','warning','3000');
-        }
+           $http.post('api/addAcceso.php', {acc :acc, idpa : $scope.iduser} )
+                .success(function(data) {
+                  console.log(data);
+                  //$scope.addProyMacro=data;
+                  if(data="true"){
+                    $scope.ShowAccesobyUsuario($scope.iduser, $scope.NAMEUSER);
+                     $scope.newAlert('registro de Acceso exitoso.','success','3000');
+                    document.getElementById("formNewAcc").reset();
+                    $scope.seleccionar=true;
+                  }
+                  else{
+                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                     $scope.ShowTableParams=true;
+                  }
+                  
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
     };
 
     $scope.cambioEstadoUser= function(iduser, estado, $index){

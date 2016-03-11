@@ -111,7 +111,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         DTColumnDefBuilder.newColumnDef(2).notSortable()
     ];
 
-
     $scope.alerts = [];
 
     $scope.newAlert = function(mensaje, tipo, tiempo) {
@@ -376,7 +375,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 console.log('Error: ' + data);
                 });
     }
-
 
       $scope.csv = {
           content: null,

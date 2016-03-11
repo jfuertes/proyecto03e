@@ -8,7 +8,6 @@ require_once('../../api/config/oracle.php');
 	//echo $_SESSION['IDUSUARIO'];
 	//echo "ola";
 	$q= 'SELECT DISTINCT acc.IDPROYMACRO, pm.NOMBREPROYMACRO, pm.ESTADOPM
-
 		 FROM proyred.ACCESO acc
 		inner join proyred.PROYMACRO pm on acc.IDPROYMACRO=pm.IDPROYMACRO
 		where acc.IDUSUARIO=:IDUSUARIO';
