@@ -1,7 +1,6 @@
 <?php
 	require_once('../../api/config/oracle.php');
 
-
 	$db  = new dbConnect();
 	$dbh = $db->conectardb();
 
