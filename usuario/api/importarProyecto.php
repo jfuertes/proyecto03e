@@ -153,7 +153,7 @@
 					list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
 					$month=$month-1;
 				$valoractual= $day."-".$month."-".$year;
-				echo "$valoractual";
+				echo "valor actual: $valoractual";
 					$nombrevalor="VALORDATE";
 					$q= "MERGE INTO PROYRED.VALOR vl
 				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' ".$nombrevalor." FROM dual) src
@@ -168,7 +168,7 @@
 				 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 				 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
-						echo " id valor: ".$IDVALOR;
+				echo " id valor: ".$IDVALOR;
 				echo "idparametro ".$pa['IDPARAMETRO'];
 				echo "idproyecto:".$IDPROYECTO;
 				echo "valor :  ".$v[$pa['NOMBREPARAM']];

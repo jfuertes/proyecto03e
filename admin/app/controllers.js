@@ -8,7 +8,7 @@
   'use strict';
 
 angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap', 'ngAnimate']).run(function(DTDefaultOptions) {
-    DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
+    DTDefaultOptions.setLanguageSource('../vendor/datatables/Spanish.json');
 })
 
 .filter('filterActivo', function(){
@@ -611,7 +611,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
-            if(objeto[0]['ID Parámetro'] && objeto[0]['Nombre Parámetro'] && objeto[0]['Módulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
+            if(objeto[0]['Nombre Parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
               if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
                   $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
                   .success(function(data) {

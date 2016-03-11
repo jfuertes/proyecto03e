@@ -64,7 +64,7 @@
     </br>
         <div class="col-lg-12 col-lg-offset-1" id="logo"><img src="img/entel_logo.png" width="30%"></div>
         <div class="col-lg-12" id="contenedor">
-        <div class="col-lg-offset-2 col-lg-4" id="sistema" ><h3>Sistema de Seguimiento RollOut</h3></div>
+        <div class="col-lg-offset-2 col-lg-4" id="sistema" ><h3>Sistema de Gestión de Proyectos</h3></div>
         <div id="form" class="col-lg-offset-2 col-lg-4">
             <form class="login-form" ng-submit="ctrlLogin.postForm()">
                 <h2 id="acceso">Acceso</h2>

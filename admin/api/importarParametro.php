@@ -12,7 +12,7 @@
 	foreach ($rspta['pa'] as $v) {
 		
 
-		$NOMBREPARAM = isset($v['Nombre Parámetro'])?$v['Nombre Parámetro']:NULL;
+		$NOMBREPARAM = isset($v['Nombre Parametro'])?$v['Nombre Parametro']:NULL;
 		$IDTIPODATO = isset($v['Tipo de dato'])?$v['Tipo de dato']:NULL;
 		$USAMAESTROPARAM = isset($v['Tabla maestra'])?$v['Tabla maestra']:NULL;
 			if(strtolower($USAMAESTROPARAM)=="si") $USAMAESTROPARAM=1;
@@ -20,12 +20,12 @@
 		$ESTADOPARAM = isset($v['Estado'])?$v['Estado']:NULL;
 			if(strtolower($ESTADOPARAM)=="activo") $ESTADOPARAM=1;
 			elseif(strtolower($ESTADOPARAM)=="inactivo") $ESTADOPARAM=0;
-		$IDMODULO = isset($v['Módulo'])?$v['Módulo']:NULL;
+		$IDMODULO = isset($v['Modulo'])?$v['Modulo']:NULL;
 		$IDPROYMACRO = isset($rspta['pm'])?$rspta['pm']:NULL;
 		$ORDEN = isset($v['Orden'])?$v['Orden']:NULL;
 
-/*
-		var_dump($NOMBREPARAM);
+
+		/*var_dump($NOMBREPARAM);
 		var_dump($IDTIPODATO);
 		var_dump($USAMAESTROPARAM);
 		var_dump($ESTADOPARAM);

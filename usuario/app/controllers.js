@@ -10,7 +10,7 @@
 angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap', 'ngAnimate'])
 
 .run(function(DTDefaultOptions) {
-    DTDefaultOptions.setLanguageSource('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json');
+    DTDefaultOptions.setLanguageSource('../vendor/datatables/Spanish.json');
 })
   .filter('filtertipoDato', function(){
   return function(id){
