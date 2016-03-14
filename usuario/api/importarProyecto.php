@@ -14,7 +14,7 @@
 		echo "##############cadafila\n";
 	
 		$IDPROYECTO= $v['id del proyecto'];
-		echo $IDPROYECTO;
+		//echo $IDPROYECTO;
 		$CODPROY= $v['codigo del proyecto'];
 		$NAMEPROY= $v['Nombre del proyecto'];
 		$ESTADOPROY=1;
@@ -70,8 +70,8 @@
 					echo  $IDPROYECTO;
 					echo "===========";
 				}
-				var_dump($IDVALOR);
-				var_dump($nuevoproyecto);
+				//var_dump($IDVALOR);
+				//var_dump($nuevoproyecto);
 				if($IDVALOR==NULL || $nuevoproyecto==1){
 					$q = 'SELECT max(IDVALOR) +1 as IDVALOR from proyred.valor';
 					$stmt = $dbh->prepare($q);
@@ -80,7 +80,7 @@
 
 					$IDVALOR=$r['IDVALOR'];
 
-					echo "||||nuevo valor|||||";
+					//echo "||||nuevo valor|||||";
 				}
 				//echo "parametro: ".$pa['IDPARAMETRO']."\n";
 				//echo "proyecto:  $IDPROYECTO\n";
@@ -126,7 +126,7 @@
 				echo "idparametro ".$pa['IDPARAMETRO'];
 				echo "idproyecto:".$IDPROYECTO;
 				echo "valor :  ".$valoractual;
-				var_dump($valoractual);
+				//var_dump($valoractual);
 
 				
 
@@ -160,7 +160,7 @@
 				echo "idparametro ".$pa['IDPARAMETRO'];
 				echo "idproyecto:".$IDPROYECTO;
 				echo "valor :  ".$v[$pa['NOMBREPARAM']];
-				var_dump($v[$pa['NOMBREPARAM']]);
+				//var_dump($v[$pa['NOMBREPARAM']]);
 
 				$stmt = $dbh->prepare($q);
 				$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
