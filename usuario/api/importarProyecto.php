@@ -160,7 +160,7 @@
 					 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
 					//var_dump($q);
-						echo " id valor: ".$IDVALOR;
+					echo " id valor: ".$IDVALOR;
 					echo "idparametro ".$pa['IDPARAMETRO'];
 					echo "idproyecto:".$IDPROYECTO;
 					echo "valor :  ".$v[$pa['NOMBREPARAM']];
@@ -171,6 +171,7 @@
 					$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
 					$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 					$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+
 					$valor = $stmt->execute();
 
 					echo json_encode($valor);

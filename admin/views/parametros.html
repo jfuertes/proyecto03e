@@ -66,16 +66,31 @@
                           encoding="csv.encoding"
                           encoding-visible="csv.encodingVisible">
                     </ng-csv-import><button type="button" ng-click="importar()" class="btn btn-primary col-lg-3">Importar</button>
+                    <button type="button" ng-show="logImportar" ng-click="LogError()" class="btn btn-primary col-lg-2 col-lg-offset-1">Ver Log de Importación</button>
                 </div>
+
+                <!-- Log Importación -->
+                <div class="form-group" ng-show="LogImp">
+                  <hr>
+                  <h4>Log de Importación </h4></br>
+                      <div class="form-group">
+                          <ul>
+                            <li ng-repeat="n in logImportar">{{n}}</li>
+                          </ul>
+                      </div>
+                     <hr>
+                </div>
+                <!-- /.Log Importación -->
+
 
               </br></br>
                 <div class="dataTable_wrapper">
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
-                                <th>ID Parámetro</th>
-                                <th>Nombre Parámetro</th>
-                                <th>Módulo</th>
+                                <th>ID Parametro</th>
+                                <th>Nombre Parametro</th>
+                                <th>Modulo</th>
                                 <th>Tipo de dato</th>
                                 <th>Estado</th>
                                 <th>Control</th>
