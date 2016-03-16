@@ -32,23 +32,16 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
         if(count($rx)==1){
             if($rx[0]['LDAP']=='SI'){
                 //acceso a webservice 
-                session_start();
-                $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
-                $_SESSION['login']=$rx[0]['LOGINUS'];
-                $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
-                $_SESSION['apellidous']=$rx[0]['APELLIDO'];
-                $_SESSION['emailus']=$rx[0]['EMAIL'];
-                $_SESSION['type']="ADMIN";
-                echo "{\"acceso\":\"true\",\"url\":\"admin/index.php\"}";
-            }else{
-                if($rx[0]['CLAVE']==$pass){
+                $responseWS=true;//respuesta del WS
+                if ($responseWS==true){
                     session_start();
                     $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                     $_SESSION['login']=$rx[0]['LOGINUS'];
                     $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                     $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                     $_SESSION['emailus']=$rx[0]['EMAIL'];
-                    $_SESSION['type']="usuario";
+                    
+                     $_SESSION['type']="usuario";
                     //                  
 
                        $tipo='ADMIN';
@@ -64,14 +57,54 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                          $_SESSION['acceso']=$r;
                          $_SESSION['type']="admin";
                     }
+                    echo "{\"acceso\":\"true\",\"url\":\"usuario\"}";
+                    
+                }
+                
+            }else{
+                if($rx[0]['CLAVE']==$pass && $rx[0]['IDAREA']!=null){
+                    session_start();
+                    $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
+                    $_SESSION['login']=$rx[0]['LOGINUS'];
+                    $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
+                    $_SESSION['apellidous']=$rx[0]['APELLIDO'];
+                    $_SESSION['emailus']=$rx[0]['EMAIL'];
+                    $_SESSION['type']="usuario";
+                    //                  
+                     $tipo='ADMIN';
+                    $q= 'SELECT IDPROYMACRO, IDMODULO from proyred.ACCESO where IDUSUARIO=:IDUSUARIO and TIPOUS=:TIPOUS';
+                    
+                    $stmt = $dbh->prepare($q);
+                    $stmt->bindParam(':IDUSUARIO', $_SESSION['IDUSUARIO'], PDO::PARAM_INT);
+                    $stmt->bindParam(':TIPOUS', $tipo, PDO::PARAM_INT);
+                    $stmt->execute();
+                    
+                    $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    if (sizeof($r)>0){
+                         $_SESSION['acceso']=$r;
+                         $_SESSION['type']="admin";
+                    }
+                    
+                    echo "{\"acceso\":\"true\",\"url\":\"usuario\"}";
 
-                    echo "{\"acceso\":\"true\",\"url\":\"usuario/index.php\"}";
+                }
+                else if ($rx[0]['CLAVE']==$pass && $rx[0]['IDAREA']==null){
+                     session_start();
+                    $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
+                    $_SESSION['login']=$rx[0]['LOGINUS'];
+                    $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
+                    $_SESSION['apellidous']=$rx[0]['APELLIDO'];
+                    $_SESSION['emailus']=$rx[0]['EMAIL'];
+                    $_SESSION['type']="ADMIN";
+                
+                    echo "{\"acceso\":\"true\",\"url\":\"admin\"}";
 
-
-
-                }else{
+                }
+                else{
                     echo "{\"acceso\":\"false\"}";
                 }
+
+
             }
         }else{
             echo "{\"acceso\":\"false\"}";

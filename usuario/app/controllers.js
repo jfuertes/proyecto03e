@@ -252,7 +252,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                               contPara++;
 
                             });
-                           // console.log(paracont);
+                            console.log(paracont);
                             //console.log($scope.Params[paracont].IDTIPODATO);
                             //var nameparam=value.NOMBREPARAM;
                            if($scope.Params[paracont].IDTIPODATO==1){
