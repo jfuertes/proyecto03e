@@ -7,7 +7,9 @@
 (function(){
   'use strict';
 
-angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap', 'ngAnimate']).run(function(DTDefaultOptions) {
+angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables.buttons', 'ui.bootstrap', 'ngAnimate'])
+
+.run(function(DTDefaultOptions) {
     DTDefaultOptions.setLanguageSource('../vendor/datatables/Spanish.json');
 })
 
@@ -392,6 +394,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 }])
 
+.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items) {
+
+  $scope.items = items;
+  $scope.selected = {
+    item: $scope.items[0]
+  };
+
+  $scope.ok = function () {
+    $uibModalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+})
 
 
 // Controlador Gestión Parámetros
@@ -401,6 +418,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.showConsultaByProy=false;
     $scope.ShowTableParams=true;
     $scope.editParams=false;
+    $scope.LogImp=false;
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
@@ -427,16 +445,6 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.alerts.splice(index, 1);
     };
 
-  /*  $scope.getParametro= function(){
-       $http.post('api/getParametro.php' )
-                .success(function(data) {
-                  console.log(data);
-                  $scope.Parametro=data;
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
-    };*/
     $scope.getiposDatos= function(){
        $http.post('api/getTiposDatos.php' )
                 .success(function(data) {
@@ -606,23 +614,50 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           encoding: 'UTF16',
           encodingVisible: false,
     };
-        
+    
+    $scope.LogError = function () {
+        //console.log($scope.logImportar);
+        //alert($scope.logImportar);
+        if($scope.LogImp == true) $scope.LogImp=false;
+        else $scope.LogImp=true;
+        console.log($scope.LogImp);
+    }
+
     $scope.importar = function (json, tabWidth) {
           if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
-            if(objeto[0]['Nombre Parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
+            if(objeto[0]['Nombre parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
               if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
                   $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
                   .success(function(data) {
+                      $scope.logImportar=[];
                       if(data.success){
-                        $scope.formByProyMacro($scope.pmLocal);
-
-                        $scope.newAlert(data.success,'success','5000');
+                          $scope.formByProyMacro($scope.pmLocal);
+                          var mensaje = data.success.split('\n');
+                          
+                          $.each( mensaje, function( index, value ) {
+                                 if (value!=''){
+                                    $scope.newAlert(value,'success','3000');
+                                    $scope.logImportar.push(value);
+                                }
+                          });
                       }
                       else{
                         $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
                       }
+
+                      if(data.error){
+                        var mensaje = data.error.split('\n');
+                        $.each( mensaje, function( index, value ) {
+                               if (value!=''){
+                                  $scope.newAlert(value,'danger','3000');
+                                  $scope.logImportar.push(value);
+                              }
+                        });
+                      }
+                      console.log('log');
+                      console.log($scope.logImportar);
                   })
                   .error(function(data) {
                     console.log('Error: ' + data);
@@ -631,7 +666,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
               console.log('resultado:' + $scope.csv.result);
             }
             else{
-                $scope.newAlert('Error: el archivo a importar debe contener los campos: ID Parámetro, Nombre Parámetro, Módulo, Tipo de dato, Estado, Orden, Tabla maestra. Debe respetar los acentos y mayúsculas','danger','5000');
+                $scope.newAlert('Error: el archivo a importar debe contener los campos: ID parametro, Nombre parametro, Modulo, Tipo de dato, Estado, Orden, Tabla maestra. No debe contener tildes y solo la primera letra en mayúscula.','danger','5000');
             }
           }
           else{
