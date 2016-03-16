@@ -55,8 +55,10 @@
 			$valor = $stmt->execute();
 
 		if ($valor) {
-			$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO) 
-					values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO )';
+
+			$TIPOPMPARAM="P";
+			$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO, TIPOPMPARAM) 
+					values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO ,:TIPOPMPARAM)';
 			
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
@@ -64,9 +66,39 @@
 			$stmt->bindParam(':ESTADOPMPARAMETRO',  $ESTADOPARAM, PDO::PARAM_STR);
 			$stmt->bindParam(':ORDEN',  $ORDEN, PDO::PARAM_STR);
 			$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
+			$stmt->bindParam(':TIPOPMPARAM',  $TIPOPMPARAM, PDO::PARAM_STR);
 
 			$valor2 = $stmt->execute();
 			//echo json_encode($valor);
+
+			//if hay otros select
+			if($valor2 && $rspta->pa->othermodulo){
+				$othermodulos=$rspta->pa->othermodulo;
+					$TIPOPMPARAM="V";
+					
+				foreach ($othermodulos as $key => $value) {	
+					if($value== true){
+						$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO, TIPOPMPARAM) 
+								values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO ,:TIPOPMPARAM)';
+
+						$stmt = $dbh->prepare($q);
+						$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
+						$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
+						$stmt->bindParam(':ESTADOPMPARAMETRO',  $ESTADOPARAM, PDO::PARAM_STR);
+						$stmt->bindParam(':ORDEN',  $ORDEN, PDO::PARAM_STR);
+						$stmt->bindParam(':IDMODULO',  $key, PDO::PARAM_STR);
+						$stmt->bindParam(':TIPOPMPARAM',  $TIPOPMPARAM, PDO::PARAM_STR);
+
+						$valor2 = $stmt->execute();
+					}
+					
+				}
+				//count($othermodulos)
+				//var_dump($rspta->pa->othermodulo);
+				//$TIPOPMPARAM="V";
+			}
+			//insert 
+
 
 			if ($valor2) {
 				$rpta=array('success' => 'El parámetro fue creado exitosamente');

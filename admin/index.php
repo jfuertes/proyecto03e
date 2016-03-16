@@ -1,3 +1,18 @@
+<?php
+  session_start();
+    if(isset($_SESSION['login'])){
+        if($_SESSION['login']=="usuario" ){
+             header('location:../index.php');
+        break;
+        }    
+        //echo "entro";
+        //echo "acceso correcto".$_SESSION['login'];
+    }else{
+        //echo "salio";
+        header('location:../index.php');
+        break;
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,30 +60,19 @@
                 </a>
             </div>
             <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
+              <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alerta <span class="label label-default">próximamente</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo " ".$_SESSION['nombreus']." ".$_SESSION['apellidous']; ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#/"><i class="fa fa-fw fa-user"></i> Perfil</a>
-                        </li>
-                        <li>
-                            <a href="#/"><i class="fa fa-fw fa-envelope"></i> Notificaciones</a>
-                        </li>
-                        <li>
-                            <a href="#/"><i class="fa fa-fw fa-gear"></i> Configuración</a>
+                            <a href="#/"><i class="fa fa-fw fa-user"></i> Contraseña</a>
                         </li>
                         <li class="divider"></li>
+                        <!--li>
+                            <div ng-controller="cabecera"><a href="#/" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a></div>
+                        </li-->
                         <li>
-                            <a href="#/"><i class="fa fa-fw fa-power-off"></i> Salir</a>
+                            <a href="#/" ng-controller="cabecera" ng-click="logout()" ><i class="fa fa-fw fa-power-off"></i> Salir</a>
                         </li>
                     </ul>
                 </li>
@@ -76,19 +80,24 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="#/proyMacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a>
-                    </li>
+                <?php
+                //echo $_SESSION['type'];
+                if($_SESSION['type']=="ADMIN"){
+                    echo '<li><a href="#/usuarios"><i class="fa fa-fw fa-user"></i>Usuarios</a></li><li><a href="#/proyMacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a></li>';
+                }
+                ?>
+                   
                     <li>
                         <a href="#/parametros"><i class="fa fa-fw fa-file"></i> Parametros</a>
                     </li>
                     
-                    <li>
+                   <!-- <li>
                         <a href="#/tabMaestras"><i class="fa fa-fw fa-download"></i>Tablas Maestras</a>
+                    </li>-->
+                   <li>
+                        <a href="../usuario/index.php"><i class="fa fa-fw fa-user"></i>Gestion de Proyectos</a>
                     </li>
-                       <li>
-                        <a href="#/usuarios"><i class="fa fa-fw fa-user"></i>Usuarios</a>
-                    </li>
+                     
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

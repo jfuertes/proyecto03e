@@ -38,7 +38,8 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                 $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                 $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                 $_SESSION['emailus']=$rx[0]['EMAIL'];
-                echo "{\"acceso\":\"true\",\"url\":\"main.html\"}";
+                $_SESSION['type']="ADMIN";
+                echo "{\"acceso\":\"true\",\"url\":\"admin/index.php\"}";
             }else{
                 if($rx[0]['CLAVE']==$pass){
                     session_start();
@@ -47,7 +48,27 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                     $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                     $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                     $_SESSION['emailus']=$rx[0]['EMAIL'];
+                    $_SESSION['type']="usuario";
+                    //                  
+
+                       $tipo='ADMIN';
+                    $q= 'SELECT IDPROYMACRO, IDMODULO from proyred.ACCESO where IDUSUARIO=:IDUSUARIO and TIPOUS=:TIPOUS';
+                    
+                    $stmt = $dbh->prepare($q);
+                    $stmt->bindParam(':IDUSUARIO', $_SESSION['IDUSUARIO'], PDO::PARAM_INT);
+                    $stmt->bindParam(':TIPOUS', $tipo, PDO::PARAM_INT);
+                    $stmt->execute();
+                    
+                    $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    if (sizeof($r)>0){
+                         $_SESSION['acceso']=$r;
+                         $_SESSION['type']="admin";
+                    }
+
                     echo "{\"acceso\":\"true\",\"url\":\"usuario/index.php\"}";
+
+
+
                 }else{
                     echo "{\"acceso\":\"false\"}";
                 }

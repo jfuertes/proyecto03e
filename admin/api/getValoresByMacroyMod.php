@@ -20,7 +20,7 @@
             inner join proyred.parametro p on v.idparametro=p.idparametro    
             inner join proyred.pmparametro pm on  p.idparametro=pm.idparametro
             inner join proyred.proyecto py on v.idproyecto=py.idproyecto
-            where pm.IDPROYMACRO=:IDPROYMACRO and pm.idmodulo=:IDMODULO
+            where pm.IDPROYMACRO=:IDPROYMACRO and pm.idmodulo=:IDMODULO and py.ESTADOPROY!=0
             order by py.IDPROYECTO,pm.orden";
 
 	$stmt = $dbh->prepare($q);

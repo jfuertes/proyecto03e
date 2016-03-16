@@ -88,137 +88,143 @@
 
 
 				//ya se tiene el idvalor
-				if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
-					$nombrevalor="VALORNUMBER";
+				//verificar que sea principal en Tabla pmparametro
+				if($pa['TIPOPMPARAM']=="V"){echo "visualisacion no se hace nada con este parametro";}
 
-					if ($v[$pa['NOMBREPARAM']]==null || $v[$pa['NOMBREPARAM']]=="NaN"){
-						$valoractual=null;
-					
-					$q= "MERGE INTO PROYRED.VALOR vl
-				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' $nombrevalor FROM dual) src
-				     ON( vl.IDVALOR= src.IDVALOR)
-				 WHEN MATCHED THEN
+				else{//verificar que sea principal en Tabla pmparametro
+					if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
+						$nombrevalor="VALORNUMBER";
 
-				   UPDATE SET $nombrevalor = src.$nombrevalor 
-				 WHEN NOT MATCHED THEN
-				   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
-				 }
-					else  if($v[$pa['NOMBREPARAM']]!=null )
-					{
-						$valoractual=$v[$pa['NOMBREPARAM']];
-							$q= "MERGE INTO PROYRED.VALOR vl
-				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, ".$valoractual." $nombrevalor FROM dual) src
-				     ON( vl.IDVALOR= src.IDVALOR)
-				 WHEN MATCHED THEN
+						if ($v[$pa['NOMBREPARAM']]==null || $v[$pa['NOMBREPARAM']]=="NaN"){
+							$valoractual=null;
+						
+						$q= "MERGE INTO PROYRED.VALOR vl
+					  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' $nombrevalor FROM dual) src
+					     ON( vl.IDVALOR= src.IDVALOR)
+					 WHEN MATCHED THEN
 
-				   UPDATE SET $nombrevalor = src.$nombrevalor 
-				 WHEN NOT MATCHED THEN
-				   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
-					}
-					
-				 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
+					   UPDATE SET $nombrevalor = src.$nombrevalor 
+					 WHEN NOT MATCHED THEN
+					   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+					     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+					 }
+						else  if($v[$pa['NOMBREPARAM']]!=null )
+						{
+							$valoractual=$v[$pa['NOMBREPARAM']];
+								$q= "MERGE INTO PROYRED.VALOR vl
+					  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, ".$valoractual." $nombrevalor FROM dual) src
+					     ON( vl.IDVALOR= src.IDVALOR)
+					 WHEN MATCHED THEN
 
-				//var_dump($q);
-				echo " id valor: ".$IDVALOR;
-				echo "idparametro ".$pa['IDPARAMETRO'];
-				echo "idproyecto:".$IDPROYECTO;
-				echo "valor :  ".$valoractual;
-				//var_dump($valoractual);
+					   UPDATE SET $nombrevalor = src.$nombrevalor 
+					 WHEN NOT MATCHED THEN
+					   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+					     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+						}
+						
+					 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+					 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
-				
-
-				$stmt = $dbh->prepare($q);
-				$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
-				$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
-				$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-				//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
-				$valor = $stmt->execute();
-
-				echo json_encode($valor);
-
-				}
-				else if($pa['IDTIPODATO']==3){
-					$nombrevalor="VALORSTR";
-					$q= "MERGE INTO PROYRED.VALOR vl
-				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR $nombrevalor FROM dual) src
-				     ON( vl.IDVALOR= src.IDVALOR)
-				 WHEN MATCHED THEN
-
-				   UPDATE SET $nombrevalor = src.$nombrevalor 
-				 WHEN NOT MATCHED THEN
-				   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
-
-				 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
-
-				//var_dump($q);
+					//var_dump($q);
 					echo " id valor: ".$IDVALOR;
-				echo "idparametro ".$pa['IDPARAMETRO'];
-				echo "idproyecto:".$IDPROYECTO;
-				echo "valor :  ".$v[$pa['NOMBREPARAM']];
-				//var_dump($v[$pa['NOMBREPARAM']]);
-
-				$stmt = $dbh->prepare($q);
-				$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
-				$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
-				$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-				$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
-				$valor = $stmt->execute();
-
-				echo json_encode($valor);
-
-				}
-				else{
-					//manipular fecha
-				if($v[$pa['NOMBREPARAM']]!=null){
-					list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
-					$month=$month;
-				$valoractual= $day."-".$month."-".$year;
-				echo "valor actual: $valoractual";
-					$nombrevalor="VALORDATE";
-				}
-				else{
-					$nombrevalor="VALORDATE";
-					$valoractual=null;
-
-				}
+					echo "idparametro ".$pa['IDPARAMETRO'];
+					echo "idproyecto:".$IDPROYECTO;
+					echo "valor :  ".$valoractual;
+					//var_dump($valoractual);
 
 					
-					$q= "MERGE INTO PROYRED.VALOR vl
-				  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' ".$nombrevalor." FROM dual) src
-				     ON( vl.IDVALOR= src.IDVALOR)
-				 WHEN MATCHED THEN
 
-				   UPDATE SET $nombrevalor = src.$nombrevalor 
-				 WHEN NOT MATCHED THEN
-				   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+					$stmt = $dbh->prepare($q);
+					$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
+					$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
+					$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+					//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+					$valor = $stmt->execute();
 
-				 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-				 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
+					echo json_encode($valor);
 
-				echo " id valor: ".$IDVALOR;
-				echo "idparametro ".$pa['IDPARAMETRO'];
-				echo "idproyecto:".$IDPROYECTO;
-				echo "valor :  ".$v[$pa['NOMBREPARAM']];
-				//var_dump($v[$pa['NOMBREPARAM']]);
+					}
+					else if($pa['IDTIPODATO']==3){
+						$nombrevalor="VALORSTR";
+						$q= "MERGE INTO PROYRED.VALOR vl
+					  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR $nombrevalor FROM dual) src
+					     ON( vl.IDVALOR= src.IDVALOR)
+					 WHEN MATCHED THEN
 
-				$stmt = $dbh->prepare($q);
-				$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
-				$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
-				$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-				//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
-				$valor = $stmt->execute();
+					   UPDATE SET $nombrevalor = src.$nombrevalor 
+					 WHEN NOT MATCHED THEN
+					   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+					     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
 
-				echo json_encode($valor);
+					 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+					 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
+					//var_dump($q);
+						echo " id valor: ".$IDVALOR;
+					echo "idparametro ".$pa['IDPARAMETRO'];
+					echo "idproyecto:".$IDPROYECTO;
+					echo "valor :  ".$v[$pa['NOMBREPARAM']];
+					//var_dump($v[$pa['NOMBREPARAM']]);
+
+					$stmt = $dbh->prepare($q);
+					$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
+					$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
+					$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+					$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+					$valor = $stmt->execute();
+
+					echo json_encode($valor);
+
+					}
+					else{
+						//manipular fecha
+							if($v[$pa['NOMBREPARAM']]!=null){
+								list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
+								$month=$month;
+							$valoractual= $day."-".$month."-".$year;
+							echo "valor actual: $valoractual";
+								$nombrevalor="VALORDATE";
+							}
+							else{
+								$nombrevalor="VALORDATE";
+								$valoractual=null;
+
+							}
+
+								
+								$q= "MERGE INTO PROYRED.VALOR vl
+							  USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' ".$nombrevalor." FROM dual) src
+							     ON( vl.IDVALOR= src.IDVALOR)
+							 WHEN MATCHED THEN
+
+							   UPDATE SET $nombrevalor = src.$nombrevalor 
+							 WHEN NOT MATCHED THEN
+							   INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+							     VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+
+							 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+							 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
+
+							echo " id valor: ".$IDVALOR;
+							echo "idparametro ".$pa['IDPARAMETRO'];
+							echo "idproyecto:".$IDPROYECTO;
+							echo "valor :  ".$v[$pa['NOMBREPARAM']];
+							//var_dump($v[$pa['NOMBREPARAM']]);
+
+							$stmt = $dbh->prepare($q);
+							$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
+							$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
+							$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+							//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+							$valor = $stmt->execute();
+
+							echo json_encode($valor);
+
+						}
+					}
 				}
 			}
 		}	//echo json_encode($valor);
 
-	}
+	
 ?>

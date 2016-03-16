@@ -45,7 +45,9 @@
 			//$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
 			//$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
+			echo $value;
 			echo json_encode($valor);
+
 			//echo json_encode($valor);
 
 		}
@@ -61,6 +63,7 @@
 			//$stmt->bindParam(':VALORNUMBER',  $valoractual, PDO::PARAM_STR);
 			//$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
+			echo $value;
 			echo json_encode($valor);
 		}
 
@@ -72,6 +75,7 @@
 			$stmt->bindParam(':VALORSTR',  $pro->$key, PDO::PARAM_STR);
 			$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
+			echo $value;
 			echo json_encode($valor);
 		}
 
@@ -90,6 +94,7 @@
 			//$stmt->bindParam(':VALORDATE',  $pro->$key, PDO::PARAM_STR);
 			//$stmt->bindParam(':IDVALOR',  $value, PDO::PARAM_STR);
 			$valor = $stmt->execute();
+			echo $value;
 			echo json_encode($valor);
 
 			}
