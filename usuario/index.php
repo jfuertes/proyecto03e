@@ -78,7 +78,12 @@
                     <li>
                         <a href="#/proyectos"><i class="fa fa-fw fa-dashboard"></i> Proyectos</a>
                     </li>
-
+                    <?php
+                   
+                    if( $_SESSION['type']=="admin"){
+                        echo '<li><a href="../admin/index.php"><i class="fa fa-fw fa-dashboard"></i> Administracion</a></li>';
+                    }
+                    ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

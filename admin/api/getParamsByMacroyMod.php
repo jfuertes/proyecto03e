@@ -12,7 +12,7 @@
 	//var_dump($IDPROYMACRO);
 	//var_dump($IDPROYMACRO);
 
-	$q = 'SELECT p.idparametro,p.nombreparam ,pm.orden,pm.idproymacro,p.idtipodato,tp.nombretipodato,p.usamaestroparam
+	$q = 'SELECT p.idparametro,p.nombreparam ,pm.orden,pm.idproymacro,p.idtipodato,tp.nombretipodato,p.usamaestroparam, pm.TIPOPMPARAM
             from proyred.pmparametro pm
             inner join proyred.parametro p on pm.idparametro=p.idparametro            
             inner join proyred.tipodato tp on p.idtipodato=tp.idtipodato

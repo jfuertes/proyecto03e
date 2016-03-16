@@ -8,7 +8,6 @@ header('Content-Type: application/json');
 //include_once 'controlador.php';
     require_once('../usuario/api/config/oracle.php');
 
-
     $db  = new dbConnect();
     $dbh = $db->conectardb();
 
@@ -21,7 +20,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
         $login=$_POST['login'];
         $pass=md5($_POST['clave']);
         $csql="select * from proyred.usuario where upper(loginus)=upper('$login')";
-         $stmt = $dbh->prepare($csql);
+        $stmt = $dbh->prepare($csql);
         $stmt->execute();
         $rx = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -31,17 +30,16 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
     
         if(count($rx)==1){
             if($rx[0]['LDAP']=='SI'){
-                //acceso a webservice 
                 session_start();
                 $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                 $_SESSION['login']=$rx[0]['LOGINUS'];
                 $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                 $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                 $_SESSION['emailus']=$rx[0]['EMAIL'];
-                $_SESSION['type']="ADMIN";
+                $_SESSION['type']="admin";
                 echo "{\"acceso\":\"true\",\"url\":\"admin/index.php\"}";
             }else{
-                if($rx[0]['CLAVE']==$pass){
+                if($rx[0]['IDAREA']==null && $rx[0]['CLAVE']==$pass){
                     session_start();
                     $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                     $_SESSION['login']=$rx[0]['LOGINUS'];
@@ -49,9 +47,9 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                     $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                     $_SESSION['emailus']=$rx[0]['EMAIL'];
                     $_SESSION['type']="usuario";
-                    //                  
+                    //echo "{\"acceso\":\"true\",\"url\":\"usuario/index.php\"}";
 
-                       $tipo='ADMIN';
+                    $tipo='ADMIN';
                     $q= 'SELECT IDPROYMACRO, IDMODULO from proyred.ACCESO where IDUSUARIO=:IDUSUARIO and TIPOUS=:TIPOUS';
                     
                     $stmt = $dbh->prepare($q);
@@ -60,12 +58,10 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                     $stmt->execute();
                     
                     $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    if (sizeof($r)>0){
-                         $_SESSION['acceso']=$r;
-                         $_SESSION['type']="admin";
-                    }
+                    var_dump($r);
+                    
+                    echo json_encode($r);
 
-                    echo "{\"acceso\":\"true\",\"url\":\"usuario/index.php\"}";
 
 
 

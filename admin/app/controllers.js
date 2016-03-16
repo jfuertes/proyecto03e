@@ -19,6 +19,23 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       return estados[id];
     };
   })
+.filter('filtervisuaprin', function(){
+  return function(id){
+    if(id==null){
+      return " ";
+    }
+    else if(id == "P"){
+      return "Principal";
+    }
+    else if (id == "V"){
+      return "Visualizacion";
+    }
+      else{
+      return " ";
+    }
+    };
+  })
+
 .filter('filterMaestro', function(){
   return function(id){
     var estados = ['No', 'Si'];
@@ -394,22 +411,22 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 }])
 
-.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items) {
+.controller('cabecera', ['$scope', '$http', function($scope, $http) {
+    $scope.logout = function(){
+      //alert("saliendo");
+    $http.post ('../usuario/api/logout.php')
+        .success(function(data) {
+          console.log(data);
+           location.reload();
+                //
+            })
+        .error(function(data) {
+                console.log('Error: ' + data);
+        });
+};
 
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
 
-  $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-})
-
+}])
 
 // Controlador Gestión Parámetros
 .controller('parametrosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
@@ -476,11 +493,32 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   console.log('Error: ' + data);
                   });
     };
+     $scope.getProyMacrobyUser= function(){
+            $http.post('../usuario/api/getProyMacrobyUser.php' )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.ProyMacrobyUser=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+      };
+       $scope.getModulosbyPMandUser= function(){
+            $http.post('../usuario/api/getModulosbyPMandUser.php',{ProyMacro:$scope.IDPROYMACRO} )
+                .success(function(data) {
+                  console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
+      };
      
    // $scope.getParametro();
     $scope.getiposDatos();
     $scope.getModulos();
     $scope.getProyMacro();
+    $scope.getProyMacrobyUser();
 
      $scope.formNewParam= function(pa){
        console.log($scope.pa);
@@ -540,7 +578,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.ShowTableParams=false;
         $scope.editParams=false;
         $scope.pa={};
-
+        $scope.getModulosbyPMandUser();
        //alert($scope.IDPROYMACRO);
         $http({method:'POST',url: 'api/ultimoOrden.php', data: $.param({id: $scope.IDPROYMACRO}), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
           .success(function(response) {
@@ -550,6 +588,23 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         });
 
     };
+  $scope.addModulos= function(){
+        //alert($scope.pa.IDMODULO);
+       // alert($scope.IDPROYMACRO);
+         $http({method:'POST',url: 'api/addModulos.php', data: $.param({actual: $scope.pa.IDMODULO, idproymacro: $scope.IDPROYMACRO}), headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+          .success(function(response) {
+            console.log(response);
+            $scope.otrosModulos=response;
+        })
+          .error(function(response){
+            console.log("error: "+response);
+        });
+
+        
+        //console.log(pa);
+       // $scope.ParamSelect=pa;
+    };
+
 
     $scope.editarParam= function(pa){
         $scope.ShowTableParams=false;
