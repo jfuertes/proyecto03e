@@ -147,7 +147,7 @@
 
 				}
 				else{
-					//manipular fecha
+					echo "\nmanipular fecha\n";
 				
 
 					list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
