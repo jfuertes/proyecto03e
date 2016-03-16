@@ -35,6 +35,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     if(id==null){
       return " ";
     }
+    else if(id=="NaN"){
+      return " ";
+    }
     else{
       return id;
     }
@@ -253,11 +256,23 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                             //console.log($scope.Params[paracont].IDTIPODATO);
                             //var nameparam=value.NOMBREPARAM;
                            if($scope.Params[paracont].IDTIPODATO==1){
-                              $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseInt(value.VAL);
+                              if (parseInt(value.VAL)!="NaN"){
+                                $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseInt(value.VAL);
+                              }
+                              else{
+                                $scope.Proyectos[contador].param[value.NOMBREPARAM]=null;
+                              }
+                              
                              // console.log(parseInt(value.VAL));
                            }
                            else if($scope.Params[paracont].IDTIPODATO==2){
-                              $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseFloat(value.VAL);
+                                if (parseFloat(value.VAL)!="NaN"){
+                                $scope.Proyectos[contador].param[value.NOMBREPARAM]=parseFloat(value.VAL);
+                              }
+                              else{
+                                $scope.Proyectos[contador].param[value.NOMBREPARAM]=null;
+                              }
+                                
                              // console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
                               //console.log(value.VAL);
                               //console.log(contador);
@@ -271,7 +286,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                              if(value.VAL){
                              var res = value.VAL.split("/");
                               //var fechaactual=res[2]+"-"+res[1]+"-"+res[0];
-                             var fechaactual = new Date(res[2], res[1], res[0]);//cambiar a que muestre solo esos valores
+                             var fechaactual = new Date(res[2], res[1]-1, res[0]);//cambiar a que muestre solo esos valores
 
                               $scope.Proyectos[contador].param[value.NOMBREPARAM]=fechaactual;
                             }
