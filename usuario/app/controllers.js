@@ -410,15 +410,43 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
                 $http.post('api/importarProyecto.php', {va :objeto, pm : $scope.pmgetProyecByProyMacro, pa : $scope.Params } )
                 .success(function(data) {
+                   $scope.logImportar=[];
                   console.log(data);
-                  $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
-                  $scope.csv.result=null;
+                    if(data.success){
+                       $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                       $scope.csv.result=null;
+                        var mensaje = data.success.split('\n');
+                        $.each( mensaje, function( index, value ) {
+                                 if (value!=''){
+                                    $scope.newAlert(value,'success','3000');
+                                    $scope.logImportar.push(value);
+                                }
+                          });
+                      }
+                      else{
+                        $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
+                      }
+                       if(data.error){
+                        var mensaje = data.error.split('\n');
+                        $.each( mensaje, function( index, value ) {
+                               if (value!=''){
+                                  $scope.newAlert(value,'danger','3000');
+                                  $scope.logImportar.push(value);
+                              }
+                        });
+                      }
+                      console.log('log');
+                      console.log($scope.logImportar);
+                 
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
                   });
             }
             console.log('resultado:' + $scope.csv.result);
+          }
+          else{
+              $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
           }
           console.log($scope.csv.result);
     };
