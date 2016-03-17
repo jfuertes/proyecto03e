@@ -83,8 +83,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         .withButtons([
             'colvis',
             'copy',
-            'csv',
-            'pdf'
+            'csv'
         ]);
 
     $scope.alerts = [];
@@ -161,6 +160,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             'excel'
         ]);
 
+    $scope.alerts = [];
+
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+
+
     $scope.getAreas = function(){
        $http.post('api/getAreas.php' )
                 .success(function(data) {
@@ -175,12 +189,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
        $http.post('api/addArea.php', {ar :ar} )
           .success(function(data) {
             console.log(data);
-            
-            if(data="true"){              
+            if(data.success){
               $scope.getAreas();
-              $scope.newAlert('registro de área exitoso!.','success','3000');
+              $scope.newAlert(data.success,'success','3000');
+              $scope.ar.NOMBREAREA='';
             }else{
-              $scope.newAlert('Se encontró un problema al crear área','danger','3000');
+              $scope.newAlert(data.Error,'danger','3000');
             }
           })
           .error(function(data) {
@@ -298,18 +312,18 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
          $http.post('api/nuevoUsuario.php', {nu :nu} )
               .success(function(data) {
                 console.log(data);
-                if(data="true"){
+                if(data.succes){
                  
                    $scope.ShowTableUser=true;
                    $scope.editUser=false;
                    $scope.NuevoUsuario=false;
-                   $scope.newAlert('Usuario creado exitosamente.','success','3000');
+                   $scope.newAlert(data.succes,'success','3000');
                   document.getElementById("formEParametro").reset();
                   $scope.getUsuarios();
                   delete $scope.nu;
                 }
                 else{
-                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
+                    $scope.newAlert(data.Error,'danger','3000');
                 }
                 
               })

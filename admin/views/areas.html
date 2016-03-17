@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" id="alerta">
      <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
@@ -16,6 +16,13 @@
         </div>
     </div>
      <!-- /.row -->
+
+     <!-- Alertas -->
+    <div>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="{{alert.tiempo}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </div>
+    <!-- /Alertas -->
+
 
     <div class="row" >
         <div class="col-lg-12">

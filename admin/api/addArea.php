@@ -10,21 +10,37 @@
 	$nombre= $rspta->ar->NOMBREAREA;
 	//var_dump($etiqueta);
 
-	$q = 'SELECT max(IDAREA)+1 as ID_AREA from proyred.area';
+
+	$q = 'SELECT 1 as RESULTADO
+			FROM proyred.AREA
+			where LOWER(NOMBREAREA) = LOWER(:NOMBREAREA)';
 	$stmt = $dbh->prepare($q);
+	$stmt->bindParam(':NOMBREAREA',  $nombre, PDO::PARAM_STR);
 	$stmt->execute();
-	$r = $stmt->fetch(PDO::FETCH_ASSOC);
+	$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
-	$IDAREA = $r['ID_AREA'];
+	//var_dump($r);
+	if (isset($r['RESULTADO'])) {
+		$rpta=array('Error' => 'Error: El nombre del área ya existe.');
+	}
+	else{
 
-	$q = 'INSERT INTO proyred.area (IDAREA, NOMBREAREA) 
-				values (:IDAREA, :NOMBREAREA )';
-	
+		$q = 'SELECT max(IDAREA)+1 as ID_AREA from proyred.area';
 		$stmt = $dbh->prepare($q);
-		$stmt->bindParam(':IDAREA',  $IDAREA, PDO::PARAM_STR);
-		$stmt->bindParam(':NOMBREAREA',  $nombre, PDO::PARAM_STR);
+		$stmt->execute();
+		$r = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		$valor = $stmt->execute();
-		echo json_encode($valor);
+		$IDAREA = $r['ID_AREA'];
 
+		$q = 'INSERT INTO proyred.area (IDAREA, NOMBREAREA) 
+					values (:IDAREA, :NOMBREAREA )';
+		
+			$stmt = $dbh->prepare($q);
+			$stmt->bindParam(':IDAREA',  $IDAREA, PDO::PARAM_STR);
+			$stmt->bindParam(':NOMBREAREA',  $nombre, PDO::PARAM_STR);
+
+			$stmt->execute();
+			$rpta=array('success' => 'El área fue creada exitosamente');
+	}
+	echo json_encode($rpta);
 ?>
