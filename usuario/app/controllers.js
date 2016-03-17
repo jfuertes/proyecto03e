@@ -338,6 +338,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           $scope.pro.CODPROYECTO=$scope.Proyectos[index].CODPROYECTO;
           $scope.pro.NOMBREPROY=$scope.Proyectos[index].NOMBREPROY;
           $scope.pro.IDPROYECTO=$scope.Proyectos[index].IDPROYECTO;
+          $scope.pro.ESTADOPROY=$scope.Proyectos[index].ESTADOPROY;
           $scope.pro.valores=$scope.valores[index];
           $scope.pro.etiquetas=$scope.Etiquetas;
 

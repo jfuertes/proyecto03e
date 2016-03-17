@@ -61,7 +61,7 @@
 		$NOMBREMODULO = isset($v['Módulo'])?$v['Modulo']:$NOMBREMODULO;
 
 			//Obteniendo el IDMODULO a partir del NOMBREMODULO
-			$q = 'SELECT IDMODULO from proyred.MODULO WHERE NOMBREMODULO=:NOMBREMODULO';
+			$q = 'SELECT IDMODULO from proyred.MODULO WHERE NOMBREMODULO=:NOMBREMODULO';//falta acceso!!!!
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':NOMBREMODULO',  $NOMBREMODULO, PDO::PARAM_STR);
 			$stmt->execute();
@@ -145,7 +145,5 @@
 		}
 	}
 
-	$rpta=array('success' => $success, 'error' => $error);
 
-	echo json_encode($rpta);
 ?>

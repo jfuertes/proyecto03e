@@ -10,6 +10,7 @@
 	$NOMBREPROY= $rspta->pro->NOMBREPROY;
 	$CODPROYECTO= $rspta->pro->CODPROYECTO;
 	$IDPROYECTO= $rspta->pro->IDPROYECTO;
+	$ESTADOPROY= $rspta->pro->ESTADOPROY;
 	//$IDVALORES={};
 	$IDVALOR=$rspta->pro->valores;
 	$pro=$rspta->pro;
@@ -20,12 +21,13 @@
 //var_dump($IDPROYECTO);
 //echo "============";
 	$q = 'UPDATE proyred.PROYECTO 
-				SET NOMBREPROY=:NOMBREPROY, CODPROYECTO=:CODPROYECTO
+				SET NOMBREPROY=:NOMBREPROY, CODPROYECTO=:CODPROYECTO, ESTADOPROY=:ESTADOPROY
 				WHERE IDPROYECTO=:IDPROYECTO';
 	$stmt = $dbh->prepare($q);
 	$stmt->bindParam(':NOMBREPROY',  $NOMBREPROY, PDO::PARAM_STR);
 	$stmt->bindParam(':CODPROYECTO',  $CODPROYECTO, PDO::PARAM_STR);
 	$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+	$stmt->bindParam(':ESTADOPROY',  $ESTADOPROY, PDO::PARAM_STR);
 	$valor = $stmt->execute();
 		echo json_encode($valor);
 

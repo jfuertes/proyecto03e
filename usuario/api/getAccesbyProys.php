@@ -13,7 +13,13 @@ require_once('../../api/config/oracle.php');
 //echo $idProy;
 //echo $idMod;
 //echo $_SESSION['IDUSUARIO'];
+if($_SESSION['type']=="ADMIN"){
+		$r= [];
+		$r['PRIVILEGIO']="RW";
+		
 
+}
+else{
 	$q= 'SELECT acc.PRIVILEGIO
 		 FROM proyred.ACCESO acc
 		
@@ -26,7 +32,8 @@ require_once('../../api/config/oracle.php');
 	$stmt->execute();
 	
 	$r = $stmt->fetch(PDO::FETCH_ASSOC);
-	
+	}
+
 	echo json_encode($r);
 
 

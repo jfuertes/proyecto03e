@@ -7,25 +7,25 @@
 	$dbh = $db->conectardb();
 
 	$rspta = json_decode(file_get_contents("php://input"), true);
+	$success="";
+	$error="";
 
 	//var_dump($rspta);
 
 	foreach ($rspta['va'] as $v) {
-		echo "##############cadafila\n";
 	
 		$IDPROYECTO= $v['id del proyecto'];
 		//echo $IDPROYECTO;
 		$CODPROY= $v['codigo del proyecto'];
 		$NAMEPROY= $v['Nombre del proyecto'];
+
+
 		$ESTADOPROY=1;
 		$nuevoproyecto=0;
 		if($CODPROY == null && $NAMEPROY == null){
-			echo "vacio";
-
+			$error.="Se encontro una fila sin nombre de proyecto ni codigo por lo que se ignorara el conenido de toda la fila\n";
 		}
 		else{
-
-			
 			if($IDPROYECTO == null){
 				$nuevoproyecto=1;
 
@@ -47,14 +47,17 @@
 				$stmt->bindParam(':IDPROYMACRO',  $rspta['pm']['idProy'], PDO::PARAM_STR);
 				$stmt->bindParam(':CODPROYECTO',  $CODPROY, PDO::PARAM_STR);
 				$valor = $stmt->execute();
-				echo json_encode($valor);
+				
+				if($valor==true){
+					$success.=" Se creó el proyecto: $NAMEPROY.\n";
+				}
+				else{
+					$error.="No fue posible crear el proyecto $NAMEPROY\n";
+				}
 
 			}
-
+		
 			foreach ($rspta['pa'] as $pa) {
-				echo "nuevo parametro";
-
-
 					///calculando idvalor
 				if($nuevoproyecto==0){
 					$q = 'SELECT IDVALOR from proyred.valor 
@@ -65,13 +68,9 @@
 					$stmt->execute();
 					$r=$stmt->fetch(PDO::FETCH_ASSOC);
 					$IDVALOR=$r['IDVALOR'];
-					echo "===========";
-					echo $pa['IDPARAMETRO'];
-					echo  $IDPROYECTO;
-					echo "===========";
+					
 				}
-				//var_dump($IDVALOR);
-				//var_dump($nuevoproyecto);
+
 				if($IDVALOR==NULL || $nuevoproyecto==1){
 					$q = 'SELECT max(IDVALOR) +1 as IDVALOR from proyred.valor';
 					$stmt = $dbh->prepare($q);
@@ -79,17 +78,11 @@
 					$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
 					$IDVALOR=$r['IDVALOR'];
-
-					//echo "||||nuevo valor|||||";
 				}
-				//echo "parametro: ".$pa['IDPARAMETRO']."\n";
-				//echo "proyecto:  $IDPROYECTO\n";
-				//echo "IDVALOR:  $IDVALOR\n";
 
-
-				//ya se tiene el idvalor
-				//verificar que sea principal en Tabla pmparametro
-				if($pa['TIPOPMPARAM']=="V"){echo "visualisacion no se hace nada con este parametro";}
+				if($pa['TIPOPMPARAM']=="V"){
+					$success.=" El parametro $pa['NOMBREPARAM'] es solo de visualizacion por lo que ningun cambio en el sera efectivo.\n";
+				}
 
 				else{//verificar que sea principal en Tabla pmparametro
 					if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
@@ -124,16 +117,14 @@
 						
 					 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 					 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
-
+/*
 					//var_dump($q);
-					echo " id valor: ".$IDVALOR;
+					//echo " id valor: ".$IDVALOR;
 					echo "idparametro ".$pa['IDPARAMETRO'];
 					echo "idproyecto:".$IDPROYECTO;
 					echo "valor :  ".$valoractual;
 					//var_dump($valoractual);
-
-					
-
+					*/
 					$stmt = $dbh->prepare($q);
 					$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
 					$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
@@ -141,7 +132,7 @@
 					//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 					$valor = $stmt->execute();
 
-					echo json_encode($valor);
+					//$success.=" Se creó el parámetro: $NOMBREPARAM.\n";
 
 					}
 					else if($pa['IDTIPODATO']==3){
@@ -159,11 +150,11 @@
 					 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 					 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
-					//var_dump($q);
+				/*	//var_dump($q);/*
 					echo " id valor: ".$IDVALOR;
 					echo "idparametro ".$pa['IDPARAMETRO'];
 					echo "idproyecto:".$IDPROYECTO;
-					echo "valor :  ".$v[$pa['NOMBREPARAM']];
+					echo "valor :  ".$v[$pa['NOMBREPARAM']];*/
 					//var_dump($v[$pa['NOMBREPARAM']]);
 
 					$stmt = $dbh->prepare($q);
@@ -174,7 +165,7 @@
 
 					$valor = $stmt->execute();
 
-					echo json_encode($valor);
+					//echo json_encode($valor);
 
 					}
 					else{
@@ -206,10 +197,10 @@
 							 //$q= 'INSERT INTO PROYRED.VALOR (IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 							 //    VALUES(:IDVALOR, :IDPARAMETRO, :IDPROYECTO, :VALORSTR)';
 
-							echo " id valor: ".$IDVALOR;
+					/*		echo " id valor: ".$IDVALOR;
 							echo "idparametro ".$pa['IDPARAMETRO'];
 							echo "idproyecto:".$IDPROYECTO;
-							echo "valor :  ".$v[$pa['NOMBREPARAM']];
+							echo "valor :  ".$v[$pa['NOMBREPARAM']];*/
 							//var_dump($v[$pa['NOMBREPARAM']]);
 
 							$stmt = $dbh->prepare($q);
@@ -219,13 +210,17 @@
 							//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 							$valor = $stmt->execute();
 
-							echo json_encode($valor);
+							//echo json_encode($valor);
 
 						}
 					}
 				}
 			}
 		}	//echo json_encode($valor);
+
+	$rpta=array('success' => $success, 'error' => $error);
+
+	echo json_encode($rpta);
 
 	
 ?>
