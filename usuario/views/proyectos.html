@@ -127,6 +127,17 @@
                         <input class="form-control" ng-model='pro.NOMBREPROY' type="text" placeholder="Nombre del Proyecto " required/>
                     </div>
                 </div>
+                 <div class="col-lg-10 col-md-offset-1">
+                    <div class="col-lg-3">
+                        <label class="control-label">Estado del Proyecto</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <select class="form-control" ng-model='pro.ESTADOPROY' required>
+                        <option  value="1" >Activo</option>
+                        <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="col-lg-10 col-md-offset-1" ng-repeat="(key, val) in Params" ng-show="val.TIPOPMPARAM!='V'">
                     <div class="col-lg-3">
