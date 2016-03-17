@@ -127,30 +127,30 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
     $scope.formNewProyMacro= function(pm){
        $http.post('api/addProyMacro.php', {pm :pm} )
-                .success(function(data) {
-                  console.log(data);
-                  $scope.addProyMacro=data;
-                  if(data="true"){
-                    
-                    $scope.getProyMacro();
-                    $scope.pm.NOMBREPROYMACRO="";
+          .success(function(data) {
+            console.log(data);
+            $scope.addProyMacro=data;
+            if(data="true"){
+              
+              $scope.getProyMacro();
+              $scope.pm.NOMBREPROYMACRO="";
 
-                    $scope.newAlert('registro de proyecto macro exitoso!.','success','3000');
+              $scope.newAlert('registro de proyecto macro exitoso!.','success','3000');
 
-                  }
-                  
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
-                  $scope.newAlert('Error al crear proyecto macro.','danger','3000');
-                });
+            }
+            
+          })
+          .error(function(data) {
+            console.log('Error: ' + data);
+            $scope.newAlert('Error al crear proyecto macro.','danger','3000');
+          });
     };
 
     $scope.getProyMacro();
   }])
 
-// Controlador Gestión tablas maestras
-.controller('tabMaestrasController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
+// Controlador Gestión de Areas
+.controller('areasController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
           $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
         .withDisplayLength(10)
@@ -161,22 +161,40 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             'excel'
         ]);
 
-
-    $scope.getEtiquetas= function(){
-       $http.post('api/getEtiqueta.php' )
+    $scope.getAreas = function(){
+       $http.post('api/getAreas.php' )
                 .success(function(data) {
-                  console.log(data);
-                  $scope.etiquetas=data;
+                  $scope.areas=data;
                 })
                 .error(function(data) {
                   console.log('Error: ' + data);
-                  });
+                });
     };
-     
-    $scope.getEtiquetas();
+    
+    $scope.formNewArea= function(ar){
+       $http.post('api/addArea.php', {ar :ar} )
+          .success(function(data) {
+            console.log(data);
+            
+            if(data="true"){              
+              $scope.getAreas();
+              $scope.newAlert('registro de área exitoso!.','success','3000');
+            }else{
+              $scope.newAlert('Se encontró un problema al crear área','danger','3000');
+            }
+          })
+          .error(function(data) {
+            console.log('Error: ' + data);
+            $scope.newAlert('Error al crear área.','danger','3000');
+          });
+    };
+
+    
+    $scope.getAreas();
 
 }])
 
+// Controlador Gestión de Usuarios
 .controller('usuariosController', ['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, $http) {
           $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')

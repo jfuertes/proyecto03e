@@ -60,7 +60,7 @@
                                 <td>{{ u.APELLIDO }}</td>
                                 <td>{{ u.LDAP }}</td>
                                 <td>{{ u.EMAIL }}</td>
-                                <td>{{ u.IDAREA }}</td>
+                                <td>{{ u.NOMBREAREA }}</td>
                                 <td>{{ u.ESTADO | filterActivo }}</td>
                                  <td><a href="" ng-show="u.ESTADO==1" title="Desactivar" ng-click="cambioEstadoUser(u.IDUSUARIO, 0, $index)"><span class="glyphicon glyphicon-off" style="font-size: 20px"></a>
 
@@ -178,11 +178,11 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2" >LDAP:</label>
+            <label class="control-label col-lg-2" >Área:</label>
             <div class="col-lg-4">
-              <select class="form-control"  ng-model="ue.LDAP">
-                    <option  value="SI">Si </option>
-                    <option  value="NO">No </option>
+              <select class="form-control" ng-model="ue.IDAREA">
+                    <option value="">- Selecciones el área -</option>
+                    <option ng-repeat="ar1 in Areas" value="{{ar1.IDAREA}}">{{ar1.NOMBREAREA}}</option>
              </select>
             </div>
         </div>
@@ -194,7 +194,7 @@
             </div>
         </div>
 
-        <div class="form-group"> 
+        <div class="form-group">
             <div class="col-lg-offset-2 col-lg-6">
               <button type="submit" class="btn btn-primary col-lg-4">Guardar Parametro</button>
               <div class="col-lg-2"></div>
