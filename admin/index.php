@@ -81,14 +81,23 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                 <?php
-                //echo $_SESSION['type'];
-                if($_SESSION['type']=="ADMIN"){
-                    echo '<li><a href="#/usuarios"><i class="fa fa-fw fa-user"></i>Usuarios</a></li><li><a href="#/proyMacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a></li>';
-                }
-                ?>
+                    if($_SESSION['type']=="ADMIN"){
+                    echo '
+                
+                    <li>
+                        <a href="#/usuarios"><i class="fa fa-fw fa-user"></i>Usuarios</a>
+                    </li>
+                    <li>
+                        <a href="#/areas"><i class="fa fa-fw fa-users"></i>Areas</a>
+                    </li>
+                    <li>
+                        <a href="#/proyMacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a>
+                    </li>
                     <li>
                         <a href="#/parametros"><i class="fa fa-fw fa-file"></i> Parametros</a>
-                    </li>
+                    </li>';
+                }
+                ?>
                     
                    <!-- <li>
                         <a href="#/tabMaestras"><i class="fa fa-fw fa-download"></i>Tablas Maestras</a>

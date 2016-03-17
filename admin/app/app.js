@@ -42,6 +42,11 @@ var app = angular.module('entelApp', [
           caseInsensitiveMatch: true,
           controller: 'usuariosController'
         })
+        .when('/areas', {
+          templateUrl: 'views/areas.html',
+          caseInsensitiveMatch: true,
+          controller: 'areasController'
+        })
 
         .otherwise({
           redirectTo: '/'

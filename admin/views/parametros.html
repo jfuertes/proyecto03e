@@ -82,7 +82,6 @@
                 </div>
                 <!-- /.Log Importación -->
 
-
               </br></br>
                 <div class="dataTable_wrapper">
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
@@ -134,80 +133,81 @@
   <!-- Nuevo Parámetro -->
   <div class="row" ng-show="!ShowTableParams && !ShowEtiquetasByParam && !editParams">
     
-    <h3>Agregar Nuevo Parametro para {{NAMEPROYMACRO}} </h3></br>
+    <div class="col-md-12">
+      <h3>Agregar Nuevo Parametro para {{NAMEPROYMACRO}} </h3></br>
 
-    <form id="formParametro" class="form-horizontal" role="form" ng-submit="formNewParam(pa)">
+      <form id="formParametro" class="form-horizontal" role="form" ng-submit="formNewParam(pa)">
 
-        <div class="form-group">
-            <label class="control-label col-lg-2" >Nombre de Parametro:</label>
-            <div class="col-lg-4">
-              <input type="text" class="form-control" placeholder="Nombre" ng-model="pa.NOMBREPARAM" required>
-            </div>
-        </div>
-
-       <div class="form-group">
-            <label class="control-label col-lg-2" >Tipo de datos:</label>
-            <div class="col-lg-4">
-              <select class="form-control" ng-model="pa.IDTIPODATO" required>
-                  <option ng-show="seleccionar">seleccionar</option>
-                  <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
-              </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-lg-2" >Modulo:</label>
-            <div class="col-lg-4">
-              <select class="form-control"  ng-model="pa.IDMODULO" ng-click="addModulos()" required>
-                  <option ng-show="seleccionar">seleccionar</option>
-                  <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
-              </select>
-            </div>
-        </div>  
-        <div class="form-group" ng-show="otrosModulos.length">
-            <label class="control-label col-lg-2" >Asignar parametro a otros modulos:</label>
-            <div class="col-lg-offset-3" id="moduloscheckbox" ng-repeat="omo in otrosModulos" >
-                  <input type="checkbox" value="{{omo.IDMODULO}}" ng-model="pa.othermodulo[omo.IDMODULO]">   {{omo.NOMBREMODULO}}<br></div>
-            
-        </div>
-
-       <div class="form-group">
-            <label class="control-label col-lg-2" >Tabla Maestra:</label>
-            <div class="col-lg-4">
-              <select class="form-control"  ng-model="pa.USAMAESTROPARAM" required>
-                  <option ng-show="seleccionar">seleccionar</option>
-                  <option  value="1">Si usa maestro</option>
-                  <option  value="0">No usa maestro</option>
-              </select>
-            </div>
-        </div>
+          <div class="form-group">
+              <label class="control-label col-lg-2" >Nombre de Parametro:</label>
+              <div class="col-lg-4">
+                <input type="text" class="form-control" placeholder="Nombre" ng-model="pa.NOMBREPARAM" required>
+              </div>
+          </div>
 
          <div class="form-group">
-            <label class="control-label col-lg-2" >Estado:</label>
-            <div class="col-lg-4">
-              <select class="form-control"  ng-model="pa.ESTADOPARAM" required>
-                  <option ng-show="seleccionar">seleccionar</option>
-                  <option  value="1">Activo</option>
-                  <option  value="0">Inactivo</option>
-              </select>
-            </div>
-        </div>
+              <label class="control-label col-lg-2" >Tipo de datos:</label>
+              <div class="col-lg-4">
+                <select class="form-control" ng-model="pa.IDTIPODATO" required>
+                    <option ng-show="seleccionar">seleccionar</option>
+                    <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
+                </select>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="control-label col-lg-2" >Modulo:</label>
+              <div class="col-lg-4">
+                <select class="form-control"  ng-model="pa.IDMODULO" ng-click="addModulos()" required>
+                    <option ng-show="seleccionar">seleccionar</option>
+                    <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
+                </select>
+              </div>
+          </div>  
+          <div class="form-group" ng-show="otrosModulos.length">
+              <label class="control-label col-lg-2" >Asignar parametro a otros modulos:</label>
+              <div class="col-lg-offset-3" id="moduloscheckbox" ng-repeat="omo in otrosModulos" >
+                    <input type="checkbox" value="{{omo.IDMODULO}}" ng-model="pa.othermodulo[omo.IDMODULO]">   {{omo.NOMBREMODULO}}<br></div>
+              
+          </div>
 
-        <div class="form-group">
-            <label class="control-label col-lg-2">Orden:</label>
-            <div class="col-lg-1">
-              <input type="number" string-to-number class="form-control" ng-model="pa.ORDEN" required>
-            </div>
-        </div>
+         <div class="form-group">
+              <label class="control-label col-lg-2" >Tabla Maestra:</label>
+              <div class="col-lg-4">
+                <select class="form-control"  ng-model="pa.USAMAESTROPARAM" required>
+                    <option ng-show="seleccionar">seleccionar</option>
+                    <option  value="1">Si usa maestro</option>
+                    <option  value="0">No usa maestro</option>
+                </select>
+              </div>
+          </div>
 
-        <div class="form-group"> 
-            <div class="col-lg-offset-2 col-lg-6">
-              <button type="submit" class="btn btn-primary col-lg-4">Guardar Parametro</button>
-              <div class="col-lg-2"></div>
-              <button type="button" ng-click="volverParametro()" class="btn btn-primary col-lg-4">Cancelar</button>
-            </div>
-        </div>
-    </form>
+           <div class="form-group">
+              <label class="control-label col-lg-2" >Estado:</label>
+              <div class="col-lg-4">
+                <select class="form-control"  ng-model="pa.ESTADOPARAM" required>
+                    <option ng-show="seleccionar">seleccionar</option>
+                    <option  value="1">Activo</option>
+                    <option  value="0">Inactivo</option>
+                </select>
+              </div>
+          </div>
 
+          <div class="form-group">
+              <label class="control-label col-lg-2">Orden:</label>
+              <div class="col-lg-1">
+                <input type="number" string-to-number class="form-control" ng-model="pa.ORDEN" required>
+              </div>
+          </div>
+
+          <div class="form-group"> 
+              <div class="col-lg-offset-2 col-lg-6">
+                <button type="submit" class="btn btn-primary col-lg-4">Guardar Parametro</button>
+                <div class="col-lg-2"></div>
+                <button type="button" ng-click="volverParametro()" class="btn btn-primary col-lg-4">Cancelar</button>
+              </div>
+          </div>
+      </form>
+    </div>
   </div>
   <!-- /.Nuevo Parámetro -->
 
