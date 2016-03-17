@@ -58,7 +58,8 @@
 			}
 		
 			foreach ($rspta['pa'] as $pa) {
-					///calculando idvalor
+				$error=0;
+					//calculando idvalor
 				if($nuevoproyecto==0){
 					$q = 'SELECT IDVALOR from proyred.valor 
 						where IDPARAMETRO=:IDPARAMETRO and IDPROYECTO=:IDPROYECTO';
@@ -81,7 +82,8 @@
 				}
 
 				if($pa['TIPOPMPARAM']=="V"){
-					$success.=" El parametro $pa['NOMBREPARAM'] es solo de visualizacion por lo que ningun cambio en el sera efectivo.\n";
+
+					$success.=" El parametro".$pa['NOMBREPARAM']." es solo de visualizacion por lo que ningun cambio en el sera efectivo.\n";
 				}
 
 				else{//verificar que sea principal en Tabla pmparametro
@@ -131,6 +133,9 @@
 					$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 					//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 					$valor = $stmt->execute();
+					if($valor!=true){
+								$error=1;
+							}
 
 					//$success.=" Se creó el parámetro: $NOMBREPARAM.\n";
 
@@ -166,6 +171,10 @@
 					$valor = $stmt->execute();
 
 					//echo json_encode($valor);
+					if($valor!=true){
+								$error=1;
+							}
+
 
 					}
 					else{
@@ -211,8 +220,21 @@
 							$valor = $stmt->execute();
 
 							//echo json_encode($valor);
+							if($valor!=true){
+								$error=1;
+							}
 
 						}
+						if($error==1){
+							$error.="Se encontro error en un valor de la fila del proyecto ".$IDPROYECTO."\n";
+						}
+						else{
+													$success.=" Se crearon y actualizaron con exito los valores de la fila del proyecto".$IDPROYECTO."\n";
+						
+						}
+						$error=0;
+					//acaba for eash
+
 					}
 				}
 			}

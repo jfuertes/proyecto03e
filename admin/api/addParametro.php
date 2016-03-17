@@ -72,7 +72,7 @@
 			//echo json_encode($valor);
 
 			//if hay otros select
-			if($valor2 && $rspta->pa->othermodulo){
+			if($valor2 && isset($rspta->pa->othermodulo)){
 				$othermodulos=$rspta->pa->othermodulo;
 					$TIPOPMPARAM="V";
 					

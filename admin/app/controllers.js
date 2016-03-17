@@ -399,23 +399,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           }
 
     };
-
+ 
     $scope.formNewAcc=function(acc){
        console.log(acc);
            $http.post('api/addAcceso.php', {acc :acc, idpa : $scope.iduser} )
                 .success(function(data) {
                   console.log(data);
                   //$scope.addProyMacro=data;
-                  if(data="true"){
-                    $scope.ShowAccesobyUsuario($scope.iduser, $scope.NAMEUSER);
-                     $scope.newAlert('registro de Acceso exitoso.','success','3000');
-                    document.getElementById("formNewAcc").reset();
-                    $scope.seleccionar=true;
-                  }
-                  else{
-                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
-                     $scope.ShowTableParams=true;
-                  }
+                    if(data.success){
+                      $scope.ShowAccesobyUsuario($scope.iduser, $scope.NAMEUSER);
+                      $scope.newAlert(data.success,'success','3000');
+                      document.getElementById("formNewAcc").reset();
+                    }else{
+                      $scope.newAlert(data.Error,'danger','3000');
+                      document.getElementById("formNewAcc").reset();
+                    }
                   
                 })
                 .error(function(data) {
