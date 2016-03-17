@@ -27,7 +27,7 @@
 			FROM proyred.USUARIO
 			where LOWER(LOGINUS) = LOWER(:LOGINUS)';
 	$stmt = $dbh->prepare($q);
-	$stmt->bindParam(':LOGINUS',  $nombre, PDO::PARAM_STR);
+	$stmt->bindParam(':LOGINUS',  $LOGINUS, PDO::PARAM_STR);
 	$stmt->execute();
 	$r=$stmt->fetch(PDO::FETCH_ASSOC);
 

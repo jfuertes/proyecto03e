@@ -312,7 +312,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
          $http.post('api/nuevoUsuario.php', {nu :nu} )
               .success(function(data) {
                 console.log(data);
-                if(data.succes){
+                if(data.success){
                  
                    $scope.ShowTableUser=true;
                    $scope.editUser=false;
@@ -476,8 +476,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         .withButtons([
             'colvis',
             'copy',
-            'csv',
-            'pdf'
+            'csv'
         ]);
 
     $scope.alerts = [];
@@ -768,14 +767,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 .success(function(data) {
                   console.log(data);
                   //$scope.addProyMacro=data;
-                  if(data="true"){
+                  if(data.success){
                     $scope.ShowEtiquetasByParams($scope.IDParametro, $scope.NAMEParametro);
-                     $scope.newAlert('registro de etiqueta exitoso.','success','3000');
+                     $scope.newAlert(data.success,'success','3000');
                     document.getElementById("formParametro").reset();
                   }
                   else{
-                    $scope.newAlert('Error con el servidor. Inténtelo más tarde.','danger','3000');
-                     $scope.ShowTableParams=true;
+                    $scope.newAlert(data.Error,'danger','3000');
                   }
                   
                 })
