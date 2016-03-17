@@ -7,6 +7,23 @@ require_once('../../api/config/oracle.php');
 	session_start();
 	//echo $_SESSION['IDUSUARIO'];
 	//echo "ola";
+	if($_SESSION['type']=="ADMIN"){
+
+	$rspta = json_decode(file_get_contents("php://input"));
+		$ProyMacro= $rspta->ProyMacro;
+	$q= 'SELECT DISTINCT mo.IDMODULO, mo.NOMBREMODULO
+		 FROM proyred.MODULO mo';
+	
+	$stmt = $dbh->prepare($q);
+	$stmt->execute();
+	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+	echo json_encode($r);
+
+
+	}
+	else{
+
 	$rspta = json_decode(file_get_contents("php://input"));
 		$ProyMacro= $rspta->ProyMacro;
 	$q= 'SELECT DISTINCT acc.IDMODULO, mo.NOMBREMODULO
@@ -22,6 +39,8 @@ require_once('../../api/config/oracle.php');
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 	echo json_encode($r);
+
+	}
 
 
 ?>
