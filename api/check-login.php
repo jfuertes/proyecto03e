@@ -53,6 +53,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                     $stmt->execute();
                     
                     $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    //var_dump($r);
                     if (sizeof($r)>0){
                          $_SESSION['acceso']=$r;
                          $_SESSION['type']="admin";

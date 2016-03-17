@@ -144,6 +144,9 @@
 			$error.=" No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO.\n";
 		}
 	}
+	$rpta=array('success' => $success, 'error' => $error);
+
+	echo json_encode($rpta);
 
 
 ?>

@@ -533,7 +533,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
       };
        $scope.getModulosbyPMandUser= function(){
-            $http.post('../usuario/api/getModulosbyPMandUser.php',{ProyMacro:$scope.IDPROYMACRO} )
+            $http.post('api/getModulosbyPMandUserAdmin.php',{ProyMacro:$scope.IDPROYMACRO} )
                 .success(function(data) {
                   console.log(data);
                   $scope.Modulos=data;

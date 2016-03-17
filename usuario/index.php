@@ -61,7 +61,7 @@
                     <ul class="dropdown-menu">
                         <?php
                             if( $_SESSION['type']=="admin" || $_SESSION['type']=="ADMIN"){
-                                echo '<li><a href="../admin/index.php"><i class="fa fa-fw fa-dashboard"></i> Administracion</a></li>';
+                                echo '<li><a href="../admin/"><i class="fa fa-fw fa-dashboard"></i> Administracion</a></li>';
                             }
                         ?>
                         <li class="divider"></li>
