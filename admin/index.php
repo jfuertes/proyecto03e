@@ -65,7 +65,7 @@
                     <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo " ".$_SESSION['nombreus']." ".$_SESSION['apellidous']; ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#/"><i class="fa fa-fw fa-user"></i> Contraseña</a>
+                            <a href="../usuario/index.php"><i class="fa fa-fw fa-user"></i> Proyectos</a>
                         </li>
                         <li class="divider"></li>
                         <!--li>
@@ -86,7 +86,6 @@
                     echo '<li><a href="#/usuarios"><i class="fa fa-fw fa-user"></i>Usuarios</a></li><li><a href="#/proyMacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a></li>';
                 }
                 ?>
-                   
                     <li>
                         <a href="#/parametros"><i class="fa fa-fw fa-file"></i> Parametros</a>
                     </li>
@@ -94,9 +93,6 @@
                    <!-- <li>
                         <a href="#/tabMaestras"><i class="fa fa-fw fa-download"></i>Tablas Maestras</a>
                     </li>-->
-                   <li>
-                        <a href="../usuario/index.php"><i class="fa fa-fw fa-user"></i>Gestion de Proyectos</a>
-                    </li>
                      
                 </ul>
             </div>

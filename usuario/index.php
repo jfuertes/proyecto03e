@@ -59,9 +59,11 @@
                 <li class="dropdown">
                     <a href="/#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo " ".$_SESSION['nombreus']." ".$_SESSION['apellidous']; ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#/"><i class="fa fa-fw fa-user"></i> Contraseña</a>
-                        </li>
+                        <?php
+                            if( $_SESSION['type']=="admin" || $_SESSION['type']=="ADMIN"){
+                                echo '<li><a href="../admin/index.php"><i class="fa fa-fw fa-dashboard"></i> Administracion</a></li>';
+                            }
+                        ?>
                         <li class="divider"></li>
                         <!--li>
                             <div ng-controller="cabecera"><a href="#/" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a></div>
@@ -78,12 +80,6 @@
                     <li>
                         <a href="#/proyectos"><i class="fa fa-fw fa-dashboard"></i> Proyectos</a>
                     </li>
-                    <?php
-                   
-                    if( $_SESSION['type']=="admin"){
-                        echo '<li><a href="../admin/index.php"><i class="fa fa-fw fa-dashboard"></i> Administracion</a></li>';
-                    }
-                    ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
