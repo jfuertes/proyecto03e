@@ -203,7 +203,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         .withButtons([
             'colvis',
             'copy',
-            'excel'
+            'csv'
         ]);
     $scope.ShowTableUser=true;
     $scope.NuevoUsuario=false;

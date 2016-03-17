@@ -40,13 +40,12 @@
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
-                                <th>ID usuario</th>
                                 <th>Login</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>LDAP</th>
                                 <th>Email</th>
-                                <th>IDarea</th>
+                                <th>Area</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
 
@@ -54,7 +53,6 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="u in usuarios">
-                                <td>{{ u.IDUSUARIO }}</td>
                                 <td>{{ u.LOGINUS }}</td>
                                 <td>{{ u.NOMBREUS }}</td>
                                 <td>{{ u.APELLIDO }}</td>
@@ -89,14 +87,15 @@
         <div class="form-group">
             <label class="control-label col-lg-2" >Login de usuario:</label>
             <div class="col-lg-4">
-              <input type="text" class="form-control" placeholder="login" ng-model="nu.LOGINUS" required>
+              <input type="text" pattern="[a-zA-Z-]+" title="Solo se admiten letras" class="form-control" placeholder="login" ng-model="nu.LOGINUS" required>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-lg-2" >LDAP:</label>
             <div class="col-lg-4">
-              <select class="form-control"  ng-model="nu.LDAP" required>
+              <select class="form-control" ng-model="nu.LDAP" required>
+                    <option  value="">- Seleccione LDAP - </option>
                     <option  value="SI">Si </option>
                     <option  value="NO">No </option>
              </select>
@@ -106,20 +105,20 @@
         <div class="form-group" ng-show="nu.LDAP=='NO'">
             <label class="control-label col-lg-2" >Contraseña:</label>
             <div class="col-lg-4">
-              <input type="text" class="form-control" placeholder="contraseña" ng-model="nu.CLAVE">
+              <input type="text" pattern="[a-zA-Z-]+" title="Solo se admiten letras" class="form-control" placeholder="contraseña" ng-model="nu.CLAVE">
             </div>
         </div>
 
        <div class="form-group">
             <label class="control-label col-lg-2" >Nombre de usuario</label>
             <div class="col-lg-4">
-             <input type="text" class="form-control" placeholder="nombres" ng-model="nu.NOMBREUS" required>
+             <input type="text" pattern="[a-zA-Z-]+" title="Solo se admiten letras" class="form-control" placeholder="nombres" ng-model="nu.NOMBREUS" required>
             </div>
         </div>
          <div class="form-group">
             <label class="control-label col-lg-2" >Apellidos de usuario</label>
             <div class="col-lg-4">
-             <input type="text" class="form-control" placeholder="apellidos" ng-model="nu.APELLIDO" required>
+             <input type="text" pattern="[a-zA-Z-]+" title="Solo se admiten letras" class="form-control" placeholder="apellidos" ng-model="nu.APELLIDO" required>
             </div>
         </div>
 
