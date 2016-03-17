@@ -711,7 +711,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
 
-            if(objeto[0]['Nombre parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] ){
+            if(objeto[0]['Nombre parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] && objeto[0]['Vista modulo'] ){
               if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
                   $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
                   .success(function(data) {
@@ -750,7 +750,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
               console.log('resultado:' + $scope.csv.result);
             }
             else{
-                $scope.newAlert('Error: el archivo a importar debe contener los campos: ID parametro, Nombre parametro, Modulo, Tipo de dato, Estado, Orden, Tabla maestra. No debe contener tildes y solo la primera letra en mayúscula.','danger','5000');
+                $scope.newAlert('Error: el archivo a importar debe contener los campos: Nombre parametro, Modulo, Tipo de dato, Estado, Orden, Tabla maestra, Vista modulo. No debe contener tildes y solo la primera letra en mayúscula.','danger','5000');
             }
           }
           else{

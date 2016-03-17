@@ -37,6 +37,14 @@
 				$error.=" Error al crear el parámetro '$NOMBREPARAM', Orden ingresado invalido. \n";
 			}
 
+		$VISTAMODULO = isset($v['Vista modulo'])?$v['Vista modulo']:NULL;
+			if(strtolower($VISTAMODULO)=="principal") $TIPOPMPARAM='P';
+			elseif(strtolower($VISTAMODULO)=="visualizacion") $TIPOPMPARAM='V';
+			else{
+				$TIPOPMPARAM=NULL;
+				$error.=" Error al crear el parámetro '$NOMBREPARAM', El valor de Vista Modulo debe ser 'Principal' o 'Visualizacion'.\n";
+			}
+
 		//Tipo de Dato
 		$NOMBRETIPODATO = isset($v['Tipo de dato'])?$v['Tipo de dato']:NULL;
 
@@ -93,10 +101,11 @@
 			$q = 'SELECT 1 as RESULTADO
 					FROM proyred.parametro pa
 					INNER JOIN proyred.pmparametro pm on pa.IDPARAMETRO=pm.IDPARAMETRO
-					where pm.IDPROYMACRO=:IDPROYMACRO and LOWER(pa.NOMBREPARAM) = LOWER(:NOMBREPARAM)';
+					where pm.IDPROYMACRO=:IDPROYMACRO and LOWER(pa.NOMBREPARAM) = LOWER(:NOMBREPARAM) and pm.IDMODULO=:IDMODULO';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
 			$stmt->bindParam(':NOMBREPARAM',  $NOMBREPARAM, PDO::PARAM_STR);
+			$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
 			$stmt->execute();
 			$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -125,8 +134,8 @@
 
 					$valor = $stmt->execute();
 
-				$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO) 
-							values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO )';
+				$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO, TIPOPMPARAM) 
+							values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO, :TIPOPMPARAM )';
 					
 					$stmt = $dbh->prepare($q);
 					$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
@@ -134,6 +143,7 @@
 					$stmt->bindParam(':ESTADOPMPARAMETRO',  $ESTADOPARAM, PDO::PARAM_STR);
 					$stmt->bindParam(':ORDEN',  $ORDEN, PDO::PARAM_STR);
 					$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
+					$stmt->bindParam(':TIPOPMPARAM',  $TIPOPMPARAM, PDO::PARAM_STR);
 
 					$valor = $stmt->execute();
 
@@ -141,9 +151,10 @@
 			}
 		}
 		else{
-			$error.=" No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO.\n";
+			$error.=" No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo de dato: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO, Vista modulo: $VISTAMODULO.\n";
 		}
 	}
 
-
+	$rspta= array('success' => $success, 'error' => $error );
+	echo json_encode($rspta);
 ?>

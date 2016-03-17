@@ -75,7 +75,7 @@
                   <h4>Log de Importación </h4></br>
                       <div class="form-group">
                           <ul>
-                            <li ng-repeat="n in logImportar">{{n}}</li>
+                            <li ng-repeat="n in logImportar track by $index">{{n}}</li>
                           </ul>
                       </div>
                      <hr>
@@ -87,12 +87,12 @@
                     <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs"  class="row-border hover">
                         <thead>
                             <tr>
-                                <th>ID Parametro</th>
-                                <th>Nombre Parametro</th>
+                                <th>ID parametro</th>
+                                <th>Nombre parametro</th>
                                 <th>Modulo</th>
+                                <th>Vista modulo</th>
                                 <th>Tipo de dato</th>
                                 <th>Estado</th>
-                                <th>Control</th>
                                 <th>Orden</th>
                                 <th>Tabla maestra</th>
                                 <th></th>
@@ -103,9 +103,9 @@
                                 <td>{{ pa.IDPARAMETRO }}</td>
                                 <td>{{ pa.NOMBREPARAM  }}</td>
                                 <td>{{ pa.NOMBREMODULO }}</td>
+                                <td>{{ pa.TIPOPMPARAM | filtervisuaprin }}</td>
                                 <td>{{ pa.NOMBRETIPODATO }}</td>
                                 <td>{{ pa.ESTADOPMPARAMETRO | filterActivo }}</td>
-                                <td>{{ pa.TIPOPMPARAM | filtervisuaprin }}</td>
                                 <td>{{ pa.ORDEN  }}</td>
                                 <td>{{ pa.USAMAESTROPARAM |filterMaestro }}</td>
                                 <td>
