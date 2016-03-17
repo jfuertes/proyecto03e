@@ -80,7 +80,7 @@
                     </li>
                     <?php
                    
-                    if( $_SESSION['type']=="admin"){
+                    if( $_SESSION['type']=="admin" || $_SESSION['type']=="ADMIN"){
                         echo '<li><a href="../admin/index.php"><i class="fa fa-fw fa-dashboard"></i> Administracion</a></li>';
                     }
                     ?>
