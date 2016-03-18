@@ -21,7 +21,7 @@ foreach ($params as $key => $value) {
 //echo $value->NOMBREPARAM;
 	if($value->USAMAESTROPARAM =="1"){
 			$q = 'SELECT ETIQUETA from proyred.maestro
-					where IDPARAMETRO= :IDPARAMETRO';
+					where IDPARAMETRO= :IDPARAMETRO order by ETIQUETA';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDPARAMETRO',  $value->IDPARAMETRO, PDO::PARAM_STR);
 			$stmt->execute();

@@ -7,7 +7,7 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.AREA';
+		from proyred.AREA order by NOMBREAREA';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);

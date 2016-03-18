@@ -7,7 +7,7 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.modulo 
+		from proyred.modulo order by NOMBREMODULO
 		';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();

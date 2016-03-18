@@ -21,11 +21,11 @@ require_once('../../api/config/oracle.php');
 		
 	}
 	else{
-		$q= 'SELECT DISTINCT acc.IDPROYMACRO, pm.NOMBREPROYMACRO, pm.ESTADOPM
+		$q= "SELECT DISTINCT acc.IDPROYMACRO, pm.NOMBREPROYMACRO, pm.ESTADOPM
 			 FROM proyred.ACCESO acc
 			inner join proyred.PROYMACRO pm on acc.IDPROYMACRO=pm.IDPROYMACRO
-			where acc.IDUSUARIO=:IDUSUARIO and pm.ESTADOPM !=0
-			order by pm.NOMBREPROYMACRO';
+			where acc.IDUSUARIO=:IDUSUARIO and pm.ESTADOPM !=0 and acc.TIPOUS='ADMIN'
+			order by pm.NOMBREPROYMACRO";
 		
 		$stmt = $dbh->prepare($q);
 		$stmt->bindParam(':IDUSUARIO', $_SESSION['IDUSUARIO'], PDO::PARAM_INT);

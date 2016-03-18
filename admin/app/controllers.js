@@ -523,7 +523,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   });
     };
      $scope.getProyMacrobyUser= function(){
-            $http.post('../usuario/api/getProyMacrobyUser.php' )
+            $http.post('api/getProyMacrobyUserAdmin.php' )
                 .success(function(data) {
                   console.log(data);
                   $scope.ProyMacrobyUser=data;
@@ -638,6 +638,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.editarParam= function(pa){
         $scope.ShowTableParams=false;
         $scope.editParams=true;
+        $scope.getModulosbyPMandUser();
         console.log(pa);
         $scope.ParamSelect=pa;
     };

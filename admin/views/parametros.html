@@ -236,10 +236,10 @@
         </div>
         <div class="form-group">
             <label class="control-label col-lg-2" >Modulo:</label>
-            <div class="col-lg-4">
+            <div class="col-lg-4">{{ParamSelect.IDMODULO}}
               <select class="form-control"  ng-model="ParamSelect.IDMODULO">
                   <option ng-show="seleccionar">seleccionar</option>
-                  <option ng-repeat="mo in Modulos" value="{{mo.IDMODULO}}">{{mo.NOMBREMODULO}}</option>
+                  <option ng-repeat="mo in Modulos" value={{mo.IDMODULO}}>{{mo.NOMBREMODULO}}</option>
               </select>
             </div>
         </div>  

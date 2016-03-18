@@ -7,7 +7,7 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.tipodato';
+		from proyred.tipodato order by NOMBRETIPODATO';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
