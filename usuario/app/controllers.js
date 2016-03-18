@@ -61,39 +61,19 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       }
     };
   })
-  .controller('mainController',['$scope', '$http', function ($scope, $http) {
-    logout
-    
-    /*
-      $http({method:'POST',url: 'api/getProy.php',headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
-      .success(function(response) {
-        //console.log(response);
-      })
-      .error(function(response){
-        //console.log(response);
-      });
-*/
 
-  }])
   .controller('cabecera', ['$scope', '$http', function($scope, $http) {
-    $scope.logout = function(){
-      //alert("saliendo");
-    $http.post ('api/logout.php')
-        .success(function(data) {
-          //console.log(data);
-           location.reload();
-                //
-            })
-        .error(function(data) {
-                //console.log('Error: ' + data);
-        });
-};
+        $scope.logout = function(){
+            $http.post ('api/logout.php')
+              .success(function(data) {
+                  location.reload();
+              })
+              .error(function(data) {
+                    console.log('Error: ' + data);
+              });
+        };
+    }])
 
-}])
-  .controller('nuevoController',['$scope', function ($scope) {
-    
-
-  }])
   .controller('proyectosController',['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', '$http', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http) {
     $scope.ShowTableParams=true;
     $scope.ShowTablecomplete=false;
@@ -119,9 +99,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.newAlert = function(mensaje, tipo, tiempo) {
         $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
 
-        /*$('html,body').animate({
+        $('html,body').animate({
             scrollTop: $("#alerta").offset().top
-        }, 500);*/
+        }, 500);
     };
 
     $scope.closeAlert = function(index) {
@@ -175,6 +155,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.getProyMacro();
       $scope.getProyMacrobyUser();
       $scope.getModulos();
+
       $scope.getModulosbyproymacro=function(){
        // alert($scope.pm.idProy);
          if($scope.pm.hasOwnProperty('idProy')){
@@ -186,10 +167,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             $scope.pmgetProyecByProyMacro=pm;
             //console.log(pm);
             //console.log( 'inicio');
-            $http.post('../admin/api/getProyecByProyMacro.php',{pm:pm} )
+            $http.post('api/getProyecByProyMacro.php',{pm:pm} )
                 .success(function(data) {
                   $scope.ShowTablecomplete=true;
-                  //console.log(data);
                   $scope.Proyectos=data;
                   $scope.ProyectosArray=[];
                   $scope.valores=[];
@@ -205,20 +185,18 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   //console.log('Error: ' + data);
                 });
 
-            $http.post('../admin/api/getParamsByMacroyMod.php',{pm:pm} )
+            $http.post('api/getParamsByMacroyMod.php',{pm:pm} )
                 .success(function(data) {
                     $scope.ShowTablecomplete=true;
-                  //console.log('param');
-                  //console.log(data);
-                  $scope.Params=data;
+                    $scope.Params=data;
+                    console.log($scope.Params);
                       $http.post('api/getEtByparams.php',{params: $scope.Params} )
-                     
-                        .success(function(data) {
+                        .success(function(data2) {
                             //$scope.ShowTablecomplete=true;
                           //console.log(data);
-                          $scope.Etiquetas=data;
+                          $scope.Etiquetas=data2;
                         })
-                        .error(function(data) {
+                        .error(function(data2) {
                           //console.log('Error: ' + data);
                           });
 
@@ -227,7 +205,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   //console.log('Error: ' + data);
                   });
 
-              $http.post('../admin/api/getValoresByMacroyMod.php',{pm:pm} )
+              $http.post('api/getValoresByMacroyMod.php',{pm:pm} )
                     .success(function(data) {
                         $scope.ShowTablecomplete=true;
                      //console.log(data);
@@ -422,15 +400,10 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                      $scope.logImportar=[];
                       //console.log(data);
                       if(data.success){
-                         
-                         //$scope.csv.result=null;
                           var mensaje = data.success.split('\n');
-                          //console.log('mensaje');
-                          //console.log(mensaje);
+                           $scope.newAlert('La importación se realizó correctamente','success','3000');
                           $.each( mensaje, function( index, value ) {
-                                 if (value!=''){
-                                    //console.log('value:' + value);
-                                    $scope.newAlert(value,'success','3000');
+                                 if (value!=''){                                   
                                     $scope.logImportar.push(value);
                                 }
                             });
@@ -441,16 +414,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                         }
                          if(data.error){
                           var mensaje = data.error.split('\n');
+                          $scope.newAlert('Se encontraron algunos errores al importar los proyectos. Por favor revise el Log de Importación','danger','3000');
                           $.each( mensaje, function( index, value ) {
                                  if (value!=''){
-                                    $scope.newAlert(value,'danger','3000');
                                     $scope.logImportar.push(value);
                                 }
                           });
                         }
-                        //console.log('log');
-                        //console.log($scope.logImportar);
-                   
                   })
                   .error(function(data) {
                     //console.log('Error: ' + data);

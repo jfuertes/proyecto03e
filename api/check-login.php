@@ -7,14 +7,12 @@ header('Content-Type: application/json');
  */
 //include_once 'controlador.php';
     require_once('config/oracle.php');
-    include_once('ldap.php');
-
+    include_once('ldap v2.php');
 
     $db  = new dbConnect();
     $dbh = $db->conectardb();
 
    
-
 if(isset($_POST['login']) && isset($_POST['clave'])){  
 //echo "entro al login y clave";  
 
@@ -34,7 +32,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
             if($rx[0]['LDAP']=='SI'){
                 //acceso a webservice 
                 $responseWS=true;//respuesta del WS
-                //$userData  = checkLDAP($login, $pass); 
+                //$userData  = checkLDAP($login, $_POST['clave']); 
                 //if (!array_key_exists('error', $userData)){
                 if ($responseWS){
                     session_start();
@@ -109,7 +107,6 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                 else{
                     echo "{\"acceso\":\"false\"}";
                 }
-
 
             }
         }else{

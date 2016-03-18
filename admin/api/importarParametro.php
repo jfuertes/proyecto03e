@@ -81,14 +81,15 @@
 				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', Módulo ingresado invalido.\n";
 			}
 
-		
-		/*var_dump($NOMBREPARAM);
+		/*
+		var_dump($NOMBREPARAM);
 		var_dump($IDTIPODATO);
 		var_dump($USAMAESTROPARAM);
 		var_dump($ESTADOPARAM);
 		var_dump($IDMODULO);
 		var_dump($IDPROYMACRO);
-		var_dump($ORDEN);*/
+		var_dump($ORDEN);
+		var_dump($TIPOPMPARAM);*/
 
 		
 		if($NOMBREPARAM!=NULL && $IDTIPODATO!=NULL && $USAMAESTROPARAM!=NULL && $ESTADOPARAM!=NULL && $IDMODULO!=NULL && $IDPROYMACRO!=NULL){
@@ -104,11 +105,26 @@
 			$stmt->execute();
 			$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
-			$modulo_tmp = isset($r['IDMODULO'])?$r['IDMODULO']:'';
-			$id_param_tmp = isset($r['IDPARAMETRO'])?$r['IDPARAMETRO']:'';
+			$id_param_tmp = isset($r['IDPARAMETRO'])?$r['IDPARAMETRO']:'';		
 
+			if($TIPOPMPARAM=='V'){
+				// Buscando si el nombre del parámetro ya existe para el módulo seleccionado
+				$q = 'SELECT 1 as RESULTADO, pm.IDPARAMETRO, pm.IDMODULO
+						FROM proyred.parametro pa
+						INNER JOIN proyred.pmparametro pm on pa.IDPARAMETRO=pm.IDPARAMETRO
+						where pm.IDPROYMACRO=:IDPROYMACRO and LOWER(pa.NOMBREPARAM) = LOWER(:NOMBREPARAM)';
+				$stmt = $dbh->prepare($q);
+				$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
+				$stmt->bindParam(':NOMBREPARAM',  $NOMBREPARAM, PDO::PARAM_STR);
+				$stmt->execute();
+				$rr=$stmt->fetch(PDO::FETCH_ASSOC);
+
+				$modulo_tmp = isset($rr['IDMODULO'])?$rr['IDMODULO']:'';
+				$id_param_tmp = isset($rr['IDPARAMETRO'])?$rr['IDPARAMETRO']:'';					
+			}
+			
 			//Si el nombre ya existe y (el tipo de parámetro a agregar es 'Principal' o se quiere agregar el parámetro en un mismo módulo), se envía error de parámetro existente
-			if(isset($r['RESULTADO']) && ($TIPOPMPARAM=='P' || $modulo_tmp==$IDMODULO)){
+			if(isset($r['RESULTADO']) && ($TIPOPMPARAM=='P' || isset($rr['RESULTADO']))){
 				$error.=" El parámetro '$NOMBREPARAM' ya existe.\n";
 			}
 			else{
@@ -180,10 +196,8 @@
 			$error.="Error: No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo de dato: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO, Vista modulo: $VISTAMODULO.\n";
 		}
 	}
+	
 	$rpta=array('success' => $success, 'error' => $error);
-
 	echo json_encode($rpta);
 
-	$rspta= array('success' => $success, 'error' => $error );
-	echo json_encode($rspta);
 ?>

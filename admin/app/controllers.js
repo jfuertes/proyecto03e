@@ -726,10 +726,10 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                         if(data.success){
                             $scope.formByProyMacro($scope.pmLocal);
                             var mensaje = data.success.split('\n');
-                            
+                            $scope.newAlert('Importación exitosa','success','3000');
+
                             $.each( mensaje, function( index, value ) {
                                    if (value!=''){
-                                      $scope.newAlert(value,'success','3000');
                                       $scope.logImportar.push(value);
                                   }
                             });
@@ -740,9 +740,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
                         if(data.error){
                           var mensaje2 = data.error.split('\n');
+                          $scope.newAlert('Se encontraron algunos errores al importar parámetros. Por favor revise el Log de importación.','danger','3000');
                           $.each( mensaje2, function( index, value ) {
                                  if (value!=''){
-                                    $scope.newAlert(value,'danger','3000');
                                     $scope.logImportar.push(value);
                                 }
                           });

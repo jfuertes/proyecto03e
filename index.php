@@ -18,7 +18,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1">        
-        <title>Sistema de Gesti&oacute;n de Proyectos</title>
+        <title>Sistema de Proyectos de Implementación</title>
         <script src="vendor/angular/1.3.15/angular.min.js"></script>
         <script src="app/app.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -64,7 +64,7 @@
     </br>
         <div class="col-lg-12 col-lg-offset-1" id="logo"><img src="img/entel_logo.png" width="30%"></div>
         <div class="col-lg-12" id="contenedor">
-        <div class="col-lg-offset-2 col-lg-4" id="sistema" ><h3>Sistema de Gestión de Proyectos</h3></div>
+        <div class="col-lg-offset-1 col-lg-5" id="sistema" ><h3>Sistema de Proyectos de Implementación</h3></div>
         <div id="form" class="col-lg-offset-2 col-lg-4">
             <form class="login-form" ng-submit="ctrlLogin.postForm()">
                 <h2 id="acceso">Acceso</h2>

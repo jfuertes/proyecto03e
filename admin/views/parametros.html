@@ -228,17 +228,17 @@
        <div class="form-group">
             <label class="control-label col-lg-2" >Tipo de datos:</label>
             <div class="col-lg-4">
-              <select class="form-control"  ng-model="ParamSelect.IDTIPODATO">
-                  <option ng-show="seleccionar">seleccionar</option>
+              <select class="form-control"  ng-model="ParamSelect.IDTIPODATO" required>
+                  <option value="">- seleccionar -</option>
                   <option ng-repeat="td in tiposDatos" value="{{td.IDTIPODATO}}">{{td.NOMBRETIPODATO}}</option>
               </select>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-2" >Modulo:</label>
-            <div class="col-lg-4">{{ParamSelect.IDMODULO}}
-              <select class="form-control"  ng-model="ParamSelect.IDMODULO">
-                  <option ng-show="seleccionar">seleccionar</option>
+            <div class="col-lg-4"> {{ParamSelect.IDMODULO}}
+              <select class="form-control" ng-model="ParamSelect.IDMODULO" required>
+                  <option value="">- seleccionar -</option>
                   <option ng-repeat="mo in Modulos" value={{mo.IDMODULO}}>{{mo.NOMBREMODULO}}</option>
               </select>
             </div>
@@ -247,8 +247,8 @@
        <div class="form-group">
             <label class="control-label col-lg-2" >Tabla Maestra:</label>
             <div class="col-lg-4">
-              <select class="form-control"  ng-model="ParamSelect.USAMAESTROPARAM">
-                  <option ng-show="seleccionar">seleccionar</option>
+              <select class="form-control"  ng-model="ParamSelect.USAMAESTROPARAM" required>
+                  <option value="">- seleccionar -</option>
                   <option  value="1">Si usa maestro</option>
                   <option  value="0">No usa maestro</option>
               </select>
@@ -258,8 +258,8 @@
          <div class="form-group">
             <label class="control-label col-lg-2" >Estado:</label>
             <div class="col-lg-4">
-              <select class="form-control"  ng-model="ParamSelect.ESTADOPMPARAMETRO">
-                  <option ng-show="seleccionar">seleccionar</option>
+              <select class="form-control"  ng-model="ParamSelect.ESTADOPMPARAMETRO" required>
+                  <option value="">- seleccionar -</option>
                   <option  value="1">Activo</option>
                   <option  value="0">Inactivo</option>
               </select>

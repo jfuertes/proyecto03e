@@ -14,16 +14,16 @@
 
 	foreach ($rspta['va'] as $v) {
 	
-		$IDPROYECTO= $v['id del proyecto'];
+		$IDPROYECTO = isset($v['id del proyecto'])?$v['id del proyecto']:null;
 		//echo $IDPROYECTO;
-		$CODPROY= $v['codigo del proyecto'];
-		$NAMEPROY= $v['Nombre del proyecto'];
-
+		$CODPROY = isset($v['codigo del proyecto'])?$v['codigo del proyecto']:null;
+		$NAMEPROY = isset($v['Nombre del proyecto'])?$v['Nombre del proyecto']:null;
 
 		$ESTADOPROY=1;
 		$nuevoproyecto=0;
-		if($CODPROY == null && $NAMEPROY == null){
-			$error.="Se encontro una fila sin nombre de proyecto ni codigo por lo que se ignorara el conenido de toda la fila\n";
+
+		if($CODPROY == null || $NAMEPROY == null){
+			$error.="Error: Se encontro una fila sin código ni nombre de proyecto\n";
 		}
 		else{
 			if($IDPROYECTO == null){
@@ -35,7 +35,6 @@
 				$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
 				$IDPROYECTO=$r['IDPROYECTO'];
-
 
 				$q = 'INSERT INTO proyred.PROYECTO (IDPROYECTO, NOMBREPROY, ESTADOPROY, IDPROYMACRO, CODPROYECTO)
 							VALUES (:IDPROYECTO, :NOMBREPROY, :ESTADOPROY, :IDPROYMACRO, :CODPROYECTO) ';
@@ -49,10 +48,10 @@
 				$valor = $stmt->execute();
 				
 				if($valor==true){
-					$success.=" Se creó el proyecto: $NAMEPROY.\n";
+					$success.="Se creó el proyecto: $NAMEPROY.\n";
 				}
 				else{
-					$error.="No fue posible crear el proyecto $NAMEPROY\n";
+					$error.="Error: No fue posible crear el proyecto $NAMEPROY\n";
 				}
 
 			}
@@ -241,9 +240,9 @@
 			}
 		}	//echo json_encode($valor);
 
-	$rpta=array('success' => $success, 'error' => $error);
+	$respuesta=array('success' => $success, 'error' => $error);
 
-	echo json_encode($rpta);
+	echo json_encode($respuesta);
 
 	
 ?>
