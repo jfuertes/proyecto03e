@@ -7,7 +7,7 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.proymacro';
+		from proyred.proymacro order by NOMBREPROYMACRO';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -7,7 +7,7 @@
 	$dbh = $db->conectardb();
 
 	$q = 'SELECT *
-		from proyred.MAESTRO';
+		from proyred.MAESTRO order by ETIQUETA';
 	$stmt = $dbh->prepare($q);
 	$stmt->execute();
 	$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
