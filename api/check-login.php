@@ -34,9 +34,9 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
             if($rx[0]['LDAP']=='SI'){
                 //acceso a webservice 
                 $responseWS=true;//respuesta del WS
-                $userData  = checkLDAP($login, $pass); 
-                
-                if ($responseWS==true){
+                //$userData  = checkLDAP($login, $pass); 
+                //if (!array_key_exists('error', $userData)){
+                if ($responseWS){
                     session_start();
                     $_SESSION['IDUSUARIO']=$rx[0]['IDUSUARIO'];
                     $_SESSION['login']=$rx[0]['LOGINUS'];
@@ -47,7 +47,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                      $_SESSION['type']="usuario";
                     //                  
 
-                       $tipo='ADMIN';
+                   $tipo='ADMIN';
                     $q= 'SELECT IDPROYMACRO, IDMODULO from proyred.ACCESO where IDUSUARIO=:IDUSUARIO and TIPOUS=:TIPOUS';
                     
                     $stmt = $dbh->prepare($q);
@@ -64,7 +64,9 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                     echo "{\"acceso\":\"true\",\"url\":\"usuario\"}";
                     
                 }
-                
+                else{
+                    echo "{\"acceso\":\"false\"}";
+                }
             }else{
                 if($rx[0]['CLAVE']==$pass && $rx[0]['IDAREA']!=null){
                     session_start();
