@@ -186,48 +186,48 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
             $scope.pmgetProyecByProyMacro=pm;
             console.log(pm);
             console.log( 'inicio');
-                $http.post('../admin/api/getProyecByProyMacro.php',{pm:pm} )
-                    .success(function(data) {
-                      $scope.ShowTablecomplete=true;
-                      console.log(data);
-                      $scope.Proyectos=data;
-                      $scope.ProyectosArray=[];
-                      $scope.valores=[];
+            $http.post('../admin/api/getProyecByProyMacro.php',{pm:pm} )
+                .success(function(data) {
+                  $scope.ShowTablecomplete=true;
+                  console.log(data);
+                  $scope.Proyectos=data;
+                  $scope.ProyectosArray=[];
+                  $scope.valores=[];
 
-                      $.each(data,function(index,value){
-                        $scope.ProyectosArray[index]=value.NOMBREPROY;
-                        $scope.Proyectos[index].param={};
-                        $scope.valores[index]={};
-                      });
-                      console.log( $scope.ProyectosArray);
-                    })
-                    .error(function(data) {
-                      console.log('Error: ' + data);
-                      });
+                  $.each(data,function(index,value){
+                    $scope.ProyectosArray[index]=value.NOMBREPROY;
+                    $scope.Proyectos[index].param={};
+                    $scope.valores[index]={};
+                  });
+                  console.log( $scope.ProyectosArray);
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                });
 
-                $http.post('../admin/api/getParamsByMacroyMod.php',{pm:pm} )
-                    .success(function(data) {
-                        $scope.ShowTablecomplete=true;
-                      console.log('param');
-                      console.log(data);
-                      $scope.Params=data;
-                          $http.post('api/getEtByparams.php',{params: $scope.Params} )
-                         
-                            .success(function(data) {
-                                //$scope.ShowTablecomplete=true;
-                              console.log(data);
-                              $scope.Etiquetas=data;
-                            })
-                            .error(function(data) {
-                              console.log('Error: ' + data);
-                              });
+            $http.post('../admin/api/getParamsByMacroyMod.php',{pm:pm} )
+                .success(function(data) {
+                    $scope.ShowTablecomplete=true;
+                  console.log('param');
+                  console.log(data);
+                  $scope.Params=data;
+                      $http.post('api/getEtByparams.php',{params: $scope.Params} )
+                     
+                        .success(function(data) {
+                            //$scope.ShowTablecomplete=true;
+                          console.log(data);
+                          $scope.Etiquetas=data;
+                        })
+                        .error(function(data) {
+                          console.log('Error: ' + data);
+                          });
 
-                    })
-                    .error(function(data) {
-                      console.log('Error: ' + data);
-                      });
+                })
+                .error(function(data) {
+                  console.log('Error: ' + data);
+                  });
 
-                $http.post('../admin/api/getValoresByMacroyMod.php',{pm:pm} )
+              $http.post('../admin/api/getValoresByMacroyMod.php',{pm:pm} )
                     .success(function(data) {
                         $scope.ShowTablecomplete=true;
                      console.log(data);
@@ -361,16 +361,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           console.log(JSON.stringify(pro));
           //$http({method:'POST',url: 'api/editProyecto2.php', data: $.param({pro:pro, pa:$scope.Params}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
           $http.post('api/editProyecto.php',{pro:pro, pa:$scope.Params} )
-                .success(function(data) {
-                    $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
-                    $scope.ShowTablecomplete=true;
-                    $scope.ShowTableParams=true;
-                    $scope.EditarProyecto=false;
-                  console.log(data);
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
+            .success(function(data) {
+                $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                $scope.ShowTablecomplete=true;
+                $scope.ShowTableParams=true;
+                $scope.EditarProyecto=false;
+              console.log(data);
+            })
+            .error(function(data) {
+              console.log('Error: ' + data);
+              });
       }
 
       $scope.agregarProyecto= function(){
@@ -381,15 +381,15 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.guardarProyecto=function(pron){
          console.log(pron);
           $http.post('api/addProyecto.php',{pro:pron, pa:$scope.Params, pm: $scope.pmgetProyecByProyMacro} )
-              .success(function(data) {
-                  $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
-                  $scope.ShowTablecomplete=true;
-                  $scope.ShowTableParams=true;
-                console.log(data);
-              })
-              .error(function(data) {
-                console.log('Error: ' + data);
-                });
+            .success(function(data) {
+                $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                $scope.ShowTablecomplete=true;
+                $scope.ShowTableParams=true;
+              console.log(data);
+            })
+            .error(function(data) {
+              console.log('Error: ' + data);
+              });
     }
 
       $scope.csv = {
@@ -403,6 +403,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           encoding: 'UTF16',
           encodingVisible: false,
     };
+
+    $scope.LogError = function () {
+        //console.log($scope.logImportar);
+        //alert($scope.logImportar);
+        if($scope.LogImp == true) $scope.LogImp=false;
+        else $scope.LogImp=true;
+        console.log($scope.LogImp);
+    }
 
       $scope.importar = function (json, tabWidth) {
           if($scope.csv.result){

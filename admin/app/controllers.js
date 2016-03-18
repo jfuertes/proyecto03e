@@ -709,52 +709,62 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
     $scope.importar = function (json, tabWidth) {
           if($scope.csv.result){
-            var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
+            if($scope.csv.result.length>0){
+              var objeto =  $scope.csv.result.slice(0,$scope.csv.result.length);
+              
+              if(objeto==null) {console.log('si')}
+              else {console.log('no')}
 
-            if(objeto[0]['Nombre parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] && objeto[0]['Vista modulo'] ){
-              if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
-                  $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
-                  .success(function(data) {
-                      $scope.logImportar=[];
-                      if(data.success){
-                          $scope.formByProyMacro($scope.pmLocal);
-                          var mensaje = data.success.split('\n');
-                          
-                          $.each( mensaje, function( index, value ) {
+                console.log(objeto);
+
+              if(objeto[0]['Nombre parametro'] && objeto[0]['Modulo'] && objeto[0]['Tipo de dato'] && objeto[0]['Tabla maestra'] && objeto[0]['Orden'] && objeto[0]['Vista modulo'] ){
+                if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                    $http.post('api/importarParametro.php', {pa :objeto, pm : $scope.IDPROYMACRO} )
+                    .success(function(data) {
+                        $scope.logImportar=[];
+                        if(data.success){
+                            $scope.formByProyMacro($scope.pmLocal);
+                            var mensaje = data.success.split('\n');
+                            
+                            $.each( mensaje, function( index, value ) {
+                                   if (value!=''){
+                                      $scope.newAlert(value,'success','3000');
+                                      $scope.logImportar.push(value);
+                                  }
+                            });
+                        }
+                        else{
+                          $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
+                        }
+
+                        if(data.error){
+                          var mensaje2 = data.error.split('\n');
+                          $.each( mensaje2, function( index, value ) {
                                  if (value!=''){
-                                    $scope.newAlert(value,'success','3000');
+                                    $scope.newAlert(value,'danger','3000');
                                     $scope.logImportar.push(value);
                                 }
                           });
-                      }
-                      else{
-                        $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
-                      }
-
-                      if(data.error){
-                        var mensaje = data.error.split('\n');
-                        $.each( mensaje, function( index, value ) {
-                               if (value!=''){
-                                  $scope.newAlert(value,'danger','3000');
-                                  $scope.logImportar.push(value);
-                              }
-                        });
-                      }
-                      console.log('log');
-                      console.log($scope.logImportar);
-                  })
-                  .error(function(data) {
-                    console.log('Error: ' + data);
-                  });
+                        }
+                        console.log('log');
+                        console.log($scope.logImportar);
+                    })
+                    .error(function(data) {
+                      console.log('Error: ' + data);
+                    });
+                }
+                console.log('resultado:' + $scope.csv.result);
               }
-              console.log('resultado:' + $scope.csv.result);
+              else{
+                  $scope.newAlert('Error: el archivo a importar debe contener los campos: Nombre parametro, Modulo, Tipo de dato, Estado, Orden, Tabla maestra, Vista modulo. No debe contener tildes y solo la primera letra en mayúscula.','danger','5000');
+              }
             }
             else{
-                $scope.newAlert('Error: el archivo a importar debe contener los campos: Nombre parametro, Modulo, Tipo de dato, Estado, Orden, Tabla maestra, Vista modulo. No debe contener tildes y solo la primera letra en mayúscula.','danger','5000');
+                $scope.newAlert('El archivo seleccionado no es un csv válido .','warning','3000');
             }
           }
           else{
-              $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
+              $scope.newAlert('Seleccione el archivo a importar .','warning','3000');
           }
           console.log($scope.csv.result);
     };

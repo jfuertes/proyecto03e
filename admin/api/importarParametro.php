@@ -12,7 +12,6 @@
 
 	foreach ($rspta['pa'] as $v) {
 		
-
 		$NOMBREPARAM = isset($v['Nombre parametro'])?$v['Nombre parametro']:NULL;
 		
 		$MAESTRO = isset($v['Tabla maestra'])?$v['Tabla maestra']:NULL;
@@ -20,21 +19,21 @@
 			elseif(strtolower($MAESTRO)=="no") $USAMAESTROPARAM='0';
 			else{
 				$USAMAESTROPARAM=NULL;
-				$error.=" Error al crear el parámetro '$NOMBREPARAM', El valor de Maestro debe ser 'Si' o 'No'.\n";
+				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', El valor de Maestro debe ser 'Si' o 'No'.\n";
 			}
 		$ESTADOPARAM = isset($v['Estado'])?$v['Estado']:NULL;
 			if(strtolower($ESTADOPARAM)=="activo") $ESTADOPARAM='1';
 			elseif(strtolower($ESTADOPARAM)=="inactivo") $ESTADOPARAM='0';
 			else{
 				$ESTADOPARAM=NULL;
-				$error.=" Error al crear el parámetro '$NOMBREPARAM', Estado ingresado invalido. \n";
+				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', Estado ingresado invalido. \n";
 			}
 		$IDPROYMACRO = isset($rspta['pm'])?$rspta['pm']:NULL;
 		$ORDEN = isset($v['Orden'])?$v['Orden']:NULL;
 			if($ORDEN>=0) $OK = 1;
 			else{
 				$ORDEN=NULL;
-				$error.=" Error al crear el parámetro '$NOMBREPARAM', Orden ingresado invalido. \n";
+				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', Orden ingresado invalido. \n";
 			}
 
 		$VISTAMODULO = isset($v['Vista modulo'])?$v['Vista modulo']:NULL;
@@ -42,7 +41,7 @@
 			elseif(strtolower($VISTAMODULO)=="visualizacion") $TIPOPMPARAM='V';
 			else{
 				$TIPOPMPARAM=NULL;
-				$error.=" Error al crear el parámetro '$NOMBREPARAM', El valor de Vista Modulo debe ser 'Principal' o 'Visualizacion'.\n";
+				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', El valor de Vista Modulo debe ser 'Principal' o 'Visualizacion'.\n";
 			}
 
 		//Tipo de Dato
@@ -60,10 +59,9 @@
 			}
 			else{
 				$IDTIPODATO=NULL;
-				$error.=" Error al crear el parámetro '$NOMBREPARAM', Tipo de Dato ingresado invalido. \n";
+				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', Tipo de Dato ingresado invalido. \n";
 			}
 		
-
 		// Modulo
 		$NOMBREMODULO = isset($v['Modulo'])?$v['Modulo']:NULL;
 		$NOMBREMODULO = isset($v['Módulo'])?$v['Modulo']:$NOMBREMODULO;
@@ -80,7 +78,7 @@
 			}
 			else{
 				$IDMODULO=NULL;
-				$error.=" Error al crear el parámetro '$NOMBREPARAM', Módulo ingresado invalido.\n";
+				$error.="Error: Error al crear el parámetro '$NOMBREPARAM', Módulo ingresado invalido.\n";
 			}
 
 		
@@ -92,66 +90,94 @@
 		var_dump($IDPROYMACRO);
 		var_dump($ORDEN);*/
 
-
-
 		
 		if($NOMBREPARAM!=NULL && $IDTIPODATO!=NULL && $USAMAESTROPARAM!=NULL && $ESTADOPARAM!=NULL && $IDMODULO!=NULL && $IDPROYMACRO!=NULL){
 
 			// Buscando si el nombre del parámetro ya existe
-			$q = 'SELECT 1 as RESULTADO
+			$q = 'SELECT 1 as RESULTADO, pm.IDPARAMETRO, pm.IDMODULO
 					FROM proyred.parametro pa
 					INNER JOIN proyred.pmparametro pm on pa.IDPARAMETRO=pm.IDPARAMETRO
-					where pm.IDPROYMACRO=:IDPROYMACRO and LOWER(pa.NOMBREPARAM) = LOWER(:NOMBREPARAM) and pm.IDMODULO=:IDMODULO';
+					where pm.IDPROYMACRO=:IDPROYMACRO and LOWER(pa.NOMBREPARAM) = LOWER(:NOMBREPARAM)';
 			$stmt = $dbh->prepare($q);
 			$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
 			$stmt->bindParam(':NOMBREPARAM',  $NOMBREPARAM, PDO::PARAM_STR);
-			$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
 			$stmt->execute();
 			$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
-			//var_dump($r);
-			if (isset($r['RESULTADO'])) {
+			$modulo_tmp = isset($r['IDMODULO'])?$r['IDMODULO']:'';
+			$id_param_tmp = isset($r['IDPARAMETRO'])?$r['IDPARAMETRO']:'';
+
+			//Si el nombre ya existe y (el tipo de parámetro a agregar es 'Principal' o se quiere agregar el parámetro en un mismo módulo), se envía error de parámetro existente
+			if(isset($r['RESULTADO']) && ($TIPOPMPARAM=='P' || $modulo_tmp==$IDMODULO)){
 				$error.=" El parámetro '$NOMBREPARAM' ya existe.\n";
 			}
 			else{
 				//Calculando el siguiente id de parámetro
-				$q = 'SELECT max(IDPARAMETRO) +1 as ID_PARAMETRO from proyred.parametro';
-				$stmt = $dbh->prepare($q);
-				$stmt->execute();
-				$r=$stmt->fetch(PDO::FETCH_ASSOC);
-
-				$IDPARAMETRO=$r['ID_PARAMETRO'];
-
-				$q = 'INSERT INTO proyred.parametro (IDPARAMETRO, NOMBREPARAM, IDTIPODATO, USAMAESTROPARAM, ESTADOPARAM) 
-							values (:IDPARAMETRO, :NOMBREPARAM, :IDTIPODATO, :USAMAESTROPARAM, :ESTADOPARAM)';
-					
+				if($TIPOPMPARAM=='P' && $id_param_tmp==''){
+					// Es un nuevo parámetro con tipo 'Principal' y se crea parámetro en tabla PARAMETRO y PMPARAMETRO
+					$q = 'SELECT max(IDPARAMETRO) +1 as ID_PARAMETRO from proyred.parametro';
 					$stmt = $dbh->prepare($q);
-					$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
-					$stmt->bindParam(':NOMBREPARAM',  $NOMBREPARAM, PDO::PARAM_STR);
-					$stmt->bindParam(':IDTIPODATO',  $IDTIPODATO, PDO::PARAM_STR);
-					$stmt->bindParam(':USAMAESTROPARAM',  $USAMAESTROPARAM, PDO::PARAM_STR);
-					$stmt->bindParam(':ESTADOPARAM',  $ESTADOPARAM, PDO::PARAM_STR);
+					$stmt->execute();
+					$r=$stmt->fetch(PDO::FETCH_ASSOC);
 
-					$valor = $stmt->execute();
+					$IDPARAMETRO=$r['ID_PARAMETRO'];
 
-				$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO, TIPOPMPARAM) 
+					$q = 'INSERT INTO proyred.parametro (IDPARAMETRO, NOMBREPARAM, IDTIPODATO, USAMAESTROPARAM, ESTADOPARAM) 
+								values (:IDPARAMETRO, :NOMBREPARAM, :IDTIPODATO, :USAMAESTROPARAM, :ESTADOPARAM)';
+						
+						$stmt = $dbh->prepare($q);
+						$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
+						$stmt->bindParam(':NOMBREPARAM',  $NOMBREPARAM, PDO::PARAM_STR);
+						$stmt->bindParam(':IDTIPODATO',  $IDTIPODATO, PDO::PARAM_STR);
+						$stmt->bindParam(':USAMAESTROPARAM',  $USAMAESTROPARAM, PDO::PARAM_STR);
+						$stmt->bindParam(':ESTADOPARAM',  $ESTADOPARAM, PDO::PARAM_STR);
+
+						$valor = $stmt->execute();
+
+					if($valor){
+						$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO, TIPOPMPARAM) 
 							values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO, :TIPOPMPARAM )';
-					
-					$stmt = $dbh->prepare($q);
-					$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
-					$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
-					$stmt->bindParam(':ESTADOPMPARAMETRO',  $ESTADOPARAM, PDO::PARAM_STR);
-					$stmt->bindParam(':ORDEN',  $ORDEN, PDO::PARAM_STR);
-					$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
-					$stmt->bindParam(':TIPOPMPARAM',  $TIPOPMPARAM, PDO::PARAM_STR);
+						
+						$stmt = $dbh->prepare($q);
+						$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
+						$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
+						$stmt->bindParam(':ESTADOPMPARAMETRO',  $ESTADOPARAM, PDO::PARAM_STR);
+						$stmt->bindParam(':ORDEN',  $ORDEN, PDO::PARAM_STR);
+						$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
+						$stmt->bindParam(':TIPOPMPARAM',  $TIPOPMPARAM, PDO::PARAM_STR);
 
-					$valor = $stmt->execute();
+						$valor2 = $stmt->execute();
 
-					$success.=" Se creó el parámetro: $NOMBREPARAM.\n";
+						if($valor2) $success.=" Se creó el parámetro: $NOMBREPARAM.\n";
+						else $error.="Error: Error al crear parámetro: $NOMBREPARAM.\n";
+					}
+					else{
+						$error.="Error:  Error al crear parámetro: $NOMBREPARAM.\n";
+					}
+				}
+				elseif($TIPOPMPARAM=='V' && $id_param_tmp!=''){
+					// Es un parámetro existente con tipo 'Vista' a agregarse en un nuevo módulo. Solo se crea parámetro en tabla PMPARAMETRO
+
+					$q = 'INSERT INTO proyred.pmparametro (IDPROYMACRO, IDPARAMETRO, ESTADOPMPARAMETRO, ORDEN, IDMODULO, TIPOPMPARAM) 
+							values (:IDPROYMACRO, :IDPARAMETRO, :ESTADOPMPARAMETRO, :ORDEN, :IDMODULO, :TIPOPMPARAM )';
+						
+						$stmt = $dbh->prepare($q);
+						$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);
+						$stmt->bindParam(':IDPARAMETRO',  $IDPARAMETRO, PDO::PARAM_STR);
+						$stmt->bindParam(':ESTADOPMPARAMETRO',  $ESTADOPARAM, PDO::PARAM_STR);
+						$stmt->bindParam(':ORDEN',  $ORDEN, PDO::PARAM_STR);
+						$stmt->bindParam(':IDMODULO',  $IDMODULO, PDO::PARAM_STR);
+						$stmt->bindParam(':TIPOPMPARAM',  $TIPOPMPARAM, PDO::PARAM_STR);
+
+						$valor2 = $stmt->execute();
+
+						if($valor2) $success.=" Se creó el parámetro: $NOMBREPARAM.\n";
+						else $error.="Error: Error al crear parámetro: $NOMBREPARAM.\n";
+				}
 			}
 		}
 		else{
-			$error.=" No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo de dato: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO, Vista modulo: $VISTAMODULO.\n";
+			$error.="Error: No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo de dato: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO, Vista modulo: $VISTAMODULO.\n";
 		}
 	}
 

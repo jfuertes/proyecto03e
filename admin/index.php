@@ -93,11 +93,12 @@
                     <li>
                         <a href="#/proyMacro"><i class="fa fa-fw fa-edit"></i>Proyectos Macro</a>
                     </li>
-                    <li>
-                        <a href="#/parametros"><i class="fa fa-fw fa-file"></i> Parametros</a>
-                    </li>';
+                    ';
                 }
                 ?>
+                    <li>
+                        <a href="#/parametros"><i class="fa fa-fw fa-file"></i> Parametros</a>
+                    </li>
                     
                    <!-- <li>
                         <a href="#/tabMaestras"><i class="fa fa-fw fa-download"></i>Tablas Maestras</a>
