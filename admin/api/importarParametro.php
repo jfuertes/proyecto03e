@@ -180,6 +180,9 @@
 			$error.="Error: No se cargó el parámetro con valores: Nombre: $NOMBREPARAM, Tipo de dato: $NOMBRETIPODATO, Maestro: $MAESTRO, Módulo: $NOMBREMODULO, Orden: $ORDEN, Proy Macro:$IDPROYMACRO, Vista modulo: $VISTAMODULO.\n";
 		}
 	}
+	$rpta=array('success' => $success, 'error' => $error);
+
+	echo json_encode($rpta);
 
 	$rspta= array('success' => $success, 'error' => $error );
 	echo json_encode($rspta);
