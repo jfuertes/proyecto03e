@@ -67,10 +67,10 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     /*
       $http({method:'POST',url: 'api/getProy.php',headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
       .success(function(response) {
-        console.log(response);
+        //console.log(response);
       })
       .error(function(response){
-        console.log(response);
+        //console.log(response);
       });
 */
 
@@ -80,12 +80,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       //alert("saliendo");
     $http.post ('api/logout.php')
         .success(function(data) {
-          console.log(data);
+          //console.log(data);
            location.reload();
                 //
             })
         .error(function(data) {
-                console.log('Error: ' + data);
+                //console.log('Error: ' + data);
         });
 };
 
@@ -119,9 +119,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     $scope.newAlert = function(mensaje, tipo, tiempo) {
         $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
 
-        $('html,body').animate({
+        /*$('html,body').animate({
             scrollTop: $("#alerta").offset().top
-        }, 500);
+        }, 500);*/
     };
 
     $scope.closeAlert = function(index) {
@@ -131,22 +131,22 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
        $scope.getProyMacro= function(){
             $http.post('../admin/api/getProyMacro.php' )
                 .success(function(data) {
-                  console.log(data);
+                  //console.log(data);
                   $scope.ProyMacro=data;
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
+                  //console.log('Error: ' + data);
                   });
       };
 
         $scope.getProyMacrobyUser= function(){
             $http.post('api/getProyMacrobyUser.php' )
                 .success(function(data) {
-                  console.log(data);
+                  //console.log(data);
                   $scope.ProyMacrobyUser=data;
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
+                  //console.log('Error: ' + data);
                   });
       };
 
@@ -154,21 +154,21 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
        $scope.getModulos= function(){
             $http.post('../admin/api/getModulos.php' )
                 .success(function(data) {
-                  console.log(data);
+                  //console.log(data);
                   $scope.Modulos=data;
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
+                  //console.log('Error: ' + data);
                   });
       };
        $scope.getModulosbyPMandUser= function(ProyMacro){
             $http.post('api/getModulosbyPMandUser.php',{ProyMacro:ProyMacro} )
                 .success(function(data) {
-                  console.log(data);
+                  //console.log(data);
                   $scope.Modulos=data;
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
+                  //console.log('Error: ' + data);
                   });
       };
 
@@ -184,12 +184,12 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.getProyecByProyMacro=function(pm){
         if(pm && pm.idProy && pm.idMod){
             $scope.pmgetProyecByProyMacro=pm;
-            console.log(pm);
-            console.log( 'inicio');
+            //console.log(pm);
+            //console.log( 'inicio');
             $http.post('../admin/api/getProyecByProyMacro.php',{pm:pm} )
                 .success(function(data) {
                   $scope.ShowTablecomplete=true;
-                  console.log(data);
+                  //console.log(data);
                   $scope.Proyectos=data;
                   $scope.ProyectosArray=[];
                   $scope.valores=[];
@@ -199,61 +199,61 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                     $scope.Proyectos[index].param={};
                     $scope.valores[index]={};
                   });
-                  console.log( $scope.ProyectosArray);
+                  //console.log( $scope.ProyectosArray);
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
+                  //console.log('Error: ' + data);
                 });
 
             $http.post('../admin/api/getParamsByMacroyMod.php',{pm:pm} )
                 .success(function(data) {
                     $scope.ShowTablecomplete=true;
-                  console.log('param');
-                  console.log(data);
+                  //console.log('param');
+                  //console.log(data);
                   $scope.Params=data;
                       $http.post('api/getEtByparams.php',{params: $scope.Params} )
                      
                         .success(function(data) {
                             //$scope.ShowTablecomplete=true;
-                          console.log(data);
+                          //console.log(data);
                           $scope.Etiquetas=data;
                         })
                         .error(function(data) {
-                          console.log('Error: ' + data);
+                          //console.log('Error: ' + data);
                           });
 
                 })
                 .error(function(data) {
-                  console.log('Error: ' + data);
+                  //console.log('Error: ' + data);
                   });
 
               $http.post('../admin/api/getValoresByMacroyMod.php',{pm:pm} )
                     .success(function(data) {
                         $scope.ShowTablecomplete=true;
-                     console.log(data);
-                    //  console.log(data[0]);
+                     //console.log(data);
+                    //  //console.log(data[0]);
                      // $scope.Valores=data;
-                     console.log($scope.Params);
+                     //console.log($scope.Params);
                       $.each(data,function(index,value){
-                       /// console.log(value.NOMBREPROY);
-                       // console.log(value.NOMBREPARAM);
-                         //   console.log(value.VAL);
-                        //console.log(value.IDPARAMETRO);
-                        //  console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
+                       /// //console.log(value.NOMBREPROY);
+                       // //console.log(value.NOMBREPARAM);
+                         //   //console.log(value.VAL);
+                        ////console.log(value.IDPARAMETRO);
+                        //  //console.log(jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray ));
                             var contador = jQuery.inArray( value.NOMBREPROY, $scope.ProyectosArray );
                             // contador de parametro usando el value.IDPARAMETRO  
                             var contPara=0;
                             var paracont;
                             $.each($scope.Params, function(indexp, valuep){
-                              //console.log(parseInt(valuep.IDPARAMETRO) == value.IDPARAMETRO);
+                              ////console.log(parseInt(valuep.IDPARAMETRO) == value.IDPARAMETRO);
                               if(parseInt(valuep.IDPARAMETRO) == value.IDPARAMETRO){
                                 paracont=contPara;
                               }
                               contPara++;
 
                             });
-                            console.log(paracont);
-                            //console.log($scope.Params[paracont].IDTIPODATO);
+                            //console.log(paracont);
+                            ////console.log($scope.Params[paracont].IDTIPODATO);
                             //var nameparam=value.NOMBREPARAM;
                            if($scope.Params[paracont].IDTIPODATO==1){
                               if (parseInt(value.VAL)!="NaN"){
@@ -263,7 +263,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                                 $scope.Proyectos[contador].param[value.NOMBREPARAM]=null;
                               }
                               
-                             // console.log(parseInt(value.VAL));
+                             // //console.log(parseInt(value.VAL));
                            }
                            else if($scope.Params[paracont].IDTIPODATO==2){
                                 if (parseFloat(value.VAL)!="NaN"){
@@ -273,13 +273,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                                 $scope.Proyectos[contador].param[value.NOMBREPARAM]=null;
                               }
                                 
-                             // console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
-                              //console.log(value.VAL);
-                              //console.log(contador);
+                             // //console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
+                              ////console.log(value.VAL);
+                              ////console.log(contador);
                            }
                            else if($scope.Params[paracont].IDTIPODATO==3){
                               $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
-                              //console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
+                              ////console.log( $scope.Proyectos[paracont].param[value.NOMBREPARAM]);
                            }
                            else if ($scope.Params[paracont].IDTIPODATO==4){
                              // $scope.Proyectos[contador].param[value.NOMBREPARAM]=value.VAL;
@@ -297,33 +297,33 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                            }
                             $scope.valores[contador][value.NOMBREPARAM]=value.IDVALOR;
                       });
-                      console.log($scope.Proyectos);
+                      //console.log($scope.Proyectos);
 
                     })
                     .error(function(data) {
-                      console.log('Error: ' + data);
+                      //console.log('Error: ' + data);
                       });
 
-                   console.log( 'fin');
+                   //console.log( 'fin');
 
                    //verificar accesos de R y RW
                    $http.post('api/getAccesbyProys.php',{pm:pm})
                     .success(function(data) {
                       if(data.PRIVILEGIO=="RW"){
-                        console.log(data.PRIVILEGIO);
+                        //console.log(data.PRIVILEGIO);
                         $scope.ShowWrite=true;
                       }
                       else if(data.PRIVILEGIO=="R"){
-                        console.log(data.PRIVILEGIO);
+                        //console.log(data.PRIVILEGIO);
                         $scope.ShowWrite=false;
                       }
                       else{
-                        console.log("error salio:"+data.PRIVILEGIO);
+                        //console.log("error salio:"+data.PRIVILEGIO);
                       }
 
                     })
                     .error(function(data) {
-                      console.log('Error: ' + data);
+                      //console.log('Error: ' + data);
                       });
           }
           else{
@@ -343,7 +343,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           $scope.pro.etiquetas=$scope.Etiquetas;
 
           //alert(typeof $scope.pro["Fecha Modificacion Plan"]);
-          console.log($scope.pro);
+          //console.log($scope.pro);
           $scope.EditarProyecto=true;
           $scope.ShowTablecomplete=false;
           $scope.ShowTableParams=false;
@@ -358,7 +358,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           $scope.NuevoProyecto=false;
       }
       $scope.editProyecto=function(pro){
-          console.log(JSON.stringify(pro));
+          //console.log(JSON.stringify(pro));
           //$http({method:'POST',url: 'api/editProyecto2.php', data: $.param({pro:pro, pa:$scope.Params}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
           $http.post('api/editProyecto.php',{pro:pro, pa:$scope.Params} )
             .success(function(data) {
@@ -366,10 +366,10 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                 $scope.ShowTablecomplete=true;
                 $scope.ShowTableParams=true;
                 $scope.EditarProyecto=false;
-              console.log(data);
+              //console.log(data);
             })
             .error(function(data) {
-              console.log('Error: ' + data);
+              //console.log('Error: ' + data);
               });
       }
 
@@ -379,16 +379,16 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         $scope.EditarProyecto=false;
       }
       $scope.guardarProyecto=function(pron){
-         console.log(pron);
+         //console.log(pron);
           $http.post('api/addProyecto.php',{pro:pron, pa:$scope.Params, pm: $scope.pmgetProyecByProyMacro} )
             .success(function(data) {
                 $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
                 $scope.ShowTablecomplete=true;
                 $scope.ShowTableParams=true;
-              console.log(data);
+              //console.log(data);
             })
             .error(function(data) {
-              console.log('Error: ' + data);
+              //console.log('Error: ' + data);
               });
     }
 
@@ -405,59 +405,67 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
 
     $scope.LogError = function () {
-        //console.log($scope.logImportar);
+        ////console.log($scope.logImportar);
         //alert($scope.logImportar);
         if($scope.LogImp == true) $scope.LogImp=false;
         else $scope.LogImp=true;
-        console.log($scope.LogImp);
+        //console.log($scope.LogImp);
     }
 
       $scope.importar = function (json, tabWidth) {
           if($scope.csv.result){
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
-
-            if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
-                $http.post('api/importarProyecto.php', {va :objeto, pm : $scope.pmgetProyecByProyMacro, pa : $scope.Params } )
-                .success(function(data) {
-                   $scope.logImportar=[];
-                  console.log(data);
-                    if(data.success){
-                       $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
-                       $scope.csv.result=null;
-                        var mensaje = data.success.split('\n');
-                        $.each( mensaje, function( index, value ) {
+            if(objeto[0]['id del proyecto'] && objeto[0]['codigo del proyecto'] && objeto[0]['Nombre del proyecto']){
+              if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                  $http.post('api/importarProyecto.php', {va :objeto, pm : $scope.pmgetProyecByProyMacro, pa : $scope.Params } )
+                  .success(function(data) {
+                     $scope.logImportar=[];
+                      //console.log(data);
+                      if(data.success){
+                         
+                         //$scope.csv.result=null;
+                          var mensaje = data.success.split('\n');
+                          //console.log('mensaje');
+                          //console.log(mensaje);
+                          $.each( mensaje, function( index, value ) {
                                  if (value!=''){
+                                    //console.log('value:' + value);
                                     $scope.newAlert(value,'success','3000');
                                     $scope.logImportar.push(value);
                                 }
+                            });
+                          $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                        }
+                        else{
+                          $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
+                        }
+                         if(data.error){
+                          var mensaje = data.error.split('\n');
+                          $.each( mensaje, function( index, value ) {
+                                 if (value!=''){
+                                    $scope.newAlert(value,'danger','3000');
+                                    $scope.logImportar.push(value);
+                                }
                           });
-                      }
-                      else{
-                        $scope.newAlert('Se encontró un error al importar los parámetros','danger','3000');
-                      }
-                       if(data.error){
-                        var mensaje = data.error.split('\n');
-                        $.each( mensaje, function( index, value ) {
-                               if (value!=''){
-                                  $scope.newAlert(value,'danger','3000');
-                                  $scope.logImportar.push(value);
-                              }
-                        });
-                      }
-                      console.log('log');
-                      console.log($scope.logImportar);
-                 
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data);
-                  });
+                        }
+                        //console.log('log');
+                        //console.log($scope.logImportar);
+                   
+                  })
+                  .error(function(data) {
+                    //console.log('Error: ' + data);
+                    });
+                }
             }
-            console.log('resultado:' + $scope.csv.result);
+            else{
+                $scope.newAlert('Error: el archivo a importar debe contener al menos los campos: id del proyecto, codigo del proyecto, Nombre del proyecto.','danger','5000');
+            }
+            //console.log('resultado:' + $scope.csv.result);
           }
           else{
               $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
           }
-          console.log($scope.csv.result);
+          //console.log($scope.csv.result);
     };
 
   }])

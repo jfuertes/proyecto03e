@@ -183,7 +183,7 @@
 								list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
 								$month=$month;
 							$valoractual= $day."-".$month."-".$year;
-							echo "valor actual: $valoractual";
+							//echo "valor actual: $valoractual";
 								$nombrevalor="VALORDATE";
 							}
 							else{
@@ -225,11 +225,12 @@
 							}
 
 						}
+						$nombre_parametro=$v[$pa['NOMBREPARAM']];
 						if($error==1){
-							$error.="Se encontro error en un valor de la fila del proyecto ".$IDPROYECTO."\n";
+							$error.="Se encontro error al actualizar el valor $nombre_parametro del proyecto ".$IDPROYECTO."\n";
 						}
 						else{
-													$success.=" Se crearon y actualizaron con exito los valores de la fila del proyecto".$IDPROYECTO."\n";
+							$success.=" Se creó y actualizó con exito el valor $nombre_parametro del proyecto".$IDPROYECTO."\n";
 						
 						}
 						$error=0;
