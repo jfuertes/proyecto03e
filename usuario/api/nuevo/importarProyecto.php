@@ -104,6 +104,10 @@
 								$v[$pa['NOMBREPARAM']]=$r['ETIQUETA'];
 								$esunaetiqueta=true;
 							}
+							else{
+
+								//$success.="ERROR: Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO." dicho valor solo acepta valores definidos como etiquetas.\n";
+							}
 							
 					}
 					else{
@@ -219,10 +223,10 @@
 						//echo $esunaetiqueta;
 						$nombre_parametro=$v[$pa['NOMBREPARAM']];
 						if(	$esunaetiqueta== false){
-							$error.="Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO." dicho valor solo acepta valores definidos como etiquetas.\n";
+							$success.="ERROR: Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO." ,El valor ingresado no se encuentra en la lista de etiuetas.\n";
 						}
-						else if($error==1 && $esunaetiqueta== true){
-							$error.="Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO."\n";
+						else if($error==1){
+							$success.=" ERROR: Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO."\n";
 						}
 						else {
 							$success.=" Se creó y actualizó con exito el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto".$IDPROYECTO."\n";
