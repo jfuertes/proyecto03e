@@ -7,6 +7,7 @@
 	$rspta = json_decode(file_get_contents("php://input"), true);
 	$success="";
 	$error="";
+	
 
 	//var_dump($rspta);
 
@@ -81,7 +82,36 @@
 				}
 
 				else{//verificar que sea principal en Tabla pmparametro
-					if($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2){
+					/*echo $v[$pa['NOMBREPARAM']];
+					echo $pa['IDTIPODATO'];
+					var_dump($esunaetiqueta) ;
+					echo "-------------";*/
+					if($pa['USAMAESTROPARAM']=="1"){
+					$esunaetiqueta=false;//usa etiquetas
+						//var_dump($pa);
+						$q = 'SELECT ETIQUETA from proyred.MAESTRO 
+							where IDPARAMETRO=:IDPARAMETRO and LOWER(ETIQUETA)=LOWER(:ETIQUETA)';
+							$stmt = $dbh->prepare($q);
+							$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
+							$stmt->bindParam(':ETIQUETA',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+							$stmt->execute();
+							$r=$stmt->fetch(PDO::FETCH_ASSOC);
+							//echo "================";
+							//echo $v[$pa['NOMBREPARAM']];
+							//var_dump($r);
+							//echo "================";
+							if ($r != false){
+								$v[$pa['NOMBREPARAM']]=$r['ETIQUETA'];
+								$esunaetiqueta=true;
+							}
+							
+					}
+					else{
+						$esunaetiqueta=true;
+					}
+					
+					if(($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2) && $esunaetiqueta== true){
+						//echo "######entro";
 						$nombrevalor="VALORNUMBER";
 						$entró=false;
 
@@ -129,7 +159,8 @@
 						if($valor!=true) $error=1;
 
 					}
-					else if($pa['IDTIPODATO']==3){
+					else if($pa['IDTIPODATO']==3 && $esunaetiqueta== true){
+						//echo "######entro";
 						$nombrevalor="VALORSTR";
 						$q= "MERGE INTO PROYRED.VALOR vl
 						USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, :VALORSTR $nombrevalor FROM dual) src
@@ -152,7 +183,8 @@
 						//echo json_encode($valor);
 						if($valor!=true) $error=1;
 					}
-					else{
+					else if($pa['IDTIPODATO']==4 && $esunaetiqueta== true){
+						//echo "######entro";
 						//manipular fecha
 						if($v[$pa['NOMBREPARAM']]!=null){
 							
@@ -164,9 +196,7 @@
 						else{
 							$nombrevalor="VALORDATE";
 							$valoractual=null;
-
 						}
-								
 						$q= "MERGE INTO PROYRED.VALOR vl
 							USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, '".$valoractual."' ".$nombrevalor." FROM dual) src
 							ON( vl.IDVALOR= src.IDVALOR)
@@ -183,21 +213,23 @@
 							$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
 							//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
 							$valor = $stmt->execute();
-
 							//echo json_encode($valor);
 							if($valor!=true) $error=1;
-
 						}
+						//echo $esunaetiqueta;
 						$nombre_parametro=$v[$pa['NOMBREPARAM']];
-						
-						if($error==1){
+						if(	$esunaetiqueta== false){
+							$error.="Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO." dicho valor solo acepta valores definidos como etiquetas.\n";
+						}
+						else if($error==1 && $esunaetiqueta== true){
 							$error.="Se encontro error al actualizar el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto ".$IDPROYECTO."\n";
 						}
-						else{
+						else {
 							$success.=" Se creó y actualizó con exito el valor ".$pa['NOMBREPARAM'].": $nombre_parametro del proyecto".$IDPROYECTO."\n";
 						}
 
 						$error=0;
+						
 						//acaba for each
 					}
 				}
