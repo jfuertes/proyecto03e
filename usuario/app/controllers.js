@@ -40,6 +40,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       else if(id=="        .000"){
         return " ";
       }
+      else if((typeof id) == 'object'){
+        return id;
+      }
       else if((id.split("/").length) ==3){
         //fecha
         return id;
@@ -88,8 +91,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         ngModel.$parsers.push(function(value) {
           if(value){
             if((typeof value) == 'object'){
-                return new Date(value.getFullYear(), value.getMonth(), value.getDate());
-                //return value;
+                //return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+                //return new Date(value.getMonth()+'/'+value.getDate()+'/'+value.getFullYear());
+                return value;
             }
             else{
               var res = value.split("/");
@@ -101,8 +105,9 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
         ngModel.$formatters.push(function(value) {
           if(value){
             if((typeof value) == 'object'){
-              return new Date(value.getFullYear(), value.getMonth(), value.getDate());
-              //return value;
+              //return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+              //return new Date(value.getMonth()+'/'+value.getDate()+'/'+value.getFullYear());
+              return value;
             }
             else{
               var res = value.split("/");
@@ -659,6 +664,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
               //console.log('Error: ' + data);
               });
       }
+      
+      $scope.cambiaFecha= function(fecha, index){
+        console.log(fecha);
+        console.log(index);
+      }
 
       $scope.agregarProyecto= function(){
         $scope.ShowTablecomplete=false;
@@ -730,7 +740,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                         }
                         else{
                           $scope.newAlert('Se encontró un error al importar los parámetros. Revise el Log de importación para mayor detalle.','danger','3000');
-                          $scope.logImportar.push(data);
+                          $scope.logImportar.push(data + '. Por favor contacte al administrador del sistema.');
                         }
                        if(data.error){
                           var mensaje = data.error.split('\n');

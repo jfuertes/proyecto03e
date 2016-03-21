@@ -113,8 +113,9 @@
 					if(($pa['IDTIPODATO']==1 || $pa['IDTIPODATO']==2) && $esunaetiqueta== true){
 						//echo "######entro";
 						$nombrevalor="VALORNUMBER";
+						$entró=false;
 
-						if ($v[$pa['NOMBREPARAM']]==null || $v[$pa['NOMBREPARAM']]=="NaN"){
+						if ($v[$pa['NOMBREPARAM']]==null || $v[$pa['NOMBREPARAM']]=="NaN" || is_numeric($v[$pa['NOMBREPARAM']]!=true)){
 							$valoractual=null;
 						
 							$q= "MERGE INTO PROYRED.VALOR vl
@@ -126,26 +127,34 @@
 								WHEN NOT MATCHED THEN
 								INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
 								VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
-						}
-						else  if($v[$pa['NOMBREPARAM']]!=null ){
-							$valoractual=$v[$pa['NOMBREPARAM']];
-								$q= "MERGE INTO PROYRED.VALOR vl
-									USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, ".$valoractual." $nombrevalor FROM dual) src
-									ON( vl.IDVALOR= src.IDVALOR)
-									WHEN MATCHED THEN
 
-									UPDATE SET $nombrevalor = src.$nombrevalor 
-									WHEN NOT MATCHED THEN
-									INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
-									VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+								$entro=true;
+								$error=1;
+						}
+						else  if($v[$pa['NOMBREPARAM']]!=null && is_numeric($v[$pa['NOMBREPARAM']])){
+							$valoractual=$v[$pa['NOMBREPARAM']];
+							$q= "MERGE INTO PROYRED.VALOR vl
+								USING( SELECT :IDVALOR IDVALOR, :IDPARAMETRO IDPARAMETRO, :IDPROYECTO IDPROYECTO, ".$valoractual." $nombrevalor FROM dual) src
+								ON( vl.IDVALOR= src.IDVALOR)
+								WHEN MATCHED THEN
+
+								UPDATE SET $nombrevalor = src.$nombrevalor 
+								WHEN NOT MATCHED THEN
+								INSERT( IDVALOR, IDPARAMETRO, IDPROYECTO, $nombrevalor) 
+								VALUES(src.IDVALOR, src.IDPARAMETRO, src.IDPROYECTO, src.$nombrevalor)";
+
+								$entro=true;
 						}
 						
-						$stmt = $dbh->prepare($q);
-						$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
-						$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
-						$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
-						//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
-						$valor = $stmt->execute();
+						if($entro==true){
+							$stmt = $dbh->prepare($q);
+							$stmt->bindParam(':IDVALOR',  $IDVALOR, PDO::PARAM_STR);
+							$stmt->bindParam(':IDPARAMETRO',  $pa['IDPARAMETRO'], PDO::PARAM_STR);
+							$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+							//$stmt->bindParam(':VALORSTR',  $v[$pa['NOMBREPARAM']], PDO::PARAM_STR);
+							$valor = $stmt->execute();	
+						}
+						
 						
 						if($valor!=true) $error=1;
 
@@ -178,6 +187,7 @@
 						//echo "######entro";
 						//manipular fecha
 						if($v[$pa['NOMBREPARAM']]!=null){
+							
 							list($day, $month, $year) = split("/", $v[$pa['NOMBREPARAM']]);
 							$date = date_create("$year-$month-$day", timezone_open("America/Lima"));
 							$valoractual=date_format($date, 'd-m-Y');
