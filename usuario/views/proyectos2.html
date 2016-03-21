@@ -177,6 +177,7 @@
                         <input class="form-control" ng-if="val.IDTIPODATO==4"
                         type="{{val.IDTIPODATO | filtertipoDato}}"
                         string-to-date
+                        ng-change="cambiaFecha(val.VAL, $index)"
                         ng-model="val.VAL">
 
                     </div>

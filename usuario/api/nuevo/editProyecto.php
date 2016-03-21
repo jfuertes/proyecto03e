@@ -60,8 +60,20 @@
 					}
 				}
 				else{
-					$date = date_create($value->VAL);
+					$tmp = split("T", $value->VAL);
+
+					if(sizeof($tmp)==1){
+						list($year, $month, $day) = split("/", $value->VAL);
+						$date = date_create("$year-$month-$day", timezone_open("America/Lima"));
+					}
+					else{
+						list($fecha, $hora) = split("T", $value->VAL);
+						list($year, $month, $day) = split("-", $fecha);
+						$date = date_create("$year-$month-$day", timezone_open("America/Lima"));
+					}
+					
 					$valoractual=date_format($date, 'd-m-Y');
+
 					//var_dump($value->VAL);
 					$q = 'UPDATE proyred.VALOR 
 						SET VALORDATE=:VALORDATE
