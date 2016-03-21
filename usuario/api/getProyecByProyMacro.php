@@ -8,7 +8,7 @@
 	$IDPROYMACRO= $rspta->pm->idProy;
 	//var_dump($IDPROYMACRO);
 	$q = 'SELECT IDPROYECTO, NOMBREPROY, ESTADOPROY, CODPROYECTO
-			 from proyred.PROYECTO  where IDPROYMACRO= :IDPROYMACRO and ESTADOPROY!=0 order by NOMBREPROY';
+			 from proyred.PROYECTO  where IDPROYMACRO= :IDPROYMACRO and ESTADOPROY=1 order by NOMBREPROY';
 
 	$stmt = $dbh->prepare($q);
 	$stmt->bindParam(':IDPROYMACRO',  $IDPROYMACRO, PDO::PARAM_STR);

@@ -30,17 +30,24 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
   })
  .filter('filternull', function(){
-  return function(id){
-    
-    if(id==null){
-      return " ";
-    }
-    else if(id=="NaN"){
-      return " ";
-    }
-    else{
-      return id;
-    }
+    return function(id){
+      if(id==null){
+        return " ";
+      }
+      else if(id=="NaN"){
+        return " ";
+      }
+      else if(id=="        .000"){
+        return " ";
+      }
+      else if((id.split("/").length) ==3){
+        //fecha
+        return id;
+      }
+      else{
+        if(parseFloat(id)) return parseFloat(id);
+        else return id;
+      }
     };
   })
 
@@ -58,6 +65,52 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       }
       else{
         return id;
+      }
+    };
+  })
+
+  .directive('stringToNumber', function() {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        
+        ngModel.$formatters.push(function(value) {
+          return parseFloat(value, 10);
+        });
+      }
+    };
+  })
+
+ .directive('stringToDate', function($filter) {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        ngModel.$parsers.push(function(value) {
+          if(value){
+            if((typeof value) == 'object'){
+                return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+                //return value;
+            }
+            else{
+              var res = value.split("/");
+              var fechaactual = new Date(res[2], res[1]-1, res[0]);
+              return fechaactual;
+            }
+          }
+        });
+        ngModel.$formatters.push(function(value) {
+          if(value){
+            if((typeof value) == 'object'){
+              return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+              //return value;
+            }
+            else{
+              var res = value.split("/");
+              var fechaactual = new Date(res[2], res[1]-1, res[0]);
+              return fechaactual;
+            }
+          }
+        });
       }
     };
   })
@@ -370,7 +423,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
               });
     }
 
-      $scope.csv = {
+    $scope.csv = {
           content: null,
           header: true,
           headerVisible: false,
@@ -440,17 +493,271 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
   }])
 
-  .controller('editarController',['$scope', function ($scope) {
+
+//PROYECTOS 2
 
 
-  }])
-  .controller('exportarController',['$scope', function ($scope) {
-    
+.controller('proyectos2Controller',['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', '$http', '$filter', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http, $filter) {
+    $scope.ShowTableParams=true;
+    $scope.ShowTablecomplete=false;
+    $scope.NuevoProyecto=false;
 
+      $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withPaginationType('full_numbers')
+        .withDisplayLength(10)
+        .withBootstrap()
+        .withButtons([
+            'colvis',
+            'copy',
+            'csv'
+        ]);
+      $scope.dtColumnDefs = [
+        DTColumnDefBuilder.newColumnDef(0),
+        DTColumnDefBuilder.newColumnDef(1),
+        DTColumnDefBuilder.newColumnDef(2).notSortable()
+    ];
 
-  }])
-  .controller('cargaMasivaController',['$scope', function ($scope) {
-    
+    $scope.alerts = [];
+
+    $scope.newAlert = function(mensaje, tipo, tiempo) {
+        $scope.alerts.push({msg: mensaje, type: tipo, tiempo: tiempo});
+
+        $('html,body').animate({
+            scrollTop: $("#alerta").offset().top
+        }, 500);
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+
+     $scope.getProyMacro= function(){
+            $http.post('../admin/api/getProyMacro.php' )
+                .success(function(data) {
+                  //console.log(data);
+                  $scope.ProyMacro=data;
+                })
+                .error(function(data) {
+                  //console.log('Error: ' + data);
+                  });
+      };
+
+        $scope.getProyMacrobyUser= function(){
+            $http.post('api/getProyMacrobyUser.php' )
+                .success(function(data) {
+                  //console.log(data);
+                  $scope.ProyMacrobyUser=data;
+                })
+                .error(function(data) {
+                  //console.log('Error: ' + data);
+                  });
+      };
+
+      
+       $scope.getModulos= function(){
+            $http.post('../admin/api/getModulos.php' )
+                .success(function(data) {
+                  //console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  //console.log('Error: ' + data);
+                  });
+      };
+       $scope.getModulosbyPMandUser= function(ProyMacro){
+            $http.post('api/getModulosbyPMandUser.php',{ProyMacro:ProyMacro} )
+                .success(function(data) {
+                  //console.log(data);
+                  $scope.Modulos=data;
+                })
+                .error(function(data) {
+                  //console.log('Error: ' + data);
+                  });
+      };
+
+      $scope.getProyMacro();
+      $scope.getProyMacrobyUser();
+      //$scope.getModulos();
+
+      $scope.getModulosbyproymacro=function(){
+         if($scope.pm.hasOwnProperty('idProy')){
+          $scope.getModulosbyPMandUser($scope.pm.idProy);
+        }
+      }
+
+      $scope.getProyecByProyMacro=function(pm){
+          if(pm && pm.idProy && pm.idMod){
+            $scope.pmgetProyecByProyMacro=pm;
+
+            $http.post('api/nuevo/getProyecByProyMacro.php',{pm:pm} )
+                .success(function(data) {
+                  $scope.ShowTablecomplete=true;
+                  console.log(data);
+                  $scope.Proyectos=data[0];
+                  $scope.Parametros=data[1];
+                  $scope.Valores=data[2];
+                  $scope.Etiquetas=data[3];
+
+                  if(data[4].PRIVILEGIO=="RW") $scope.ShowWrite=true;
+                  else if(data[4].PRIVILEGIO=="R") $scope.ShowWrite=false;
+
+                })
+                .error(function(data) {
+
+                });
+          }
+          else{
+              $scope.alerts.push({msg: 'Seleccione el Proyecto Macro y el Módulo', type: 'warning', tiempo: '4000'});
+          }
+      };
+
+      $scope.editarValores=function(pro,index){
+        console.log(pro,index);
+        if($scope.ShowWrite){
+          $scope.pro=pro;//falta castear para que reconoscca como entero al momento de editar!!!! no olvidar
+
+          $scope.pro.valores = $filter('filter')($scope.Valores, {IDPROYECTO:pro.IDPROYECTO}, true)
+          console.log($filter('filter')($scope.Valores, {IDPROYECTO:pro.IDPROYECTO}, true));
+          $scope.EditarProyecto=true;
+          $scope.ShowTablecomplete=false;
+          $scope.ShowTableParams=false;
+          $scope.NuevoProyecto=false;
+        }
+
+      };
+
+      $scope.volvertablaproyectos=function(){
+          $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+
+          $scope.EditarProyecto=false;
+          $scope.ShowTablecomplete=true;
+          $scope.ShowTableParams=true;
+          $scope.NuevoProyecto=false;
+      }
+
+      $scope.editProyecto=function(pro){
+          console.log(pro);
+          //$http({method:'POST',url: 'api/editProyecto2.php', data: $.param({pro:pro, pa:$scope.Params}) ,headers : { 'Content-Type': 'application/x-www-form-urlencoded' }})
+          
+          $http.post('api/nuevo/editProyecto.php', {pro:pro})
+            .success(function(data) {
+                if(data.success){
+                  
+                  $scope.ShowTablecomplete=true;
+                  $scope.ShowTableParams=true;
+                  $scope.EditarProyecto=false;
+
+                  $scope.alerts.push({msg: data.success, type: 'success', tiempo: '3000'});
+                  $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                }
+                else if(data.Error){
+                   $scope.alerts.push({msg: data.Error, type: 'danger', tiempo: '4000'});
+                }
+              console.log(data);
+            })
+            .error(function(data) {
+              //console.log('Error: ' + data);
+              });
+      }
+
+      $scope.agregarProyecto= function(){
+        $scope.ShowTablecomplete=false;
+        $scope.NuevoProyecto=true;
+        $scope.EditarProyecto=false;
+
+        $scope.pron={};
+        $scope.pron.valores = $scope.Parametros;
+      }
+
+      $scope.guardarProyecto=function(pron){
+          console.log(pron);
+          $http.post('api/nuevo/addProyecto.php', { pro:pron, pm:$scope.pmgetProyecByProyMacro })
+            .success(function(data) {
+                if(data.success){
+                  $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                  $scope.ShowTablecomplete=true;
+                  $scope.ShowTableParams=true;
+                  $scope.NuevoProyecto=false;
+                  console.log(data);
+                  $scope.alerts.push({msg: data.success, type: 'success', tiempo: '4000'});
+                }
+                else if(data.Error){
+                   $scope.alerts.push({msg: data.Error, type: 'danger', tiempo: '4000'});
+                }
+            })
+            .error(function(data) {
+              //console.log('Error: ' + data);
+            });
+    }
+
+    $scope.csv = {
+          content: null,
+          header: true,
+          headerVisible: false,
+          separator: ',',
+          separatorVisible: false,
+          result: null,
+          accept:'.csv, .xls, .xlsx',
+          encoding: 'UTF16',
+          encodingVisible: false,
+    };
+
+    $scope.LogError = function () {
+        ////console.log($scope.logImportar);
+        //alert($scope.logImportar);
+        if($scope.LogImp == true) $scope.LogImp=false;
+        else $scope.LogImp=true;
+        //console.log($scope.LogImp);
+    }
+
+      $scope.importar = function (json, tabWidth) {
+          if($scope.csv.result){
+            var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
+            if(objeto[0]['id del proyecto'] && objeto[0]['codigo del proyecto'] && objeto[0]['Nombre del proyecto']){
+              if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
+                  $http.post('api/nuevo/importarProyecto.php', {va: objeto, pm: $scope.pmgetProyecByProyMacro, pa: $scope.Parametros } )
+                  .success(function(data) {
+                     $scope.logImportar=[];
+                      if(data.success){
+                          var mensaje = data.success.split('\n');
+                           $scope.newAlert('La importación se realizó correctamente. Revise el Log de importación para mayor detalle.','success','3000');
+                          $.each( mensaje, function( index, value ) {
+                                 if (value!=''){                                   
+                                    $scope.logImportar.push(value);
+                                }
+                            });
+                          $scope.getProyecByProyMacro($scope.pmgetProyecByProyMacro);
+                        }
+                        else{
+                          $scope.newAlert('Se encontró un error al importar los parámetros. Revise el Log de importación para mayor detalle.','danger','3000');
+                          $scope.logImportar.push(data);
+                        }
+                       if(data.error){
+                          var mensaje = data.error.split('\n');
+                          $scope.newAlert('Se encontraron algunos errores al importar los proyectos. Por favor revise el Log de Importación','danger','3000');
+                          $.each( mensaje, function( index, value ) {
+                                 if (value!=''){
+                                    $scope.logImportar.push(value);
+                                }
+                          });
+                        }
+                  })
+                  .error(function(data) {
+                    //console.log('Error: ' + data);
+                    });
+                }
+            }
+            else{
+                $scope.newAlert('Error: el archivo a importar debe contener al menos los campos: id del proyecto, codigo del proyecto, Nombre del proyecto.','danger','5000');
+            }
+            //console.log('resultado:' + $scope.csv.result);
+          }
+          else{
+              $scope.newAlert('Seleccione el archivo a importar.','warning','3000');
+          }
+          //console.log($scope.csv.result);
+    };
+
 
   }])
 

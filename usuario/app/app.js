@@ -15,14 +15,19 @@ var app = angular.module('entelApp', [
     app.config(['$routeProvider', function($routeProvider){
       $routeProvider.
         when('/', {
-          templateUrl: 'views/proyectos.html',
+          templateUrl: 'views/proyectos2.html',
           caseInsensitiveMatch: true,
-          controller: 'proyectosController'
+          controller: 'proyectos2Controller'
         })
-          .when('/proyectos', {
+          /*.when('/proyectos', {
           templateUrl: 'views/proyectos.html',
           caseInsensitiveMatch: true,
           controller: 'proyectosController'
+        })*/
+          .when('/proyectos2', {
+          templateUrl: 'views/proyectos2.html',
+          caseInsensitiveMatch: true,
+          controller: 'proyectos2Controller'
         })
         .otherwise({
           redirectTo: '/'
