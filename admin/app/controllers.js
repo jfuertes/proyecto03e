@@ -313,14 +313,13 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
               .success(function(data) {
                 console.log(data);
                 if(data.success){
-                 
-                   $scope.ShowTableUser=true;
-                   $scope.editUser=false;
-                   $scope.NuevoUsuario=false;
-                   $scope.newAlert(data.succes,'success','3000');
-                  document.getElementById("formEParametro").reset();
-                  $scope.getUsuarios();
-                  delete $scope.nu;
+                    $scope.ShowTableUser=true;
+                    $scope.editUser=false;
+                    $scope.NuevoUsuario=false;
+                    $scope.newAlert(data.success,'success','3000');
+                    document.getElementById("formEParametro").reset();
+                    $scope.getUsuarios();
+                    delete $scope.nu;
                 }
                 else{
                     $scope.newAlert(data.Error,'danger','3000');
@@ -551,27 +550,37 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
      $scope.formNewParam= function(pa){
        console.log($scope.pa);
-       if($scope.pa.IDTIPODATO && $scope.pa.USAMAESTROPARAM && $scope.pa.ESTADOPARAM && $scope.pa.IDMODULO){
-           if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
-              console.log(pa);
-               $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
-                .success(function(data) {
-                  console.log(data);
-                  //$scope.addProyMacro=data;
-                  if(data.success){
-                    $scope.formByProyMacro($scope.pmLocal);
-                    $scope.ShowTableParams=true;
-                    $scope.newAlert(data.success,'success','3000');
-                    document.getElementById("formParametro").reset();
-                  }
-                  else{
-                    $scope.newAlert(data.Error,'danger','3000');
-                  }
-                })
-                .error(function(data) {
-                  console.log('Error: ' + data.Error);
-                });
-           }
+       var $nombresReservado=['id parametro', 'id de parametro', 'id parámetro', 'id de parámetro' , 'nombre parametro', 'nombre de parametro', 'nombre parámetro', 'nombre de parámetro', 'comentario'];
+
+       console.log(jQuery.inArray($scope.pa.NOMBREPARAM.toLowerCase(), $nombresReservado));
+
+        if($scope.pa.IDTIPODATO && $scope.pa.USAMAESTROPARAM && $scope.pa.ESTADOPARAM && $scope.pa.IDMODULO && $scope.pa.NOMBREPARAM){
+            if(jQuery.inArray($scope.pa.NOMBREPARAM, $nombresReservado) == -1){
+
+                 if ( confirm("¿Está seguro que desea Confirmar el registro?") ) {
+                    console.log(pa);
+                     $http.post('api/addParametro.php', {pa :pa, pm : $scope.IDPROYMACRO} )
+                      .success(function(data) {
+                        console.log(data);
+                        //$scope.addProyMacro=data;
+                        if(data.success){
+                          $scope.formByProyMacro($scope.pmLocal);
+                          $scope.ShowTableParams=true;
+                          $scope.newAlert(data.success,'success','3000');
+                          document.getElementById("formParametro").reset();
+                        }
+                        else{
+                          $scope.newAlert(data.Error,'danger','3000');
+                        }
+                      })
+                      .error(function(data) {
+                        console.log('Error: ' + data.Error);
+                      });
+                 }
+            }
+            else{
+                $scope.newAlert("Los nombres de parámetros 'Id Parámetro', 'Nombre Parámetro' y 'Comentario' se encuentran reservados.",'warning','3000');
+            }
         }
         else{
             $scope.newAlert('Debe completar todos los campos','danger','3000');
