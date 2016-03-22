@@ -3,6 +3,7 @@
 
 	$db  = new dbConnect();
 	$dbh = $db->conectardb();
+	session_start();
 
  	$rspta = json_decode(file_get_contents("php://input"));
 
@@ -10,6 +11,7 @@
 	$CODPROYECTO = isset($rspta->pro->CODPROYECTO)?$rspta->pro->CODPROYECTO:null;
 	$IDPROYECTO = isset($rspta->pro->IDPROYECTO)?$rspta->pro->IDPROYECTO:null;
 	$ESTADOPROY = isset($rspta->pro->ESTADOPROY)?$rspta->pro->ESTADOPROY:null;
+	$COMENT = isset($rspta->pro->COMENTARIO)?$rspta->pro->COMENTARIO:null;
 	$VALORES = isset($rspta->pro->valores)?$rspta->pro->valores:null;
 	
 	if($NOMBREPROY!=NULL && $CODPROYECTO!=NULL && $IDPROYECTO!=NULL && $ESTADOPROY!=NULL && $VALORES!=NULL){
@@ -24,6 +26,27 @@
 		$resultado1 = $stmt->execute();
 		
 		if($resultado1){
+			// Creación nuevo comentario
+			if($COMENT!=""){
+				//Calculando id siguiente comentario:
+				$q = 'SELECT max(IDCOMENTARIO) +1 as IDCOMENTARIO from proyred.COMENTARIO';
+				$stmt = $dbh->prepare($q);
+				$stmt->execute();
+				$r=$stmt->fetch(PDO::FETCH_ASSOC);
+	
+				$IDCOMENTARIO=$r['IDCOMENTARIO'];
+				$IDUSUARIO= $_SESSION['IDUSUARIO'];
+				// Insertando nuevo comentario
+				$q = 'INSERT INTO proyred.COMENTARIO (IDCOMENTARIO, IDPROYECTO, IDUSUARIO, FECHACREACION, COMENT)
+						VALUES(:IDCOMENTARIO, :IDPROYECTO, :IDUSUARIO, CURRENT_TIMESTAMP, :COMENT)';
+				$stmt = $dbh->prepare($q);
+				$stmt->bindParam(':IDCOMENTARIO',  $IDCOMENTARIO, PDO::PARAM_STR);
+				$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+				$stmt->bindParam(':IDUSUARIO',  $IDUSUARIO, PDO::PARAM_STR);
+				$stmt->bindParam(':COMENT',  $COMENT, PDO::PARAM_STR);
+				$resultado2 = $stmt->execute();
+			}
+
 			foreach ($VALORES as $key => $value) {
 				if($value->IDTIPODATO=="1" || $value->IDTIPODATO=="2"){
 					

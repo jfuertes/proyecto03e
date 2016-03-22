@@ -100,6 +100,23 @@
 	}
 	array_push($Proyectos, $r);
 
+
+	// Seleccionando los comentarios de dicho proyecto
+	$q = 'SELECT co.IDCOMENTARIO, co.IDPROYECTO, co.coment, co.FECHACREACION, trunc(co.FECHACREACION) as FECHA, us.LOGINUS
+		FROM proyred.COMENTARIO co
+		INNER JOIN proyred.USUARIO us on co.IDUSUARIO=us.IDUSUARIO
+		INNER JOIN proyred.PROYECTO pro on co.IDPROYECTO=pro.IDPROYECTO
+		WHERE pro.IDPROYMACRO=:IDPROYMACRO
+		order by co.FECHACREACION desc';
+
+		$stmt = $dbh->prepare($q);
+		$stmt->bindParam(':IDPROYMACRO', $IDPROYMACRO, PDO::PARAM_INT);
+		$stmt->execute();
+		$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	array_push($Proyectos, $r);
+
+
 	//var_dump($r);
 	echo json_encode($Proyectos);
 ?>

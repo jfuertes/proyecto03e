@@ -41,6 +41,7 @@ if(isset($_POST['login']) && isset($_POST['clave'])){
                     $_SESSION['nombreus']=$rx[0]['NOMBREUS'];
                     $_SESSION['apellidous']=$rx[0]['APELLIDO'];
                     $_SESSION['emailus']=$rx[0]['EMAIL'];
+                    $_SESSION['idusuario']=$rx[0]['IDUSUARIO'];
                     
                      $_SESSION['type']="usuario";
                     //                  

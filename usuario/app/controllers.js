@@ -72,6 +72,18 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
     };
   })
 
+  .filter('filterComentario', function(){
+    return function(id){
+        if(id==null || id=='' ){
+          return " ";
+        }
+        else{
+          return id[0].FECHA + " " + id[0].COMENT;
+        }
+    };
+  })
+
+
   .directive('stringToNumber', function() {
     return {
       require: 'ngModel',
@@ -149,7 +161,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.dtColumnDefs = [
         DTColumnDefBuilder.newColumnDef(0),
         DTColumnDefBuilder.newColumnDef(1),
-        DTColumnDefBuilder.newColumnDef(2).notSortable()
+        DTColumnDefBuilder.newColumnDef(2)
     ];
 
     $scope.alerts = [];
@@ -519,7 +531,8 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
       $scope.dtColumnDefs = [
         DTColumnDefBuilder.newColumnDef(0),
         DTColumnDefBuilder.newColumnDef(1),
-        DTColumnDefBuilder.newColumnDef(2).notSortable()
+        DTColumnDefBuilder.newColumnDef(2),
+        DTColumnDefBuilder.newColumnDef(3),
     ];
 
     $scope.alerts = [];
@@ -602,6 +615,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
                   $scope.Parametros=data[1];
                   $scope.Valores=data[2];
                   $scope.Etiquetas=data[3];
+                  $scope.Comentarios=data[5];
 
                   if(data[4].PRIVILEGIO=="RW") $scope.ShowWrite=true;
                   else if(data[4].PRIVILEGIO=="R") $scope.ShowWrite=false;
