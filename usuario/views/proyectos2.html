@@ -68,7 +68,7 @@
             </div>
 
             <!-- Log Importación -->
-                <div class="form-group" ng-show="LogImp">
+                <div class="form-group" ng-show="LogImp && !ShowComentarios">
                   <hr>
                   <h4>Log de Importación </h4></br>
                       <div class="form-group">
@@ -79,7 +79,55 @@
                      <hr>
                 </div>
                 <!-- /.Log Importación -->
-    
+
+            <!-- Comentarios -->
+            <div class="row" ng-show="ShowComentarios">
+                <div class="form-group">
+                    <hr>
+                    <h4>Comentarios </h4></br>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Usuario</th>
+                                    <th>Comentario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="co in Comentarios | filter : {IDPROYECTO:proySelected.IDPROYECTO}:true">
+                                    <td>{{ co.FECHA }}</td>
+                                    <td>{{ co.LOGINUS }}</td>
+                                    <td>{{ co.COMENT }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="col-lg-6 col-xs-12">
+                            <textarea class="form-control" ng-model='COMENTARIO' placeholder="Nuevo Comentario" rows="1"></textarea>
+                        </div>
+                        <div class="col-lg-2 col-xs-12">
+                           <button type="button" class=" col-lg-12 col-xs-12 btn btn-primary" ng-click="guardarComentario(COMENTARIO)">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </br>
+
+            <div class="row" ng-show="ShowComentarios">
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="col-lg-2 col-xs-12">
+                           <button type="button" class=" col-lg-12 col-xs-12 btn btn-primary" ng-click="cerrarComentarios()">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.Comentarios -->
+
+
+
             </br>
             <div class="table-responsive">
                 <div class="dataTable_wrapper">
@@ -89,7 +137,7 @@
                                 <th>id del proyecto</th>
                                 <th>codigo del proyecto</th>
                                 <th>Nombre del proyecto</th>
-                                <th>Último Comentario</th>
+                                <th>Ultimo comentario</th>
                                 <th ng-repeat="pa in Parametros">{{pa.NOMBREPARAM}}</th>
                                 <th ng-show="ShowWrite"></th>
                             </tr>
@@ -99,7 +147,7 @@
                                 <td><a href="" title="Editar" ng-click="editarValores(proy,$index) && ShowWrite">{{ proy.IDPROYECTO }}</a></td>
                                 <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.CODPROYECTO }}</a></td>
                                 <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ proy.NOMBREPROY }}</a></td>
-                                <td><a href="" title="Editar" ng-click="editarValores(proy,$index)">{{ Comentarios | filter : {IDPROYECTO: proy.IDPROYECTO}:true | filterComentario }}</a></td>
+                                <td><a href="" title="Editar" ng-click="verComentarios(proy)">{{ Comentarios | filter : {IDPROYECTO: proy.IDPROYECTO}:true | filterComentario }}</a></td>
                                 <td ng-repeat="va in Valores | filter : {IDPROYECTO:proy.IDPROYECTO}:true">{{va.VAL | filternull}}</td>
                                 <td ng-show="ShowWrite">
                                     <div ><a href="" title="Editar" ng-click="editarValores(proy,$index)"><span class="glyphicon glyphicon-pencil" style="font-size: 20px"></a></div>

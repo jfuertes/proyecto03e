@@ -513,11 +513,11 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
 //PROYECTOS 2
 
-
 .controller('proyectos2Controller',['$scope', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTDefaultOptions', '$http', '$filter', function ($scope, DTOptionsBuilder, DTColumnDefBuilder, DTDefaultOptions, $http, $filter) {
     $scope.ShowTableParams=true;
     $scope.ShowTablecomplete=false;
     $scope.NuevoProyecto=false;
+    $scope.ShowComentarios=false;
 
       $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withPaginationType('full_numbers')
@@ -542,7 +542,7 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
         $('html,body').animate({
             scrollTop: $("#alerta").offset().top
-        }, 500);
+        }, 800);
     };
 
     $scope.closeAlert = function(index) {
@@ -781,6 +781,45 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
           }
           //console.log($scope.csv.result);
     };
+
+
+    $scope.verComentarios = function (proy) {
+        $scope.ShowComentarios = true;
+        $scope.proySelected=proy;
+
+    }
+
+    $scope.cerrarComentarios = function (proy) {
+        $scope.ShowComentarios = false;        
+    }
+
+    $scope.guardarComentario = function (com) {
+        console.log(com);
+        if(com!=""){
+            $http.post('api/nuevo/addComentario.php', { com:com, pro:$scope.proySelected })
+              .success(function(data) {
+                  if(data.success){
+                    var d = new Date();
+                    var today=d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear();
+                    $scope.Comentarios.push({'COMENT': com, 'IDCOMENTARIO': data.IDCOMENTARIO, 'IDPROYECTO': $scope.proySelected.IDPROYECTO, 'LOGINUS': data.LOGINUS, 'FECHA': today});
+
+                    $scope.alerts.push({msg: data.success, type: 'success', tiempo: '4000'});
+                    $scope.COMENTARIO="";
+                  }
+                  else if(data.Error){
+                     $scope.alerts.push({msg: data.Error, type: 'danger', tiempo: '4000'});
+                  }
+              })
+              .error(function(data) {
+                console.log('Error: ' + data);
+              }); 
+        }
+        else{
+            $scope.alerts.push({msg: 'Debe ingresar un comentario.', type: 'warning', tiempo: '4000'});
+        }
+    }
+    
+    
 
 
   }])

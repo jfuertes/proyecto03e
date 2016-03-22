@@ -3,6 +3,7 @@
 	
 	$db  = new dbConnect();
 	$dbh = $db->conectardb();
+	session_start();
 
 	$rspta = json_decode(file_get_contents("php://input"), true);
 	$success="";
@@ -17,11 +18,12 @@
 		//echo $IDPROYECTO;
 		$CODPROY = isset($v['codigo del proyecto'])?$v['codigo del proyecto']:null;
 		$NAMEPROY = isset($v['Nombre del proyecto'])?$v['Nombre del proyecto']:null;
+		$COMENTARIO = isset($v['Ultimo comentario'])?$v['Ultimo comentario']:null;
 
 		$ESTADOPROY=1;
 		$nuevoproyecto=0;
 
-		if($CODPROY == null || $NAMEPROY == null){
+		if($CODPROY == null || $NAMEPROY == null || $COMENTARIO == null){
 			$error.="Error: Se encontro una fila sin código ni nombre de proyecto\n";
 		}
 		else{
@@ -52,6 +54,39 @@
 				else{
 					$error.="Error: No fue posible crear el proyecto $NAMEPROY\n";
 				}
+			}
+
+			// Insertando comentario
+			//var_dump($COMENTARIO);
+			if($COMENTARIO!=""){
+				//Calculando id siguiente comentario:
+				$q = 'SELECT max(IDCOMENTARIO) +1 as IDCOMENTARIO from proyred.COMENTARIO';
+				$stmt = $dbh->prepare($q);
+				$stmt->execute();
+				$r=$stmt->fetch(PDO::FETCH_ASSOC);
+
+				$IDCOMENTARIO=$r['IDCOMENTARIO'];
+				$IDUSUARIO= $_SESSION['IDUSUARIO'];
+				$LOGINUS= $_SESSION['login'];
+				// Insertando nuevo comentario
+				$q = 'INSERT INTO proyred.COMENTARIO (IDCOMENTARIO, IDPROYECTO, IDUSUARIO, FECHACREACION, COMENT)
+						VALUES(:IDCOMENTARIO, :IDPROYECTO, :IDUSUARIO, CURRENT_TIMESTAMP, :COMENT)';
+				$stmt = $dbh->prepare($q);
+				$stmt->bindParam(':IDCOMENTARIO',  $IDCOMENTARIO, PDO::PARAM_STR);
+				$stmt->bindParam(':IDPROYECTO',  $IDPROYECTO, PDO::PARAM_STR);
+				$stmt->bindParam(':IDUSUARIO',  $IDUSUARIO, PDO::PARAM_STR);
+				$stmt->bindParam(':COMENT',  $COMENTARIO, PDO::PARAM_STR);
+				$resultado = $stmt->execute();
+
+				if($resultado==true){
+					$success.="Comentario agregado.\n";
+				}
+				else{
+					$error.=" Error: Error a tratar de insertar comentario";
+				}
+			}
+			else{
+				$error.=" Alerta: No se ingresó comentario para ser agregado";
 			}
 		
 			foreach ($rspta['pa'] as $pa) {
