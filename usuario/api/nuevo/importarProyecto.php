@@ -91,6 +91,7 @@
 		
 			foreach ($rspta['pa'] as $pa) {
 				$error=0;
+				$IDVALOR=null;
 					//calculando idvalor
 				if($nuevoproyecto==0){
 					$q = 'SELECT IDVALOR from proyred.valor 
@@ -103,7 +104,7 @@
 					$IDVALOR=$r['IDVALOR'];
 				}
 
-				if($IDVALOR==NULL || $nuevoproyecto==1){
+				if($IDVALOR==null || $nuevoproyecto==1){
 					$q = 'SELECT max(IDVALOR) +1 as IDVALOR from proyred.valor';
 					$stmt = $dbh->prepare($q);
 					$stmt->execute();

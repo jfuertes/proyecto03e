@@ -736,8 +736,14 @@ angular.module('Controllers', ['datatables', 'datatables.bootstrap', 'datatables
 
       $scope.importar = function (json, tabWidth) {
           if($scope.csv.result){
+            console.log($scope.csv.result);
             var objeto = $scope.csv.result.slice(0,$scope.csv.result.length);
-            if(objeto[0]['id del proyecto'] && objeto[0]['codigo del proyecto'] && objeto[0]['Nombre del proyecto']){
+            console.log(objeto);
+            console.log(objeto[0]['id del proyecto']);
+            console.log(objeto[0]['codigo del proyecto']);
+            console.log(objeto[0]['Nombre del proyecto']);
+
+            if(objeto[0]['id del proyecto']!=undefined && objeto[0]['codigo del proyecto'] && objeto[0]['Nombre del proyecto']){
               if ( confirm("¿Está seguro que desea importar del archivo seleccionado?") ) {
                   $http.post('api/nuevo/importarProyecto.php', {va: objeto, pm: $scope.pmgetProyecByProyMacro, pa: $scope.Parametros } )
                   .success(function(data) {
